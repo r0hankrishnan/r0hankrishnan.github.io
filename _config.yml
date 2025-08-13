@@ -1,7 +1,2 @@
-title: Rohan
-logo: /avatar-gradient.png
-#description: text below image
-show_downloads: true
-remote_theme: pages-themes/minimal@v0.2.0
-plugins:
-- jekyll-remote-theme # add this line to the plugins list if you already have one
+title: YOUR NAME
+theme: jekyll-theme-minimal
