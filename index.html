@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rohan's Personal Website</title>
+  <link rel = "preconnect" href = "https://fonts.googleapis.com">
+  <link rel="stylesheet" href = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" >
+  <style>
+    :root{
+        --bg: #f5f0e8;
+        --text: #1a1a1a;
+        --muted: #888;
+        --accent: #c1440e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box;}
+
+    body{
+        background: var(--bg);
+        color: var(--text);
+        font-family: "EB Garamond", serif;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    #hero{
+        min-height: 33vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0vh 10vw;
+        border: 2px solid black;
+
+    }
+
+    #hero h1{
+       font-size: clamp(3rem, 8vw, 7rem);
+       font-weight: 500;
+       line-height: 1.1;
+       margin-bottom: 1rem; 
+       border: 2px solid red;
+    }
+
+    .tagline{
+        font-size: 1.25rem;
+        color: var(--muted);
+        font-style: italic;
+        border: 2px solid red;
+
+    }
+
+    #articles{
+        padding: 10vh 10vw;
+        border: 2px solid blue;
+
+    }
+
+    #articles h2{
+        font-size: 2rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
+        border: 2px solid green;
+
+    }
+
+    #article-list a{
+        display: block;
+        text-decoration: none;
+        color: var(--text);
+        font-size: 1.2rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--muted);
+        border: 2px solid green;
+    }
+
+    #article-list a:hover{
+        color: var(--accent);
+        border: 2px solid yellow;
+    }
+
+    .source{
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: 2px solid aquamarine;
+    }
+
+    #filters{
+        margin-bottom: 2rem;
+        border: 2px solid aquamarine;
+    }
+
+    .filter{
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: none;
+        border: 1px solid var(--muted);
+        color: var(--muted);
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.5rem;
+        cursor: pointer;
+        border: 2px solid grey;
+    }
+
+    .filter:hover{
+        border-color: var(--accent);
+        color: var(--accent);
+        transition: color 1.2s ease, border-color 0.75s ease;
+        border: 2px solid yellow;
+    }
+
+    .filter.active{
+        background: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+        transition: color 0.2s ease, border-color 0.2s ease;
+        border: 2px solid grey;
+    }
+  </style>
+
+</head>
+<body>
+    <main>
+        <section id = "hero">
+            <h1>Hi, I'm Rohan</h1>
+            <p class = "tagline">Just a dude who wants to work with data.</p>
+        </section>
+
+        <section id = "articles">
+            <h2>Writing</h2>
+            <div id = "filters">
+                <button class = "filter active" data-source = "all">All</button>
+                <button class = "filter" data-source = "Medium">Medium</button>
+                <button class = "filter" data-source = "Substack">Substack</button>
+            </div>
+            <div id = "article-list">Loading...</div>
+        </section>
+    </main>
+
+    <script>
+        const MEDIUM_URL = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@rohan.krishnan";
+        const SUBSTACK_URL = "";
+
+        let allArticles = [];
+
+        function renderArticles(source) {
+
+            const filtered = source === "all" ? allArticles : allArticles.filter(a => a.source === source)
+            
+            const list = document.getElementById("article-list");
+            list.innerHTML = "";
+
+            filtered.forEach(article => {
+                list.innerHTML += `
+                    <a href = "${article.link}" target = "_blank">
+                        <span class = "source">${article.source}</span>
+                        <p>${article.title}</p>
+                    </a>   
+                `;
+            });
+        };
+
+        Promise.all([
+            fetch(MEDIUM_URL).then(r => r.json()).catch(() => ({ items: []})),
+            fetch(SUBSTACK_URL).then(r => r.json()).catch(() => ({ items: [] }))
+            ]).then(([mediumData, substackData]) => {
+                allArticles = [
+                    ...mediumData.items.map(a => ({...a, source: "Medium"})),
+                    ...substackData.items.map(a => ({...a, source: "Substack"}))
+                ];
+                renderArticles("all")
+            });
+        
+        document.querySelectorAll('.filter').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                renderArticles(button.dataset.source);
+            });
+        });
+        
+    </script>
+</body>
+</html>
