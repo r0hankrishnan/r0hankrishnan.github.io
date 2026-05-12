@@ -29,6 +29,18 @@ body {
     min-height: 100vh; transition: background 0.25s, color 0.25s;
 }
 
+/* SCROLL BAR BEHAVIOR*/
+html, body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* LAYOUT */
 .page { max-width: 860px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 48px); }
 
