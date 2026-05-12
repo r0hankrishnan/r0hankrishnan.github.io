@@ -1,189 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rohan's Personal Website</title>
-  <link rel = "preconnect" href = "https://fonts.googleapis.com">
-  <link rel="stylesheet" href = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" >
-  <style>
-    :root{
-        --bg: #f5f0e8;
-        --text: #1a1a1a;
-        --muted: #888;
-        --accent: #c1440e;
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rohan Krishnan | Data Science & Writing</title>
+  <meta name="description" content="Graduate student studying data science at UPenn. Interested in building things and writing about anything I learn."/>
+  <meta name="author" content="Rohan Krishnan"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://r0hankrishnan.github.io"/>
 
-    * { margin: 0; padding: 0; box-sizing: border-box;}
+  <!-- Open Graph — controls how your site looks when shared on social -->
+  <meta property="og:title" content="Rohan Krishnan | Data Science & Writing"/>
+  <meta property="og:description" content="Graduate student studying data science at UPenn. Interested in building things and writing about anything I learn."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://r0hankrishnan.github.io"/>
 
-    body{
-        background: var(--bg);
-        color: var(--text);
-        font-family: "EB Garamond", serif;
-        font-size: 18px;
-        line-height: 1.6;
-    }
+  <!-- Structured data — tells Google explicitly who this page is about -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Rohan Krishnan",
+    "url": "https://r0hankrishnan.github.io",
+    "sameAs": [
+      "https://github.com/r0hankrishnan",
+      "https://linkedin.com/in/rohankrish",
+      "https://medium.com/@rohan.krishnan",
+      "https://substack.com/@rohankrishnan"
+    ],
+    "jobTitle": "Graduate Student @ UPenn",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "University of Pennsylvania"
+    },
+    "knowsAbout": ["Data Science", "Information Systems", "Machine Learning", "Policy"]
+  }
+  </script>
 
-    #hero{
-        min-height: 33vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 0vh 10vw;
-        border: 2px solid black;
-
-    }
-
-    #hero h1{
-       font-size: clamp(3rem, 8vw, 7rem);
-       font-weight: 500;
-       line-height: 1.1;
-       margin-bottom: 1rem; 
-       border: 2px solid red;
-    }
-
-    .tagline{
-        font-size: 1.25rem;
-        color: var(--muted);
-        font-style: italic;
-        border: 2px solid red;
-
-    }
-
-    #articles{
-        padding: 10vh 10vw;
-        border: 2px solid blue;
-
-    }
-
-    #articles h2{
-        font-size: 2rem;
-        font-weight: 500;
-        margin-bottom: 2rem;
-        border: 2px solid green;
-
-    }
-
-    #article-list a{
-        display: block;
-        text-decoration: none;
-        color: var(--text);
-        font-size: 1.2rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--muted);
-        border: 2px solid green;
-    }
-
-    #article-list a:hover{
-        color: var(--accent);
-        border: 2px solid yellow;
-    }
-
-    .source{
-        font-family: "DM Mono", monospace;
-        font-size: 0.7rem;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        border: 2px solid aquamarine;
-    }
-
-    #filters{
-        margin-bottom: 2rem;
-        border: 2px solid aquamarine;
-    }
-
-    .filter{
-        font-family: "DM Mono", monospace;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        background: none;
-        border: 1px solid var(--muted);
-        color: var(--muted);
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
-        cursor: pointer;
-        border: 2px solid grey;
-    }
-
-    .filter:hover{
-        border-color: var(--accent);
-        color: var(--accent);
-        transition: color 1.2s ease, border-color 0.75s ease;
-        border: 2px solid yellow;
-    }
-
-    .filter.active{
-        background: var(--accent);
-        color: var(--bg);
-        border-color: var(--accent);
-        transition: color 0.2s ease, border-color 0.2s ease;
-        border: 2px solid grey;
-    }
-  </style>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <main>
-        <section id = "hero">
-            <h1>Hi, I'm Rohan</h1>
-            <p class = "tagline">Just a dude who wants to work with data.</p>
-        </section>
 
-        <section id = "articles">
-            <h2>Writing</h2>
-            <div id = "filters">
-                <button class = "filter active" data-source = "all">All</button>
-                <button class = "filter" data-source = "Medium">Medium</button>
-                <button class = "filter" data-source = "Substack">Substack</button>
-            </div>
-            <div id = "article-list">Loading...</div>
-        </section>
-    </main>
+<!-- Sticky nav — slides in when header scrolls out of view -->
+<div id="sticky-nav">
+  <span class="sticky-name">Rohan Krishnan</span>
+  <div class="sticky-links">
+    <a href="#now" class="active"><i data-lucide="info"></i><span>Now</span></a>
+    <a href="#projects"><i data-lucide="folder"></i><span>Projects</span></a>
+    <a href="#writing"><i data-lucide="pen-line"></i><span>Writing</span></a>
+  </div>
+</div>
 
-    <script>
-        const MEDIUM_URL = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@rohan.krishnan";
-        const SUBSTACK_URL = "";
+<!-- Theme toggle — fixed top right always -->
+<button id="theme-toggle" aria-label="Toggle dark/light mode">
+  <i data-lucide="moon"></i>
+</button>
 
-        let allArticles = [];
+<!-- Section progress bars -->
+<nav id="section-nav" aria-label="Page sections">
+  <a class="snav-item active" href="#now"></a>
+  <a class="snav-item" href="#projects"></a>
+  <a class="snav-item" href="#writing"></a>
+</nav>
 
-        function renderArticles(source) {
+<div class="page">
 
-            const filtered = source === "all" ? allArticles : allArticles.filter(a => a.source === source)
-            
-            const list = document.getElementById("article-list");
-            list.innerHTML = "";
+  <!-- ── Header ── -->
+  <header id="site-header">
+    <h1 class="name">Hi, I'm Rohan.</h1>
+    <p class="bio">
+      I'm a master's student studying data science at the University of Pennsylvania. I like to build solutions that solve real, vetted business problems. 
+      Beyond that, I like to study a wide variety of topics and document what I learn.
+    </p>
+    <div class="social-links">
+      <a href="https://github.com/r0hankrishnan" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/rohankrish" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://substack.com/@rohankrishnan" target="_blank" rel="noopener">Substack</a>
+      <a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a>
+      <a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-hero">Email</a>
+      <a href="./krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    </div>
 
-            filtered.forEach(article => {
-                list.innerHTML += `
-                    <a href = "${article.link}" target = "_blank">
-                        <span class = "source">${article.source}</span>
-                        <p>${article.title}</p>
-                    </a>   
-                `;
-            });
-        };
+    <nav class="header-nav" >
+      <a href="#now" class="active"><i data-lucide="info"></i>About Me</a>
+      <a href="#projects"><i data-lucide="folder"></i>Projects</a>
+      <a href="#writing"><i data-lucide="pen-line"></i>Writing</a>
+    </nav>
+  </header>
 
-        Promise.all([
-            fetch(MEDIUM_URL).then(r => r.json()).catch(() => ({ items: []})),
-            fetch(SUBSTACK_URL).then(r => r.json()).catch(() => ({ items: [] }))
-            ]).then(([mediumData, substackData]) => {
-                allArticles = [
-                    ...mediumData.items.map(a => ({...a, source: "Medium"})),
-                    ...substackData.items.map(a => ({...a, source: "Substack"}))
-                ];
-                renderArticles("all")
-            });
-        
-        document.querySelectorAll('.filter').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
-                button.classList.add('active');
-                renderArticles(button.dataset.source);
-            });
-        });
-        
-    </script>
+
+  <!-- ── Now ── -->
+  <section id="now">
+
+    <p class="section-label"><i data-lucide="info"></i><a href="#now">About Me</a></p>
+
+    <div class="now-list">
+
+      <div class="now-item">
+        <span class="now-key">Based in</span>
+        <span class="now-val">Philadelphia, PA</span>
+      </div>
+
+      <div class="now-item">
+        <span class="now-key">Studying</span>
+        <span class="now-val">Data science at Penn SEAS.</span>
+      </div>
+
+      <div class="now-item">
+        <span class="now-key">Currently Building</span>
+        <span class="now-val">Frame Finder — semantic search for tennis racquets.</span>
+      </div>
+
+      <div class="now-item">
+        <span class="now-key">Reading</span>
+        <span class="now-val">Update this with what you're actually reading.</span>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── Projects ── -->
+  <section id="projects">
+    <p class="section-label"><i data-lucide="folder"></i><a href="#projects">Projects</a></p>
+    <div class="project-list">
+
+      <a class="project" href="https://github.com/r0hankrishnan/racquet-sem-search" target="_blank" rel="noopener">
+        <div class="project-header">
+          <span class="project-name">Frame Finder</span>
+          <span class="project-wip">In progress</span>
+        </div>
+        <p class="project-desc">
+          Semantic search for tennis racquets. Hybrid BM25 + dense embedding retrieval with a natural language interface. 
+          Built to solve a genuine shopping problem.
+        </p>
+      </a>
+
+      <a class="project" href="https://pypi.org/project/datashelf/" target="_blank" rel="noopener">
+        <div class="project-header">
+          <span class="project-name">Datashelf</span>
+        </div>
+        <p class="project-desc">
+          A lightweight Python library for versioned tabular data storage with hash-based deduplication. 
+          Git-inspired, published to PyPI.
+        </p>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ── Writing ── -->
+  <section id="writing">
+
+    <p class="section-label"><i data-lucide="pen-line"></i><a href="#writing">Writing</a></p>
+
+    <div class="writing-filters">
+      <button class="filter-btn active" data-source="all">All</button>
+      <button class="filter-btn" data-source="Medium">Medium</button>
+      <button class="filter-btn" data-source="Substack">Substack</button>
+    </div>
+
+    <div class="article-list" id="article-list">
+      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
+      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
+      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
+      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
+    </div>
+
+  </section>
+
+
+  <!-- ── Footer — social links + copyright only, no nav ── -->
+  <footer>
+
+    <div class="footer-links">
+      <a href="https://github.com/r0hankrishnan" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/rohankrish" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://substack.com/@rohankrishnan" target="_blank" rel="noopener">Substack</a>
+      <a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a>
+      <a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-footer">Email</a>
+      <a href="./krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    </div>
+
+    <span class="footer-copy">© 2025 Rohan Krishnan</span>
+
+  </footer>
+
+</div><!-- .page -->
+
+<script src="script.js"></script>
+
 </body>
 </html>
