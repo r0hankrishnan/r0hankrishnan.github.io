@@ -1,0 +1,149 @@
+:root{
+    --bg: #f5f0e8;
+    --text: #1a1a1a;
+    --muted: #888;
+    --accent: #2E6F40;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box;}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg) !important;
+}
+
+html{
+    scrollbar-gutter: stable;
+    scrollbar-color: var(--muted) var(--bg);
+    scrollbar-width: thin;
+}
+
+body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: "EB Garamond", serif;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.debug{
+    outline: 1px solid red;
+}
+
+
+#hero h1{
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 1rem; 
+}
+
+.tagline{
+    font-size: 1.25rem;
+    color: var(--muted);
+    font-style: italic;
+}
+
+#articles{
+    padding: 10vh 10vw;
+}
+
+#articles h2{
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+#article-list a{
+    display: block;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 1.2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--muted);
+}
+
+#article-list a:hover{
+    color: var(--accent);
+}
+
+.article-source{
+    font-family: "DM Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.article-date{
+    font-family: "DM Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+
+}
+
+#filters{
+    margin-bottom: 2rem;
+}
+
+.filter{
+    font-family: "DM Mono", monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: none;
+    border: 1px solid var(--muted);
+    color: var(--muted);
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.filter:hover{
+    border-color: var(--accent);
+    color: var(--accent);
+    transition: color 1.2s ease, border-color 0.75s ease;
+}
+
+.filter.active{
+    animation: button-click-gradient 50ms;
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+@keyframes button-click-gradient{
+    0% {
+        background: radial-gradient(circle at center, rgba(46,111,64, 0) 0%, #f5f0e8 0%, #f5f0e8 100%);
+    }
+    25% {
+        background: radial-gradient(circle at center, rgba(46,111,64, 0.3) 24%, #f5f0e8 25%, #f5f0e8 100%);
+    }
+    50% {
+        background: radial-gradient(circle at center, rgba(46,111,64, 0.5) 49%, #f5f0e8 50%, #f5f0e8 100%);
+    }
+    75% {
+        background: radial-gradient(circle at center, rgba(46,111,64, 0.8) 74%, #f5f0e8 75%, #f5f0e8 100%);
+    }
+    100% {
+        background: radial-gradient(circle at center, rgb(46,111,64) 99%, #f5f0e8 100%, #f5f0e8 100%);
+    }
+}
+
