@@ -4,7 +4,7 @@
 :root {
     --paper: #f5f0e8;
     --ink: #1a1612;
-    --muted: #7a7268;
+    --muted: #6b6259;
     --accent: #3a6b44;
     --rule:#d8d0c4;
     --serif: 'EB Garamond', Georgia, serif;
@@ -15,7 +15,7 @@
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
     --paper: #161310; --ink: #e8e0d4;
-    --muted: #6e6860; --accent: #5a9e6f; --rule: #2e2a25;
+    --muted: #8a8278; --accent: #5a9e6f; --rule: #2e2a25;
     }
 }
 :root[data-theme="dark"]  { --paper: #161310; --ink: #e8e0d4; --muted: #6e6860; --accent: #5a9e6f; --rule: #2e2a25; }
@@ -47,21 +47,6 @@ body {
 
 #sticky-nav.visible { transform: translateY(0);   box-shadow: 0 1px 0 0 var(--rule);}
 
-/* #sticky-nav::after {
-  content: '';
-  position: fixed;
-  top: var(--sticky-h);
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: transparent;
-  z-index: 202;
-}
-
-#sticky-nav.visible::after {
-  background: var(--rule);
-} */
-
 .sticky-name {
     font-family: var(--serif);
     font-size: 1rem; font-weight: 400;
@@ -79,7 +64,7 @@ body {
 }
 
 .sticky-links a {
-    font-family: var(--sans); font-size: 0.62rem; font-weight: 300;
+    font-family: var(--sans); font-size: 0.62rem; font-weight: 350;
     letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--muted); text-decoration: none;
     transition: opacity 0.2s; padding-bottom: 1px;
@@ -168,7 +153,7 @@ header {
 .social-links { display: flex; flex-wrap: wrap; row-gap: 8px; }
 
 .social-links a {
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 300;
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 350;
     letter-spacing: 0.13em; text-transform: uppercase;
     color: var(--muted); text-decoration: none; transition: opacity 0.2s;
     padding-right: 12px; margin-right: 12px;
@@ -187,7 +172,7 @@ header {
 }
 
 .header-nav a {
-    font-family: var(--sans); font-size: 0.68rem; font-weight: 300;
+    font-family: var(--sans); font-size: 0.68rem; font-weight: 350;
     letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--muted); text-decoration: none;
     transition: opacity 0.2s; padding-bottom: 2px;
@@ -208,8 +193,9 @@ section { padding: clamp(28px, 4vw, 40px) 0; animation: fadeUp 0.5s ease 0.2s bo
     letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--muted); margin-bottom: 24px;
     display: flex; align-items: center; gap: 8px;
-    padding-left: 10px; border-left: 2px solid var(--accent);
+     padding-left: 0px; border-left: None; /* 2px solid var(--accent); */
 }
+
 .section-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; flex-shrink: 0; vertical-align: middle;}
 .section-label i   { display: flex; align-items: center; margin-top: -2px;}
 .section-label a {
@@ -231,7 +217,7 @@ section { padding: clamp(28px, 4vw, 40px) 0; animation: fadeUp 0.5s ease 0.2s bo
 }
 
 .about-key {
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 300;
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 350;
     letter-spacing: 0.13em; text-transform: uppercase;
     color: var(--muted); white-space: nowrap;
     min-width: 150px; flex-shrink: 0; padding-top: 2px;
@@ -258,7 +244,7 @@ section { padding: clamp(28px, 4vw, 40px) 0; animation: fadeUp 0.5s ease 0.2s bo
 .project-wip {
   font-family: var(--sans);
   font-size: 0.55rem;
-  font-weight: 300;
+  font-weight: 350;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--accent);
@@ -274,7 +260,7 @@ section { padding: clamp(28px, 4vw, 40px) 0; animation: fadeUp 0.5s ease 0.2s bo
 .writing-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
 
 .filter-btn {
-    font-family: var(--sans); font-size: 0.58rem; font-weight: 300;
+    font-family: var(--sans); font-size: 0.58rem; font-weight: 350;
     letter-spacing: 0.14em; text-transform: uppercase;
     background: none; border: 1px solid var(--rule);
     color: var(--muted); padding: 5px 12px; cursor: pointer;
@@ -294,7 +280,7 @@ section { padding: clamp(28px, 4vw, 40px) 0; animation: fadeUp 0.5s ease 0.2s bo
 .article-meta  { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 
 .article-source, .article-date {
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 300;
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 350;
     letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted);
 }
 
@@ -305,7 +291,7 @@ section { padding: clamp(28px, 4vw, 40px) 0; animation: fadeUp 0.5s ease 0.2s bo
 
 .article-date {
     font-family: var(--sans); font-size: 0.6rem;
-    font-weight: 300; color: var(--muted); white-space: nowrap;
+    font-weight: 350; color: var(--muted); white-space: nowrap;
     flex-shrink: 0; padding-top: 3px;
 }
 
@@ -334,7 +320,7 @@ footer {
 .footer-links { display: flex; flex-wrap: wrap; row-gap: 8px; }
 
 .footer-links a {
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 300;
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 350;
     letter-spacing: 0.13em; text-transform: uppercase;
     color: var(--muted); text-decoration: none; transition: opacity 0.2s;
     padding-right: 14px; margin-right: 14px;
@@ -346,7 +332,7 @@ footer {
 
 .footer-copy {
     font-family: var(--sans); font-size: 0.6rem;
-    font-weight: 300; letter-spacing: 0.12em; color: var(--muted);
+    font-weight: 350; letter-spacing: 0.12em; color: var(--muted);
 }
 
 /* No border-bottom on last item before footer to avoid double rule */
