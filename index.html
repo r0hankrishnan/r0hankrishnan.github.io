@@ -9,13 +9,13 @@
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://r0hankrishnan.github.io"/>
 
-  <!-- Open Graph — controls how your site looks when shared on social -->
+  <!-- Open Graph tags -->
   <meta property="og:title" content="Rohan Krishnan | Data Science & Writing"/>
   <meta property="og:description" content="Graduate student studying data science at UPenn. Interested in building things and writing about anything I learn."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://r0hankrishnan.github.io"/>
 
-  <!-- Structured data — tells Google explicitly who this page is about -->
+  <!-- Structured data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -45,31 +45,34 @@
 </head>
 <body>
 
-<!-- Sticky nav — slides in when header scrolls out of view -->
+<!-- Sticky nav -->
 <div id="sticky-nav">
-  <span class="sticky-name">Rohan Krishnan</span>
+  <span class="sticky-name"><a href="#site-header">Rohan Krishnan</a></span>
   <div class="sticky-links">
-    <a href="#now" class="active"><i data-lucide="info"></i><span>Now</span></a>
+    <a href="#about" class="active"><i data-lucide="info"></i><span>About Me</span></a>
     <a href="#projects"><i data-lucide="folder"></i><span>Projects</span></a>
     <a href="#writing"><i data-lucide="pen-line"></i><span>Writing</span></a>
   </div>
+  <button id="theme-toggle-sticky" aria-label="Toggle dark/light mode">
+  <i data-lucide="moon"></i>
+</button>
 </div>
 
-<!-- Theme toggle — fixed top right always -->
+<!-- Theme toggle -->
 <button id="theme-toggle" aria-label="Toggle dark/light mode">
   <i data-lucide="moon"></i>
 </button>
 
 <!-- Section progress bars -->
 <nav id="section-nav" aria-label="Page sections">
-  <a class="snav-item active" href="#now"></a>
+  <a class="snav-item active" href="#about"></a>
   <a class="snav-item" href="#projects"></a>
   <a class="snav-item" href="#writing"></a>
 </nav>
 
 <div class="page">
 
-  <!-- ── Header ── -->
+  <!-- Header -->
   <header id="site-header">
     <h1 class="name">Hi, I'm Rohan.</h1>
     <p class="bio">
@@ -85,39 +88,39 @@
       <a href="./krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
     </div>
 
-    <nav class="header-nav" >
-      <a href="#now" class="active"><i data-lucide="info"></i>About Me</a>
+    <nav class="header-nav">
+      <a href="#about" class="active"><i data-lucide="info"></i>About Me</a>
       <a href="#projects"><i data-lucide="folder"></i>Projects</a>
       <a href="#writing"><i data-lucide="pen-line"></i>Writing</a>
     </nav>
   </header>
 
 
-  <!-- ── Now ── -->
-  <section id="now">
+  <!-- About Me -->
+  <section id="about">
 
-    <p class="section-label"><i data-lucide="info"></i><a href="#now">About Me</a></p>
+    <p class="section-label"><i data-lucide="info"></i><a href="#about">About Me</a></p>
 
-    <div class="now-list">
+    <div class="about-list">
 
-      <div class="now-item">
-        <span class="now-key">Based in</span>
-        <span class="now-val">Philadelphia, PA</span>
+      <div class="about-item">
+        <span class="about-key">Based in</span>
+        <span class="about-val">Philadelphia, PA</span>
       </div>
 
-      <div class="now-item">
-        <span class="now-key">Studying</span>
-        <span class="now-val">Data science at Penn SEAS.</span>
+      <div class="about-item">
+        <span class="about-key">Studying</span>
+        <span class="about-val">Data science at Penn SEAS.</span>
       </div>
 
-      <div class="now-item">
-        <span class="now-key">Currently Building</span>
-        <span class="now-val">Frame Finder — semantic search for tennis racquets.</span>
+      <div class="about-item">
+        <span class="about-key">Currently Building</span>
+        <span class="about-val">Frame Finder — semantic search for tennis racquets.</span>
       </div>
 
-      <div class="now-item">
-        <span class="now-key">Reading</span>
-        <span class="now-val">Update this with what you're actually reading.</span>
+      <div class="about-item">
+        <span class="about-key">Reading</span>
+        <span class="about-val">Update this with what you're actually reading.</span>
       </div>
 
     </div>
@@ -175,7 +178,7 @@
   </section>
 
 
-  <!-- ── Footer — social links + copyright only, no nav ── -->
+  <!-- Footer: social links + copyright only -->
   <footer>
 
     <div class="footer-links">

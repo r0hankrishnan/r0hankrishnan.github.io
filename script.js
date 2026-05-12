@@ -4,18 +4,18 @@
 ─────────────────────────────────────────────────── */
 const root = document.documentElement;
 const btn = document.getElementById('theme-toggle');
+const btnSticky = document.getElementById('theme-toggle-sticky');
 const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const saved = localStorage.getItem('theme');
 let isDark = saved ? saved === 'dark' : false;
 
 function setToggleIcon(dark) {
-const iconName = dark ? 'sun' : 'moon';
-const newIcon = lucide.createElement(lucide.icons[iconName === 'sun' ? 'Sun' : 'Moon']);
-newIcon.style.cssText = 'width:13px;height:13px;stroke:currentColor;fill:none;';
-btn.innerHTML = '';
-btn.appendChild(newIcon);
+  const newIcon = lucide.createElement(lucide.icons[dark ? 'Sun' : 'Moon']);
+  newIcon.style.cssText = 'width:13px;height:13px;stroke:currentColor;fill:none;';
+  [btn, btnSticky].forEach(b => {
+    if (b) { b.innerHTML = ''; b.appendChild(newIcon.cloneNode(true)); }
+  });
 }
-
 function applyTheme(dark) {
 isDark = dark;
 root.setAttribute('data-theme', dark ? 'dark' : 'light');
@@ -24,17 +24,20 @@ setToggleIcon(dark);
 }
 
 btn.addEventListener('click', () => applyTheme(!isDark));
-
+btnSticky.addEventListener('click', () => applyTheme(!isDark));
 
 /* ── Sticky nav — shows when header scrolls out ──── */
 const stickyNav = document.getElementById('sticky-nav');
 const siteHeader = document.getElementById('site-header');
 
 const headerObserver = new IntersectionObserver(
-([entry]) => {
-    stickyNav.classList.toggle('visible', !entry.isIntersecting);
-},
-{ threshold: 0 }
+  ([entry]) => {
+    const hidden = !entry.isIntersecting;
+    stickyNav.classList.toggle('visible', hidden);
+    btn.style.opacity = hidden ? '0' : '1';
+    btn.style.pointerEvents = hidden ? 'none' : 'auto';
+  },
+  { threshold: 0 }
 );
 headerObserver.observe(siteHeader);
 
@@ -101,7 +104,7 @@ list.innerHTML = page.map(a => `
         <span class="article-source">${a.source}</span>
         <span class="article-title">${a.title}</span>
     </div>
-    <span class="article-source">${formatDate(a.pubDate)}</span>
+    <span class="article-date">${formatDate(a.pubDate)}</span>
     </a>
 `).join('');
 
