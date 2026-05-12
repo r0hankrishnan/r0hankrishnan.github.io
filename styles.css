@@ -1,6 +1,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* VARIBALES */
+/* VARIABLES */
 :root {
     --paper: #f5f0e8;
     --ink: #1a1612;
@@ -44,7 +44,7 @@ body::-webkit-scrollbar {
 /* LAYOUT */
 .page { max-width: 860px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 48px); }
 
-/* Sticky nav — appears when header scrolls out */
+/* Sticky nav —> appears when header scrolls out */
 #sticky-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 202;
     height: var(--sticky-h);
@@ -88,7 +88,7 @@ body::-webkit-scrollbar {
 .sticky-links a svg { width: 11px; height: 11px; stroke: currentColor; fill: none; vertical-align: middle;}
 .sticky-links a i { display: flex; }
 
-/* ── Theme toggle — icon only, always fixed top right ── */
+/* THEME TOGGLE -> Icon Only */
 #theme-toggle {
   position: fixed; top: 0; right: 0; z-index: 201;
   height: var(--sticky-h);
@@ -120,7 +120,7 @@ body::-webkit-scrollbar {
 #theme-toggle i, #theme-toggle-sticky i { display: flex; }
 #theme-toggle svg, #theme-toggle-sticky svg { width: 13px; height: 13px; stroke: currentColor; fill: none; }
 
-/* ── Section progress bars — fixed left ─────────── */
+/* SECTION PROGRESS BARS */
 #section-nav {
     position: fixed;
     left: clamp(12px, 2vw, 24px);
@@ -142,13 +142,13 @@ body::-webkit-scrollbar {
 /* Only show when there's genuinely enough left margin */
 @media (max-width: 900px) { #section-nav { display: none; } }
 
-/* ── Header ──────────────────────────────────────── */
+/* HEADER */
 header {
     padding: clamp(40px, 8vw, 72px) 0 32px;
     animation: fadeUp 0.5s ease 0.05s both;
 }
 
-/* ── Hero ────────────────────────────────────────── */
+/* HERO */
 .name {
     font-family: var(--serif);
     font-size: clamp(2.6rem, 6vw, 4rem);
@@ -161,7 +161,7 @@ header {
     color: var(--ink); line-height: 1.75; margin-bottom: 20px;
 }
 
-/* ── Social links ────────────────────────────────── */
+/* SOCIAL LINKS */
 .social-links { display: flex; flex-wrap: wrap; row-gap: 8px; }
 
 .social-links a {
@@ -174,10 +174,10 @@ header {
 .social-links a:last-child { border-right: none; padding-right: 0; margin-right: 0; }
 .social-links a:hover { opacity: 0.5; }
 
-/* Email copy feedback */
+/* EMAIL COPY */
 .social-links a[data-copy].copied { color: var(--accent); opacity: 1; }
 
-/* ── Header nav ──────────────────────────────────── */
+/* HEADER NAV */
 .header-nav {
     padding: clamp(20px, 3vw, 28px) 0 0;
     display: flex; gap: clamp(18px, 4vw, 28px); flex-wrap: wrap;
@@ -197,7 +197,7 @@ header {
 .header-nav a svg    { stroke: currentColor; fill: none; flex-shrink: 0; width: 13px; height: 13px; }
 .header-nav a i      { display: flex; align-items: center;}
 
-/* ── Sections ────────────────────────────────────── */
+/* SECTIONS */
 section { padding: clamp(28px, 4vw, 40px) 0; animation: fadeUp 0.5s ease 0.2s both; scroll-margin: 60px;}
 
 .section-label {
