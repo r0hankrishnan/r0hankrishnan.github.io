@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="avatar-solid-green.png">
+  <link rel="icon" type="image/png" href="./assets/avatar-solid-green.png">
   <title>Rohan Krishnan | Data Science & Writing</title>
   <meta name="description" content="Graduate student studying data science at UPenn. Interested in building things and writing about anything I learn."/>
   <meta name="author" content="Rohan Krishnan"/>
@@ -15,6 +15,15 @@
   <meta property="og:description" content="Graduate student studying data science at UPenn. Interested in building things and writing about anything I learn."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://r0hankrishnan.github.io"/>
+  
+  <!-- Prevent theme snapping -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+    })();
+  </script>
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -86,7 +95,7 @@
       <a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a>
       <a href="https://substack.com/@rohankrishnan" target="_blank" rel="noopener">Substack</a>
       <a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-hero">Email</a>
-      <a href="./krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      <a href="./assets/krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
     </div>
 
     <nav class="header-nav">
@@ -200,9 +209,17 @@
       <a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a>
       <a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-footer">Email</a>
       <a href="./krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      <!-- Replace your current ramen link attempt with this, inside <div class="footer-links"> after Résumé -->
+      <a href="noodles.html" class="footer-noodles">Noodles</a>
     </div>
 
-    <span class="footer-copy">© 2025 Rohan Krishnan</span>
+    <!-- <span class="footer-copy">© 2025 Rohan Krishnan</span> -->
+    <span class="footer-copy">
+      © 2025 Rohan Krishnan
+    </span>
+
+
+
 
   </footer>
 

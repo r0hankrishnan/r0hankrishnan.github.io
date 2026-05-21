@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="avatar-solid-green.png">
+  <title>Ramen Rankings | Rohan Krishnan</title>
+  <meta name="robots" content="noindex"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet" />
+    <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+    })();
+  </script>
+  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="noodles.css">
+</head>
+<body>
+
+<div id="sticky-nav">
+  <span class="sticky-name"><a href="index.html">Rohan Krishnan</a></span>
+  <button id="theme-toggle-sticky" aria-label="Toggle dark/light mode">
+    <i data-lucide="moon"></i>
+  </button>
+</div>
+
+<button id="theme-toggle" aria-label="Toggle dark/light mode">
+  <i data-lucide="moon"></i>
+</button>
+
+<div class="page">
+
+  <header id="site-header">
+    <p class="eyebrow"><i data-lucide="sparkles"></i> You found my secret page!</p>
+    <h1 class="name">Instant Noodles Power Rankings</h1>
+    <p class="bio">My GOATed (intensely biased) instant noodles tier list.</p>
+  </header>
+
+  <section id="tierlist-section">
+    <p class="section-label"><i data-lucide="list-ordered"></i><span>Tier List</span></p>
+
+    <div id="tier-list">
+
+      <div class="tier-row">
+        <div class="tier-label tier-s">S</div>
+        <div class="tier-items">
+            <div class="noodles-item">
+                <img class="noodles-img" src="./assets/Nongshim-Ramyun-Hot-Spicy.jpg" alt="noodles" />
+                <p class="noodles-label">Nongshim Ramyun Hot & Spicy</p>
+            </div>
+          <!--
+            TO ADD A RAMEN: paste a block like this into the tier it belongs in.
+
+            <div class="ramen-item">
+              <img class="ramen-img" src="images/ramen/your-ramen.jpg" alt="ramen" />
+              <p class="ramen-label">Brand Name</p>
+            </div>
+          -->
+        </div>
+      </div>
+
+      <div class="tier-row">
+        <div class="tier-label tier-a">A</div>
+        <div class="tier-items">
+
+        </div>
+      </div>
+
+      <div class="tier-row">
+        <div class="tier-label tier-b">B</div>
+        <div class="tier-items"></div>
+      </div>
+
+      <div class="tier-row">
+        <div class="tier-label tier-c">C</div>
+        <div class="tier-items">
+            <div class="noodles-item">
+                <img class="noodles-img" src="./assets/Nongshim-Ramyun-Spicy-Kimchi.jpg" alt="noodles" />
+                <p class="noodles-label">Nongshim Ramyun Spicy Kimchi</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="tier-row">
+        <div class="tier-label tier-d">D</div>
+        <div class="tier-items"></div>
+      </div>
+
+      <div class="tier-row">
+        <div class="tier-label tier-f">F</div>
+        <div class="tier-items"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">← Back to main site</a>
+    </div>
+    <span class="footer-copy">© 2025 Rohan Krishnan</span>
+  </footer>
+
+</div>
+
+<script src="noodles.js"></script>
+</body>
+</html>
