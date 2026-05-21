@@ -347,6 +347,12 @@ footer {
     font-weight: 350; letter-spacing: 0.12em; color: var(--muted);
 }
 
+.footer-noodles {
+  font-style: italic;
+}
+
+.footer-noodles:hover { opacity: 0.6; }
+
 /* No border-bottom on last item before footer to avoid double rule */
 section:last-of-type .article:last-child,
 section:last-of-type .project:last-child,
