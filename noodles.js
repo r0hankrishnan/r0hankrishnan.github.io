@@ -1,6 +1,8 @@
 // ─── BACKGROUND REMOVAL (canvas flood-fill) ──────────────────────────────────
 // Runs on page load for any image not yet cached. Result stored in localStorage
-// keyed by src, so subsequent loads are instant.
+// keyed by src, so subsequent loads are instant. Each <img> starts with no
+// `src` (only `data-src`) and 0 opacity, so nothing paints until the real,
+// background-removed version is ready — that's what kills the flash/pop.
 
 const BG_CACHE_KEY = 'noodles-bg-cache-v2';
 
@@ -10,23 +12,6 @@ function getBgCache() {
 
 function setBgCache(cache) {
   try { localStorage.setItem(BG_CACHE_KEY, JSON.stringify(cache)); } catch(e) {}
-}
-
-async function processImages() {
-  const cache = getBgCache();
-  for (const img of document.querySelectorAll('.noodles-img')) {
-    const src = img.getAttribute('src');
-    if (!src) continue;
-    if (cache[src]) { img.src = cache[src]; continue; }
-    try {
-      const dataUrl = await removeBg(src);
-      cache[src] = dataUrl;
-      setBgCache(cache);
-      img.src = dataUrl;
-    } catch(e) {
-      console.warn('BG removal failed for', src, e);
-    }
-  }
 }
 
 function removeBg(src) {
@@ -90,72 +75,43 @@ function removeBgCanvas(img) {
   return canvas.toDataURL('image/png', 0.9);
 }
 
-// ─── THEME ───────────────────────────────────────────────────────────────────
-const root = document.documentElement;
-const btn = document.getElementById('theme-toggle');
-const btnSticky = document.getElementById('theme-toggle-sticky');
-const saved = localStorage.getItem('theme');
-const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-let isDark = saved ? saved === 'dark' : sysDark;
+async function processImages() {
+  const cache = getBgCache();
+  const jobs = [...document.querySelectorAll('.noodles-img')].map(async (img) => {
+    const src = img.dataset.src;
+    if (!src) return;
 
-function setToggleIcon(dark) {
-  const icon = lucide.createElement(lucide.icons[dark ? 'Sun' : 'Moon']);
-  icon.style.cssText = 'width:13px;height:13px;stroke:currentColor;fill:none;';
-  [btn, btnSticky].forEach(b => { if (b) { b.innerHTML = ''; b.appendChild(icon.cloneNode(true)); } });
+    let finalSrc = cache[src];
+    if (!finalSrc) {
+      try {
+        finalSrc = await removeBg(src);
+        cache[src] = finalSrc;
+        setBgCache(cache);
+      } catch (e) {
+        console.warn('BG removal failed for', src, e);
+        finalSrc = src; // fall back to the raw photo rather than leaving it blank
+      }
+    }
+
+    // Wait for the browser to actually have the final image ready before
+    // revealing it — a data URL decodes almost instantly, but this also
+    // covers the raw-photo fallback path, which is a real network fetch.
+    await new Promise(resolve => {
+      img.addEventListener('load', resolve, { once: true });
+      img.src = finalSrc;
+    });
+    img.classList.add('loaded');
+    img.closest('.noodles-thumb')?.classList.add('is-loaded');
+  });
+  await Promise.all(jobs);
 }
-
-function applyTheme(dark) {
-  isDark = dark;
-  root.setAttribute('data-theme', dark ? 'dark' : 'light');
-  localStorage.setItem('theme', dark ? 'dark' : 'light');
-  setToggleIcon(dark);
-}
-
-btn.addEventListener('click', () => applyTheme(!isDark));
-btnSticky.addEventListener('click', () => applyTheme(!isDark));
-applyTheme(isDark);
-lucide.createIcons();
-
-// Build slot machine UI, then enable it once bg removal is done
-// so the reel uses processed transparent images, not raw jpgs.
-buildSpinUI();
-document.getElementById('spin-action').disabled = true;
-document.getElementById('spin-btn').style.opacity = '0.4';
-document.getElementById('spin-btn').style.pointerEvents = 'none';
-processImages().then(() => {
-  document.getElementById('spin-action').disabled = false;
-  document.getElementById('spin-btn').style.opacity = '';
-  document.getElementById('spin-btn').style.pointerEvents = '';
-});
 
 // ─── SLOT MACHINE ─────────────────────────────────────────────────────────────
 
 function buildSpinUI() {
-  // ── Floating trigger button
-  const spinBtn = document.createElement('button');
-  spinBtn.id = 'spin-btn';
-  spinBtn.textContent = 'Spin';
-  document.body.appendChild(spinBtn);
+  const spinBtn = document.getElementById('spin-btn');
+  const overlay = document.getElementById('spin-overlay');
 
-  // ── Overlay + modal
-  const overlay = document.createElement('div');
-  overlay.id = 'spin-overlay';
-  overlay.innerHTML = `
-    <div id="spin-modal">
-      <button id="spin-close"><i data-lucide="x"></i></button>
-      <p class="spin-eyebrow">tonight's noodles</p>
-      <div id="reel-window">
-        <div id="reel-idle"><span>——</span></div>
-        <div id="reel-strip" style="display:none"></div>
-      </div>
-      <p id="spin-result-label"></p>
-      <button id="spin-action">Spin for noodles</button>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-  lucide.createIcons();
-
-  // ── Wire open/close
   spinBtn.addEventListener('click', () => overlay.classList.add('open'));
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
   document.getElementById('spin-close').addEventListener('click', closeModal);
@@ -168,7 +124,6 @@ function buildSpinUI() {
 }
 
 function getNoodleData() {
-  // Scrape current processed src + label from every noodles-item on the page
   return [...document.querySelectorAll('.noodles-item')].map(el => ({
     src:   el.querySelector('.noodles-img').src,
     label: el.querySelector('.noodles-label')?.textContent.trim() ?? '',
@@ -210,21 +165,16 @@ async function runSpin() {
   // Reset strip to top before animating
   strip.style.transition = 'none';
   strip.style.transform  = 'translateY(0)';
-  // Force reflow so the transition:none takes effect before we add the animation
   strip.getBoundingClientRect();
 
   idle.style.display  = 'none';
   strip.style.display = 'flex';
 
-  // Target: winner frame centered in the 120px window (center = 60px, img = 100px so offset by 50)
   const finalIdx    = reelItems.length - 1;
   const finalOffset = -(finalIdx * frameH) + (reelWindow.clientHeight / 2 - 50);
 
-  // Single smooth animation: cubic-bezier that starts fast and decelerates hard.
-  // (0.15, 0, 0.1, 1) — slow initial acceleration, then very long ease-out tail.
   await animateReel(strip, finalOffset, 2400, 'cubic-bezier(0.15, 0, 0.1, 1)');
 
-  // ── Result reveal: accent ring pulse on the reel window, label fades in
   reelWindow.classList.add('reel-winner');
   setTimeout(() => reelWindow.classList.remove('reel-winner'), 600);
 
@@ -242,4 +192,14 @@ function animateReel(el, toY, durationMs, easing) {
   });
 }
 
-// ── Slot machine is initialised above, after processImages resolves.
+// Build spin UI immediately (works with placeholders); gate spinning itself
+// until every image has resolved to its final, background-removed src.
+buildSpinUI();
+document.getElementById('spin-action').disabled = true;
+document.getElementById('spin-btn').style.opacity = '0.4';
+document.getElementById('spin-btn').style.pointerEvents = 'none';
+processImages().then(() => {
+  document.getElementById('spin-action').disabled = false;
+  document.getElementById('spin-btn').style.opacity = '';
+  document.getElementById('spin-btn').style.pointerEvents = '';
+});

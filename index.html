@@ -1,231 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="./assets/avatar-solid-green.png">
-  <title>Rohan Krishnan | Data Science & Writing</title>
-  <meta name="description" content="Graduate student studying data science at UPenn. Interested in building things and writing about anything I learn."/>
-  <meta name="author" content="Rohan Krishnan"/>
-  <meta name="robots" content="index, follow"/>
-  <link rel="canonical" href="https://r0hankrishnan.github.io"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rohan Krishnan | Data Science & Writing</title>
+<meta name="description" content="Graduate student studying data science at UPenn. Building small, specific tools and writing about what I learn.">
+<meta name="author" content="Rohan Krishnan">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://r0hankrishnan.github.io">
+<link rel="icon" type="image/png" href="./assets/avatar-no-bg.png">
 
-  <!-- Open Graph tags -->
-  <meta property="og:title" content="Rohan Krishnan | Data Science & Writing"/>
-  <meta property="og:description" content="Graduate student studying data science at UPenn. Interested in building things and writing about anything I learn."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://r0hankrishnan.github.io"/>
-  
-  <!-- Prevent theme snapping -->
-  <script>
-    (function() {
-      var saved = localStorage.getItem('theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
-    })();
-  </script>
+<meta property="og:title" content="Rohan Krishnan">
+<meta property="og:description" content="Graduate student studying data science at UPenn. Building small, specific tools and writing about what I learn.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://r0hankrishnan.github.io">
 
-  <!-- Structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Rohan Krishnan",
-    "url": "https://r0hankrishnan.github.io",
-    "sameAs": [
-      "https://github.com/r0hankrishnan",
-      "https://linkedin.com/in/rohankrish",
-      "https://medium.com/@rohan.krishnan",
-      "https://substack.com/@rohankrishnan"
-    ],
-    "jobTitle": "Graduate Student @ UPenn",
-    "affiliation": {
-      "@type": "Organization",
-      "name": "University of Pennsylvania"
-    },
-    "knowsAbout": ["Data Science", "Information Systems", "Machine Learning", "Policy"]
-  }
-  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Rohan Krishnan",
+  "url": "https://r0hankrishnan.github.io",
+  "sameAs": [
+    "https://github.com/r0hankrishnan",
+    "https://linkedin.com/in/rohankrish",
+    "https://medium.com/@rohan.krishnan",
+    "https://substack.com/@rohankrishnan"
+  ],
+  "jobTitle": "Graduate Student @ UPenn",
+  "affiliation": { "@type": "Organization", "name": "University of Pennsylvania" },
+  "knowsAbout": ["Data Science", "Information Systems", "Machine Learning", "Policy"]
+}
+</script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- Sticky nav -->
-<div id="sticky-nav">
-  <span class="sticky-name"><a href="#site-header">Rohan Krishnan</a></span>
-  <div class="sticky-links">
-    <a href="#about" class="active"><i data-lucide="info"></i><span>About Me</span></a>
-    <a href="#projects"><i data-lucide="folder"></i><span>Projects</span></a>
-    <a href="#writing"><i data-lucide="pen-line"></i><span>Writing</span></a>
-  </div>
-  <button id="theme-toggle-sticky" aria-label="Toggle dark/light mode">
-  <i data-lucide="moon"></i>
-</button>
-</div>
+<div class="wrap">
 
-<!-- Theme toggle -->
-<button id="theme-toggle" aria-label="Toggle dark/light mode">
-  <i data-lucide="moon"></i>
-</button>
-
-<!-- Section progress bars -->
-<nav id="section-nav" aria-label="Page sections">
-  <a class="snav-item active" href="#about"></a>
-  <a class="snav-item" href="#projects"></a>
-  <a class="snav-item" href="#writing"></a>
-</nav>
-
-<div class="page">
-
-  <!-- Header -->
-  <header id="site-header">
-    <h1 class="name">Hi, I'm Rohan.</h1>
-    <p class="bio">
-      I'm a master's student studying data science at the University of Pennsylvania. I like to build solutions that solve real, vetted business problems. 
-      Beyond that, I like to study a wide variety of topics and document what I learn.
+  <header id="top">
+    <h1>Rohan Krishnan</h1>
+    <p>I'm getting a master's in data science at Penn, after two undergrad degrees in economics and information systems. Most of what's below started as a specific annoyance — a racquet search that only took structured filters, a dataset I couldn't version cleanly — that turned into a longer project.</p>
+    <p>I also occasionally write about the things I'm learning, emphasis on the <em>occassionally</em>.</p>
+    <p class="quicklinks">
+      <a href="https://linkedin.com/in/rohankrish" target="_blank" rel="noopener">LinkedIn</a><span>·</span><a href="https://github.com/r0hankrishnan" target="_blank" rel="noopener">GitHub</a><span>·</span><a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a><span>·</span><a href="https://substack.com/@rohankrishnan" target="_blank" rel="noopener">Substack</a><span>·</span><a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-hero">Email</a><span>·</span><a href="./assets/krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
     </p>
-    <div class="social-links">
-      <a href="https://linkedin.com/in/rohankrish" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/r0hankrishnan" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a>
-      <a href="https://substack.com/@rohankrishnan" target="_blank" rel="noopener">Substack</a>
-      <a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-hero">Email</a>
-      <a href="./assets/krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
-    </div>
-
-    <nav class="header-nav">
-      <a href="#about" class="active"><i data-lucide="info"></i>About Me</a>
-      <a href="#projects"><i data-lucide="folder"></i>Projects</a>
-      <a href="#writing"><i data-lucide="pen-line"></i>Writing</a>
-    </nav>
   </header>
 
-
-  <!-- About Me -->
-  <section id="about">
-
-    <p class="section-label"><i data-lucide="info"></i><a href="#about">About Me</a></p>
-
-    <div class="about-list">
-
-      <div class="about-item">
-        <span class="about-key">Based in</span>
-        <span class="about-val">Philadelphia, PA</span>
-      </div>
-
-      <div class="about-item">
-        <span class="about-key">Studying</span>
-        <span class="about-val">M.S.E. Data Science @ UPenn SEAS.</span>
-      </div>
-
-      <div class="about-item">
-        <span class="about-key">Currently Building</span>
-        <span class="about-val">Frame Finder — a better way to find tennis racquets.</span>
-      </div>
-
-      <div class="about-item">
-        <span class="about-key">Reading</span>
-        <span class="about-val">If Cats Disappeared from the World by Genki Kawamura</span>
-      </div>
-
-    </div>
+  <section id="now">
+    <h2>Now</h2>
+    <pre class="now-block"><span class="key">now</span> = {
+  location: <span>"Philadelphia, PA"</span>,
+  study:    <span>"M.S.E. Data Science, Penn SEAS"</span>,
+  role:     <span>"Technology Policy Project Lead, Paragon Policy Fellowship"</span>
+  building: <span>"FrameFinder"</span>,  <span class="comment">// semantic search for tennis racquets</span>
+  reading:  <span>"If Cats Disappeared from the World"</span>,
+}<span class="cursor"></span></pre>
   </section>
 
-
-  <!-- Projects -->
   <section id="projects">
-    <p class="section-label"><i data-lucide="folder"></i><a href="#projects">Projects</a></p>
-    <div class="project-list">
+    <h2>Projects</h2>
 
-      <a class="project" href="https://github.com/r0hankrishnan/racquet-sem-search" target="_blank" rel="noopener">
-        <div class="project-header">
-          <span class="project-name">Frame Finder</span>
-          <span class="project-wip">In progress</span>
-        </div>
-        <p class="project-desc">
-          Semantic search for tennis racquets. Hybrid BM25 + dense embedding retrieval with a natural language interface. 
-          Built to solve a genuine shopping problem.
-        </p>
-      </a>
+    <div class="project">
+      <a class="project-title" href="https://github.com/r0hankrishnan/racquet-sem-search" target="_blank" rel="noopener">FrameFinder</a>
+      <span class="project-status"> — in progress</span>
+      <p class="project-desc">Semantic search for tennis racquets — hybrid BM25 and dense retrieval behind a plain-language query box, built to try and imagine a better tennis racquet shopping experience.</p>
+    </div>
 
-      <a class="project" href="https://github.com/r0hankrishnan/flight-delays-prediction" target="_blank" rel="noopener">
-        <div class="project-header">
-          <span class="project-name">Automated ML Flight Delay Predictor</span>
-          <!-- <span class="project-wip">In progress</span> -->
-        </div>
-        <p class="project-desc">
-          A probability-based flight delay risk triage system, complete with model artifacts, a FastAPI endpoint, and a streamlit demo. 
-          Built from a handcrafted dataset sourced from BTS and OpenMeteo.
-        </p>
-      </a>
+    <div class="project">
+      <a class="project-title" href="https://github.com/r0hankrishnan/flight-delays-prediction" target="_blank" rel="noopener">Flight Delay Predictor</a>
+      <span class="project-status"> — complete</span>
+      <p class="project-desc">A probability model for flight delay risk, trained on a handcrafted dataset from BTS and OpenMeteo. Shipped as a FastAPI endpoint with a Streamlit demo on top.</p>
+    </div>
 
-      <a class="project" href="https://pypi.org/project/datashelf/" target="_blank" rel="noopener">
-        <div class="project-header">
-          <span class="project-name">Datashelf</span>
-        </div>
-        <p class="project-desc">
-          A lightweight Python library for versioned tabular data storage with hash-based deduplication. 
-          Git-inspired, published to PyPI.
-        </p>
-      </a>
-
+    <div class="project">
+      <a class="project-title" href="https://pypi.org/project/datashelf/" target="_blank" rel="noopener">Datashelf</a>
+      <span class="project-status"> — published, PyPI</span>
+      <p class="project-desc">A lightweight Python library for versioned tabular data storage, with hash-based deduplication.</p>
     </div>
   </section>
 
-
-  <!-- Writing -->
   <section id="writing">
+    <h2>Writing</h2>
+    <p class="filters">
+      <button type="button" class="filter-btn active" data-filter="all">All</button><button type="button" class="filter-btn" data-filter="medium">Medium</button><button type="button" class="filter-btn" data-filter="substack">Substack</button>
+    </p>
 
-    <p class="section-label"><i data-lucide="pen-line"></i><a href="#writing">Writing</a></p>
-
-    <div class="writing-filters">
-      <button class="filter-btn active" data-source="all">All</button>
-      <button class="filter-btn" data-source="Medium">Medium</button>
-      <button class="filter-btn" data-source="Substack">Substack</button>
+    <div id="post-list">
+      <p class="post empty">Loading posts…</p>
     </div>
-
-    <div class="article-list" id="article-list">
-      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
-      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
-      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
-      <div class="skeleton"><div class="skel-line long"></div><div class="skel-line short"></div></div>
-    </div>
-
   </section>
 
-
-  <!-- Footer: social links + copyright only -->
   <footer>
-
-    <div class="footer-links">
-      <a href="https://github.com/r0hankrishnan" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://linkedin.com/in/rohankrish" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://substack.com/@rohankrishnan" target="_blank" rel="noopener">Substack</a>
-      <a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a>
-      <a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-footer">Email</a>
-      <a href="./assets/krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Résumé</a>
-      <!-- Replace your current ramen link attempt with this, inside <div class="footer-links"> after Résumé -->
-      <a href="noodles.html" class="footer-noodles">Noodles</a>
-    </div>
-
-    <!-- <span class="footer-copy">© 2025 Rohan Krishnan</span> -->
-    <span class="footer-copy">
-      © 2025 Rohan Krishnan
-    </span>
-
-
-
-
+    <p class="elsewhere">
+      <a href="https://github.com/r0hankrishnan" target="_blank" rel="noopener">GitHub</a><span>·</span><a href="https://linkedin.com/in/rohankrish" target="_blank" rel="noopener">LinkedIn</a><span>·</span><a href="https://substack.com/@rohankrishnan" target="_blank" rel="noopener">Substack</a><span>·</span><a href="https://medium.com/@rohan.krishnan" target="_blank" rel="noopener">Medium</a><span>·</span><a href="#" data-copy="krishnan.rohan@outlook.com" id="email-link-footer">Email</a><span>·</span><a href="./assets/krishnan_rohan_resume.pdf" target="_blank" rel="noopener">Resumé</a><span>·</span><a href="noodles.html">Noodles</a>
+    </p>
+    <p class="colophon">
+      <span>© 2026 Rohan Krishnan</span>
+      <span>Philadelphia. Trying to work on cool stuff.</span>
+    </p>
   </footer>
 
-</div><!-- .page -->
+</div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
