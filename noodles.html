@@ -1,116 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="avatar-solid-green.png">
-  <title>Ramen Rankings | Rohan Krishnan</title>
-  <meta name="robots" content="noindex"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instant Noodle Rankings | Rohan Krishnan</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="./assets/avatar-no-bg.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet" />
-    <script>
-    (function() {
-      var saved = localStorage.getItem('theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
-    })();
-  </script>
-  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js"></script>
-  <link rel="stylesheet" href="noodles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="noodles.css">
 </head>
 <body>
 
-<div id="sticky-nav">
-  <span class="sticky-name"><a href="index.html">Rohan Krishnan</a></span>
-  <button id="theme-toggle-sticky" aria-label="Toggle dark/light mode">
-    <i data-lucide="moon"></i>
-  </button>
-</div>
+<div class="wrap">
 
-<button id="theme-toggle" aria-label="Toggle dark/light mode">
-  <i data-lucide="moon"></i>
-</button>
-
-<div class="page">
-
-  <header id="site-header">
-    <p class="eyebrow"><i data-lucide="sparkles"></i> You found my secret page!</p>
-    <h1 class="name">Instant Noodles Power Rankings</h1>
-    <p class="bio">My GOATed (intensely biased) instant noodles tier list.</p>
+  <header>
+    <p class="eyebrow mono">You can never go wrong with cup noodles...or can you?</p>
+    <h1>Instant Noodle Rankings</h1>
+    <p>A tier list of every instant noodle I've eaten more than once (ranked with no real methodology). Click the &nbsp <kbd>Spin</kbd> &nbsp button to pick a noodle for dinner.</p>
+    <p class="quicklinks"><a href="index.html">← Back to main site</a></p>
   </header>
 
-  <section id="tierlist-section">
-    <p class="section-label"><i data-lucide="list-ordered"></i><span>Tier List</span></p>
+  <section id="tierlist">
+    <h2>Tier List</h2>
 
     <div id="tier-list">
 
       <div class="tier-row">
-        <div class="tier-label tier-s">S</div>
+        <div class="tier-label tier-s mono">[S]</div>
         <div class="tier-items">
-            <div class="noodles-item">
-                <img class="noodles-img" src="./assets/Nongshim-Ramyun-Hot-Spicy.jpg" alt="noodles" />
-                <p class="noodles-label">Nongshim Ramyun Hot & Spicy</p>
-            </div>
+          <div class="noodles-item">
+            <span class="noodles-thumb">
+              <img class="noodles-img" data-src="./assets/Nongshim-Ramyun-Hot-Spicy.jpg" alt="Nongshim Ramyun Hot & Spicy package" />
+            </span>
+            <p class="noodles-label">Nongshim Ramyun Hot &amp; Spicy</p>
+          </div>
           <!--
-            TO ADD A RAMEN: paste a block like this into the tier it belongs in.
-
-            <div class="ramen-item">
-              <img class="ramen-img" src="images/ramen/your-ramen.jpg" alt="ramen" />
-              <p class="ramen-label">Brand Name</p>
+            To add a noodle: just drop the package photo in assets/ and paste
+            a block like this into the tier it belongs in — no preprocessing
+            needed, the background is removed in the browser on load.
+            <div class="noodles-item">
+              <span class="noodles-thumb">
+                <img class="noodles-img" data-src="./assets/your-file.jpg" alt="descriptive alt text" />
+              </span>
+              <p class="noodles-label">Brand Name</p>
             </div>
           -->
         </div>
       </div>
 
       <div class="tier-row">
-        <div class="tier-label tier-a">A</div>
+        <div class="tier-label tier-a mono">[A]</div>
         <div class="tier-items">
-
+          <span class="tier-empty">unclaimed</span>
         </div>
       </div>
 
       <div class="tier-row">
-        <div class="tier-label tier-b">B</div>
+        <div class="tier-label tier-b mono">[B]</div>
         <div class="tier-items">
-            <div class="noodles-item">
-                <img class="noodles-img" src="./assets/Nongshim-Ramyun-Spicy-Kimchi.jpg" alt="noodles" />
-                <p class="noodles-label">Nongshim Ramyun Spicy Kimchi</p>
-            </div>
+          <div class="noodles-item">
+            <span class="noodles-thumb">
+              <img class="noodles-img" data-src="./assets/Nongshim-Ramyun-Spicy-Kimchi.jpg" alt="Nongshim Ramyun Spicy Kimchi package" />
+            </span>
+            <p class="noodles-label">Nongshim Ramyun Spicy Kimchi</p>
+          </div>
         </div>
       </div>
 
       <div class="tier-row">
-        <div class="tier-label tier-c">C</div>
+        <div class="tier-label tier-c mono">[C]</div>
         <div class="tier-items">
-            <div class="noodles-item">
-                <img class="noodles-img" src="./assets/Nongshim-Ramen-Tonkostsu-Kuromayu.png" alt="noodles" />
-                <p class="noodles-label">Nongshim Ramen Tonkostu with Kuromayu Black Garlic Oil</p>
-            </div>
+          <div class="noodles-item">
+            <span class="noodles-thumb">
+              <img class="noodles-img" data-src="./assets/Nongshim-Ramen-Tonkostsu-Kuromayu.png" alt="Nongshim Ramen Tonkotsu with Kuromayu Black Garlic Oil package" />
+            </span>
+            <p class="noodles-label">Nongshim Tonkotsu, Kuromayu Black Garlic Oil</p>
+          </div>
         </div>
       </div>
 
       <div class="tier-row">
-        <div class="tier-label tier-d">D</div>
-        <div class="tier-items"></div>
+        <div class="tier-label tier-d mono">[D]</div>
+        <div class="tier-items">
+          <span class="tier-empty">unclaimed</span>
+        </div>
       </div>
 
       <div class="tier-row">
-        <div class="tier-label tier-f">F</div>
-        <div class="tier-items"></div>
+        <div class="tier-label tier-f mono">[F]</div>
+        <div class="tier-items">
+          <span class="tier-empty">unclaimed</span>
+        </div>
       </div>
 
     </div>
   </section>
 
   <footer>
-    <div class="footer-links">
-      <a href="index.html">← Back to main site</a>
-    </div>
-    <span class="footer-copy">© 2025 Rohan Krishnan</span>
+    <p class="elsewhere"><a href="index.html">← Back to main site</a></p>
+    <p class="colophon">
+      <span>© 2026 Rohan Krishnan</span>
+      <span>Ranked while hungry.</span>
+    </p>
   </footer>
 
+</div>
+
+<button id="spin-btn" class="mono">Spin</button>
+
+<div id="spin-overlay">
+  <div id="spin-modal">
+    <button id="spin-close" aria-label="Close">×</button>
+    <p class="spin-eyebrow mono">tonight's noodles</p>
+    <div id="reel-window">
+      <div id="reel-idle"><span class="mono">— — —</span></div>
+      <div id="reel-strip" style="display:none"></div>
+    </div>
+    <p id="spin-result-label" class="mono"></p>
+    <button id="spin-action" class="mono">Spin for noodles</button>
+  </div>
 </div>
 
 <script src="noodles.js"></script>
