@@ -1,43 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Instant Noodle Rankings | Rohan Krishnan</title>
-<meta name="robots" content="noindex">
-<link rel="icon" type="image/png" href="./assets/avatar-no-bg.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instant Noodle Rankings | Rohan Krishnan</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="./assets/avatar-no-bg.png" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="noodles.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="noodles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <p class="eyebrow mono">
+          You can never go wrong with cup noodles...right?
+        </p>
+        <h1>Instant Noodle Rankings</h1>
+        <p>
+          A tier list of every instant noodle I've eaten more than once (ranked
+          with no real methodology). Click the &nbsp
+          <kbd id="spin-trigger" class="spin-trigger" role="button" tabindex="0"
+            >Spin</kbd
+          >
+          &nbsp button to pick a cup noodle for dinner.
+        </p>
+        <p class="quicklinks"><a href="index.html">← Back to main site</a></p>
+      </header>
 
-<div class="wrap">
+      <section id="tierlist">
+        <h2>Tier List</h2>
 
-  <header>
-    <p class="eyebrow mono">You can never go wrong with cup noodles...or can you?</p>
-    <h1>Instant Noodle Rankings</h1>
-    <p>A tier list of every instant noodle I've eaten more than once (ranked with no real methodology). Click the &nbsp <kbd>Spin</kbd> &nbsp button to pick a noodle for dinner.</p>
-    <p class="quicklinks"><a href="index.html">← Back to main site</a></p>
-  </header>
-
-  <section id="tierlist">
-    <h2>Tier List</h2>
-
-    <div id="tier-list">
-
-      <div class="tier-row">
-        <div class="tier-label tier-s mono">[S]</div>
-        <div class="tier-items">
-          <div class="noodles-item">
-            <span class="noodles-thumb">
-              <img class="noodles-img" data-src="./assets/Nongshim-Ramyun-Hot-Spicy.jpg" alt="Nongshim Ramyun Hot & Spicy package" />
-            </span>
-            <p class="noodles-label">Nongshim Ramyun Hot &amp; Spicy</p>
-          </div>
-          <!--
+        <div id="tier-list">
+          <div class="tier-row">
+            <div class="tier-label tier-s mono">[S]</div>
+            <div class="tier-items">
+              <div class="noodles-item">
+                <span class="noodles-thumb">
+                  <img
+                    class="noodles-img"
+                    data-src="./assets/Nongshim-Ramyun-Hot-Spicy.jpg"
+                    alt="Nongshim Ramyun Hot & Spicy package"
+                  />
+                </span>
+                <p class="noodles-label">Nongshim Ramyun Hot &amp; Spicy</p>
+              </div>
+              <!--
             To add a noodle: just drop the package photo in assets/ and paste
             a block like this into the tier it belongs in — no preprocessing
             needed, the background is removed in the browser on load.
@@ -48,82 +61,90 @@
               <p class="noodles-label">Brand Name</p>
             </div>
           -->
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <div class="tier-row">
-        <div class="tier-label tier-a mono">[A]</div>
-        <div class="tier-items">
-          <span class="tier-empty">unclaimed</span>
-        </div>
-      </div>
+          <div class="tier-row">
+            <div class="tier-label tier-a mono">[A]</div>
+            <div class="tier-items">
+              <span class="tier-empty">unclaimed</span>
+            </div>
+          </div>
 
-      <div class="tier-row">
-        <div class="tier-label tier-b mono">[B]</div>
-        <div class="tier-items">
-          <div class="noodles-item">
-            <span class="noodles-thumb">
-              <img class="noodles-img" data-src="./assets/Nongshim-Ramyun-Spicy-Kimchi.jpg" alt="Nongshim Ramyun Spicy Kimchi package" />
-            </span>
-            <p class="noodles-label">Nongshim Ramyun Spicy Kimchi</p>
+          <div class="tier-row">
+            <div class="tier-label tier-b mono">[B]</div>
+            <div class="tier-items">
+              <div class="noodles-item">
+                <span class="noodles-thumb">
+                  <img
+                    class="noodles-img"
+                    data-src="./assets/Nongshim-Ramyun-Spicy-Kimchi.jpg"
+                    alt="Nongshim Ramyun Spicy Kimchi package"
+                  />
+                </span>
+                <p class="noodles-label">Nongshim Ramyun Spicy Kimchi</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tier-row">
+            <div class="tier-label tier-c mono">[C]</div>
+            <div class="tier-items">
+              <div class="noodles-item">
+                <span class="noodles-thumb">
+                  <img
+                    class="noodles-img"
+                    data-src="./assets/Nongshim-Ramen-Tonkostsu-Kuromayu.png"
+                    alt="Nongshim Ramen Tonkotsu with Kuromayu Black Garlic Oil package"
+                  />
+                </span>
+                <p class="noodles-label">
+                  Nongshim Tonkotsu, Kuromayu Black Garlic Oil
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tier-row">
+            <div class="tier-label tier-d mono">[D]</div>
+            <div class="tier-items">
+              <span class="tier-empty">unclaimed</span>
+            </div>
+          </div>
+
+          <div class="tier-row">
+            <div class="tier-label tier-f mono">[F]</div>
+            <div class="tier-items">
+              <span class="tier-empty">unclaimed</span>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="tier-row">
-        <div class="tier-label tier-c mono">[C]</div>
-        <div class="tier-items">
-          <div class="noodles-item">
-            <span class="noodles-thumb">
-              <img class="noodles-img" data-src="./assets/Nongshim-Ramen-Tonkostsu-Kuromayu.png" alt="Nongshim Ramen Tonkotsu with Kuromayu Black Garlic Oil package" />
-            </span>
-            <p class="noodles-label">Nongshim Tonkotsu, Kuromayu Black Garlic Oil</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="tier-row">
-        <div class="tier-label tier-d mono">[D]</div>
-        <div class="tier-items">
-          <span class="tier-empty">unclaimed</span>
-        </div>
-      </div>
-
-      <div class="tier-row">
-        <div class="tier-label tier-f mono">[F]</div>
-        <div class="tier-items">
-          <span class="tier-empty">unclaimed</span>
-        </div>
-      </div>
-
+      <footer>
+        <p class="elsewhere"><a href="index.html">← Back to main site</a></p>
+        <p class="colophon">
+          <span>© 2026 Rohan Krishnan</span>
+          <span>I love ramen.</span>
+        </p>
+      </footer>
     </div>
-  </section>
 
-  <footer>
-    <p class="elsewhere"><a href="index.html">← Back to main site</a></p>
-    <p class="colophon">
-      <span>© 2026 Rohan Krishnan</span>
-      <span>Ranked while hungry.</span>
-    </p>
-  </footer>
+    <button id="spin-btn" class="mono">Spin</button>
 
-</div>
-
-<button id="spin-btn" class="mono">Spin</button>
-
-<div id="spin-overlay">
-  <div id="spin-modal">
-    <button id="spin-close" aria-label="Close">×</button>
-    <p class="spin-eyebrow mono">tonight's noodles</p>
-    <div id="reel-window">
-      <div id="reel-idle"><span class="mono">— — —</span></div>
-      <div id="reel-strip" style="display:none"></div>
+    <div id="spin-overlay">
+      <div id="spin-modal">
+        <button id="spin-close" aria-label="Close">×</button>
+        <p class="spin-eyebrow mono">Tonight's noodles</p>
+        <div id="reel-window">
+          <div id="reel-idle"><span class="mono">— — —</span></div>
+          <div id="reel-strip" style="display: none"></div>
+        </div>
+        <p id="spin-result-label" class="mono"></p>
+        <button id="spin-action" class="mono">Spin for noodles</button>
+      </div>
     </div>
-    <p id="spin-result-label" class="mono"></p>
-    <button id="spin-action" class="mono">Spin for noodles</button>
-  </div>
-</div>
 
-<script src="noodles.js"></script>
-</body>
+    <script src="noodles.js"></script>
+  </body>
 </html>
