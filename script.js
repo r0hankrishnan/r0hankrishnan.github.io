@@ -1,17 +1,45 @@
-// ─── Email copy-to-clipboard ─────────────────────────────────────────────
-document.querySelectorAll("a[data-copy]").forEach((link) => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    const email = link.dataset.copy;
-    navigator.clipboard.writeText(email).then(() => {
-      const original = link.textContent;
-      link.textContent = "Copied!";
-      link.classList.add("copied");
-      setTimeout(() => {
-        link.textContent = original;
-        link.classList.remove("copied");
-      }, 1800);
-    });
+// ─── Site info (email, résumé link, "now" block, copyright year) ─────────
+// Values live in data/site.js (loaded before this file) as `siteData`, so
+// they only need to be updated in one place.
+function renderSiteInfo() {
+  document
+    .querySelectorAll("#email-link-hero, #email-link-footer")
+    .forEach((link) => link.setAttribute("data-copy", siteData.email));
+  document
+    .querySelectorAll("#resume-link-hero, #resume-link-footer")
+    .forEach((link) => link.setAttribute("href", siteData.resumeUrl));
+
+  const yearEl = document.getElementById("copyright-year");
+  if (yearEl) yearEl.textContent = siteData.copyrightYear;
+
+  const nowEl = document.getElementById("now-block");
+  if (nowEl) {
+    const n = siteData.now;
+    nowEl.innerHTML = `<span class="key">now</span> = {
+  location: <span>"${n.location}"</span>,
+  study:    <span>"${n.study}"</span>,
+  role:     <span>"${n.role}"</span>
+  building: <span>"${n.building}"</span>,  <span class="comment">// ${n.buildingNote}</span>
+  reading:  <span>"${n.reading}"</span>,
+}<span class="cursor"></span>`;
+  }
+}
+renderSiteInfo();
+
+// ─── Email copy-to-clipboard (delegated, works regardless of render order) ─
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("a[data-copy]");
+  if (!link) return;
+  e.preventDefault();
+  const email = link.dataset.copy;
+  navigator.clipboard.writeText(email).then(() => {
+    const original = link.textContent;
+    link.textContent = "Copied!";
+    link.classList.add("copied");
+    setTimeout(() => {
+      link.textContent = original;
+      link.classList.remove("copied");
+    }, 1800);
   });
 });
 
@@ -62,29 +90,7 @@ function renderPaginationControls({
 }
 
 // ─── Projects ──────────────────────────────────────────────────────────────
-const projectsData = [
-  {
-    title: "Frame Finder",
-    status: "in progress",
-    demoUrl: "https://frame-finder.up.railway.app/",
-    codeUrl: "https://github.com/r0hankrishnan/frame-finder",
-    desc: "Semantic search for tennis racquets — plain-language queries matched to frames via a hybrid BM25 + embedding retrieval pipeline with LLM-based query parsing. Served through a FastAPI backend, deployed on Railway.",
-  },
-  {
-    title: "Flight Delay Predictor",
-    status: "complete",
-    demoUrl: "https://phl-delay-prediction.streamlit.app/",
-    codeUrl: "https://github.com/r0hankrishnan/flight-delays-prediction",
-    desc: "A probability model for flight delay risk, built on a custom dataset joining BTS flight records with OpenMeteo weather data. Shipped as a FastAPI endpoint with a Streamlit demo.",
-  },
-  {
-    title: "Datashelf",
-    status: "published, PyPI",
-    demoUrl: "https://pypi.org/project/datashelf/",
-    codeUrl: "https://github.com/r0hankrishnan/datashelf",
-    desc: "A lightweight Python library for versioned tabular data storage, with hash-based deduplication.",
-  },
-];
+// Content lives in data/projects.js (loaded before this file) as `projectsData`.
 
 const PROJECTS_PAGE_SIZE = 3;
 let currentProjectsPage = 1;
@@ -104,10 +110,10 @@ function renderProjects() {
       <div class="project-heading">
         <span>
           <a class="project-title" href="${p.demoUrl}" target="_blank" rel="noopener">${p.title}</a>
-          <span class="project-status"> — ${p.status}</span>
         </span>
         <a class="project-code" href="${p.codeUrl}" target="_blank" rel="noopener">code</a>
       </div>
+      <span class="project-status">  ${p.status}</span>
       <p class="project-desc">${p.desc}</p>
     </div>
   `,

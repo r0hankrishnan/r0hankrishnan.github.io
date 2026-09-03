@@ -36,87 +36,41 @@
       <section id="tierlist">
         <h2>Tier List</h2>
 
+        <!--
+          Tier rows below are structural only — the noodle items inside each
+          `.tier-items` container are rendered from data/noodles.js by
+          noodles.js. To add/move/remove a noodle, edit that data file, not
+          this markup.
+        -->
         <div id="tier-list">
           <div class="tier-row">
             <div class="tier-label tier-s mono">[S]</div>
-            <div class="tier-items">
-              <div class="noodles-item">
-                <span class="noodles-thumb">
-                  <img
-                    class="noodles-img"
-                    data-src="./assets/Nongshim-Ramyun-Hot-Spicy.jpg"
-                    alt="Nongshim Ramyun Hot & Spicy package"
-                  />
-                </span>
-                <p class="noodles-label">Nongshim Ramyun Hot &amp; Spicy</p>
-              </div>
-              <!--
-            To add a noodle: just drop the package photo in assets/ and paste
-            a block like this into the tier it belongs in — no preprocessing
-            needed, the background is removed in the browser on load.
-            <div class="noodles-item">
-              <span class="noodles-thumb">
-                <img class="noodles-img" data-src="./assets/your-file.jpg" alt="descriptive alt text" />
-              </span>
-              <p class="noodles-label">Brand Name</p>
-            </div>
-          -->
-            </div>
+            <div class="tier-items" data-tier="S"></div>
           </div>
 
           <div class="tier-row">
             <div class="tier-label tier-a mono">[A]</div>
-            <div class="tier-items">
-              <span class="tier-empty">unclaimed</span>
-            </div>
+            <div class="tier-items" data-tier="A"></div>
           </div>
 
           <div class="tier-row">
             <div class="tier-label tier-b mono">[B]</div>
-            <div class="tier-items">
-              <div class="noodles-item">
-                <span class="noodles-thumb">
-                  <img
-                    class="noodles-img"
-                    data-src="./assets/Nongshim-Ramyun-Spicy-Kimchi.jpg"
-                    alt="Nongshim Ramyun Spicy Kimchi package"
-                  />
-                </span>
-                <p class="noodles-label">Nongshim Ramyun Spicy Kimchi</p>
-              </div>
-            </div>
+            <div class="tier-items" data-tier="B"></div>
           </div>
 
           <div class="tier-row">
             <div class="tier-label tier-c mono">[C]</div>
-            <div class="tier-items">
-              <div class="noodles-item">
-                <span class="noodles-thumb">
-                  <img
-                    class="noodles-img"
-                    data-src="./assets/Nongshim-Ramen-Tonkostsu-Kuromayu.png"
-                    alt="Nongshim Ramen Tonkotsu with Kuromayu Black Garlic Oil package"
-                  />
-                </span>
-                <p class="noodles-label">
-                  Nongshim Tonkotsu, Kuromayu Black Garlic Oil
-                </p>
-              </div>
-            </div>
+            <div class="tier-items" data-tier="C"></div>
           </div>
 
           <div class="tier-row">
             <div class="tier-label tier-d mono">[D]</div>
-            <div class="tier-items">
-              <span class="tier-empty">unclaimed</span>
-            </div>
+            <div class="tier-items" data-tier="D"></div>
           </div>
 
           <div class="tier-row">
             <div class="tier-label tier-f mono">[F]</div>
-            <div class="tier-items">
-              <span class="tier-empty">unclaimed</span>
-            </div>
+            <div class="tier-items" data-tier="F"></div>
           </div>
         </div>
       </section>
@@ -124,7 +78,7 @@
       <footer>
         <p class="elsewhere"><a href="index.html">← Back to main site</a></p>
         <p class="colophon">
-          <span>© 2026 Rohan Krishnan</span>
+          <span>© <span id="copyright-year">2026</span> Rohan Krishnan</span>
           <span>I love ramen.</span>
         </p>
       </footer>
@@ -145,6 +99,8 @@
       </div>
     </div>
 
+    <script src="data/site.js"></script>
+    <script src="data/noodles.js"></script>
     <script src="noodles.js"></script>
   </body>
 </html>

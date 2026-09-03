@@ -178,6 +178,7 @@ section > h2 {
   font-size: 1.02rem;
 }
 .project-status {
+  font-size: 0.8rem;
   color: var(--ink-soft);
   font-style: italic;
 }

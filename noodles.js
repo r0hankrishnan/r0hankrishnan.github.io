@@ -1,3 +1,36 @@
+// ─── TIER LIST RENDER ────────────────────────────────────────────────────────
+// Builds each `.tier-items` container from data/noodles.js (loaded before
+// this file, as `noodlesData`). Must run before anything below queries
+// `.noodles-item` / `.noodles-img`.
+
+function renderTierList() {
+  document.querySelectorAll(".tier-items").forEach((container) => {
+    const tier = container.dataset.tier;
+    const items = noodlesData.filter((n) => n.tier === tier);
+
+    container.innerHTML = items.length
+      ? items
+          .map(
+            (n) => `
+      <div class="noodles-item">
+        <span class="noodles-thumb">
+          <img class="noodles-img" data-src="${n.src}" alt="${n.alt}" />
+        </span>
+        <p class="noodles-label">${n.label}</p>
+      </div>
+    `,
+          )
+          .join("")
+      : `<span class="tier-empty">unclaimed</span>`;
+  });
+}
+
+renderTierList();
+
+// Copyright year (data/site.js, loaded before this file, as `siteData`).
+const copyrightYearEl = document.getElementById("copyright-year");
+if (copyrightYearEl) copyrightYearEl.textContent = siteData.copyrightYear;
+
 // ─── BACKGROUND REMOVAL (canvas flood-fill) ──────────────────────────────────
 // Runs on page load for any image not yet cached. Result stored in localStorage
 // keyed by src, so subsequent loads are instant. Each <img> starts with no
