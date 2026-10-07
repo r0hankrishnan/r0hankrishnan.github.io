@@ -22,6 +22,8 @@ Personal portfolio site, deployed by GitHub Pages straight from `main`. **Anythi
 - **Big changes** (new pages/sections, layout or visual redesigns, refactors across files): propose a short plan and wait for approval first.
 - Design is evolving: keep things consistent with the current look, but feel free to **suggest** visual improvements. Suggest them; don't apply them unasked.
 - Communication: explain the *why* behind changes briefly. The user wants to learn as they go.
+- Keep code simple and maintainable; avoid clever or convoluted solutions. Visual effects and animations should be isolated so they're easy to revert (e.g. removing one file or one block).
+- Avoid decorative symbols like ↗ and ✓ in the UI. The user sees them as telltale signs of AI-generated design.
 
 ## Verification (required before handing back)
 
