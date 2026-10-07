@@ -187,33 +187,20 @@ async function processImages() {
 
 // ─── SLOT MACHINE ─────────────────────────────────────────────────────────────
 
+// The modal is a native <dialog>: showModal() handles focus, Esc, and the
+// backdrop for us.
 function buildSpinUI() {
-  const spinBtn = document.getElementById("spin-btn");
-  const spinTrigger = document.getElementById("spin-trigger");
-  const overlay = document.getElementById("spin-overlay");
+  const modal = document.getElementById("spin-modal");
+  const openModal = () => modal.showModal();
 
-  function openModal() {
-    overlay.classList.add("open");
-  }
-  function closeModal() {
-    overlay.classList.remove("open");
-  }
-
-  spinBtn.addEventListener("click", openModal);
-  spinTrigger.addEventListener("click", openModal);
-  spinTrigger.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      openModal();
-    }
-  });
-
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeModal();
-  });
-  document.getElementById("spin-close").addEventListener("click", closeModal);
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
+  document.getElementById("spin-btn").addEventListener("click", openModal);
+  document.getElementById("spin-trigger").addEventListener("click", openModal);
+  document
+    .getElementById("spin-close")
+    .addEventListener("click", () => modal.close());
+  // Clicks on the backdrop land on the <dialog> element itself.
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.close();
   });
   document.getElementById("spin-action").addEventListener("click", runSpin);
 }
@@ -237,6 +224,7 @@ async function runSpin() {
 
   action.disabled = true;
   action.textContent = "Spinning…";
+  reelWindow.classList.remove("reel-winner");
   resultLabel.style.opacity = "0";
   resultLabel.textContent = "";
 
@@ -268,10 +256,17 @@ async function runSpin() {
   const finalIdx = reelItems.length - 1;
   const finalOffset = -(finalIdx * frameH) + (reelWindow.clientHeight / 2 - 50);
 
-  await animateReel(strip, finalOffset, 2400, "cubic-bezier(0.15, 0, 0.1, 1)");
+  // The easing's last value (1.02) overshoots slightly, so the reel settles
+  // back onto the winner. Use "cubic-bezier(0.15, 0, 0.1, 1)" for a hard stop.
+  await animateReel(
+    strip,
+    finalOffset,
+    2400,
+    "cubic-bezier(0.15, 0, 0.1, 1.02)",
+  );
 
+  // Stays on until the next spin; drives the pulse and steam (effects.css).
   reelWindow.classList.add("reel-winner");
-  setTimeout(() => reelWindow.classList.remove("reel-winner"), 600);
 
   resultLabel.textContent = winner.label;
   resultLabel.style.opacity = "1";
@@ -290,15 +285,8 @@ function animateReel(el, toY, durationMs, easing) {
 // Build spin UI immediately (works with placeholders); gate spinning itself
 // until every image has resolved to its final, background-removed src.
 buildSpinUI();
-document.getElementById("spin-action").disabled = true;
-document.getElementById("spin-btn").style.opacity = "0.4";
-document.getElementById("spin-btn").style.pointerEvents = "none";
-document.getElementById("spin-trigger").style.opacity = "0.4";
-document.getElementById("spin-trigger").style.pointerEvents = "none";
-processImages().then(() => {
-  document.getElementById("spin-action").disabled = false;
-  document.getElementById("spin-btn").style.opacity = "";
-  document.getElementById("spin-btn").style.pointerEvents = "";
-  document.getElementById("spin-trigger").style.opacity = "";
-  document.getElementById("spin-trigger").style.pointerEvents = "";
-});
+const spinControls = ["spin-action", "spin-btn", "spin-trigger"].map((id) =>
+  document.getElementById(id),
+);
+spinControls.forEach((el) => (el.disabled = true));
+processImages().then(() => spinControls.forEach((el) => (el.disabled = false)));

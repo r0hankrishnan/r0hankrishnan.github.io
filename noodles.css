@@ -1,61 +1,4 @@
-* {
-  box-sizing: border-box;
-}
-html {
-  -webkit-text-size-adjust: 100%;
-}
-
-:root {
-  --paper: #fbfaf7;
-  --ink: #15140f;
-  --ink-soft: #6b6860;
-  --rule: #e6e3d9;
-}
-
-body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family:
-    "Archivo",
-    -apple-system,
-    sans-serif;
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: var(--rule);
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  transition: text-decoration-color 0.15s ease;
-}
-a:hover {
-  text-decoration-color: var(--ink);
-}
-a:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 3px;
-}
-
-.mono {
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-}
-
-.wrap {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 5.5rem 1.5rem 4rem;
-}
+/* Noodles page styles. Shared tokens and layout live in base.css. */
 
 /* ---------- Header ---------- */
 
@@ -65,56 +8,27 @@ a:focus-visible {
   color: var(--ink-soft);
   margin: 0 0 0.9rem;
 }
-header h1 {
-  font-size: 1.7rem;
-  font-weight: 600;
-  margin: 0 0 1.1rem;
-  letter-spacing: -0.01em;
-}
-header p {
-  margin: 0 0 1.1rem;
-  max-width: 58ch;
-}
-.quicklinks {
-  font-size: 0.95rem;
-  color: var(--ink-soft);
-  margin: 0 0 0.4rem;
-}
 
-kbd {
-  display: inline-block;
+/* Inline "Spin" key in the intro sentence */
+.spin-trigger {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 0.72rem;
-  background: var(--rule);
+  line-height: 1.4;
   color: var(--ink-soft);
+  background: var(--rule);
+  border: 1px solid var(--rule);
   border-radius: 3px;
   padding: 1px 6px;
-  border: 1px solid var(--rule);
-}
-.spin-trigger {
+  margin: 0 0.15rem;
+  vertical-align: 1px;
   cursor: pointer;
   transition:
     color 0.15s ease,
     border-color 0.15s ease;
 }
 .spin-trigger:hover {
-  color: var(--ink);
-  border-color: var(--ink);
-}
-.spin-trigger:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 2px;
-}
-
-/* ---------- Sections ---------- */
-
-section {
-  margin-top: 4rem;
-}
-section > h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 1.3rem;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* ---------- Tier list ---------- */
@@ -141,33 +55,20 @@ section > h2 {
   font-size: 0.85rem;
   letter-spacing: 0.02em;
   border-right: 1px solid var(--rule);
+  color: var(--ink);
 }
 
-/* Monochrome severity gradient — no accent color, just weight and opacity */
+/* S is the accent; the bottom tiers step down to soft ink. Every label
+   stays above 4.5:1 contrast. */
 .tier-s {
-  color: var(--ink);
+  color: var(--accent);
   font-weight: 500;
-  opacity: 1;
 }
-.tier-a {
-  color: var(--ink);
-  opacity: 0.82;
-}
-.tier-b {
-  color: var(--ink);
-  opacity: 0.66;
-}
-.tier-c {
-  color: var(--ink);
-  opacity: 0.5;
-}
-.tier-d {
-  color: var(--ink);
-  opacity: 0.36;
+.tier-d,
+.tier-f {
+  color: var(--ink-soft);
 }
 .tier-f {
-  color: var(--ink);
-  opacity: 0.24;
   font-style: italic;
 }
 
@@ -266,32 +167,9 @@ section > h2 {
   word-break: break-word;
 }
 
-/* ---------- Footer ---------- */
-
-footer {
-  margin-top: 4rem;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-}
-footer .elsewhere {
-  margin-bottom: 1.6rem;
-}
-footer .colophon {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  font-size: 0.85rem;
-}
-
 /* ---------- Responsive ---------- */
 
 @media (max-width: 560px) {
-  .wrap {
-    padding: 3.5rem 1.25rem 3rem;
-  }
-  header h1 {
-    font-size: 1.5rem;
-  }
   .tier-label {
     width: 40px;
     font-size: 0.75rem;
@@ -299,17 +177,14 @@ footer .colophon {
   .noodles-item {
     width: 64px;
   }
-  .noodles-thumb {
-    width: 64px;
-    height: 64px;
-  }
+  .noodles-thumb,
   .noodles-img {
     width: 64px;
     height: 64px;
   }
-  footer .colophon {
-    flex-direction: column;
-    gap: 0.35rem;
+  /* Keep the floating button clear of the last tier row */
+  .wrap {
+    padding-bottom: 6rem;
   }
 }
 
@@ -317,72 +192,70 @@ footer .colophon {
 
 #spin-btn {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 24px;
+  right: 24px;
   z-index: 300;
   font-size: 0.72rem;
   letter-spacing: 0.06em;
-  color: var(--ink-soft);
-  background: var(--paper);
-  border: 1px solid var(--rule);
-  padding: 10px 18px;
+  color: var(--paper);
+  background: var(--accent);
+  border: none;
+  padding: 11px 20px;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(21, 20, 15, 0.18);
   transition:
-    color 0.15s ease,
-    border-color 0.15s ease;
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
 }
-#spin-btn:hover {
-  color: var(--ink);
-  border-color: var(--ink);
+#spin-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(21, 20, 15, 0.22);
+}
+#spin-btn:disabled,
+.spin-trigger:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
-/* ─── MODAL OVERLAY ───────────────────────────────────────────────── */
-
-#spin-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 400;
-  background: rgba(21, 20, 15, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-#spin-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
-}
+/* ─── MODAL (native <dialog>) ─────────────────────────────────────── */
 
 #spin-modal {
   background: var(--paper);
+  color: var(--ink);
   border: 1px solid var(--rule);
   width: clamp(260px, 90vw, 360px);
   padding: 32px 26px 26px;
+}
+#spin-modal[open] {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  position: relative;
-  transform: translateY(6px);
-  transition: transform 0.2s ease;
+  animation: modal-in 0.2s ease;
 }
-#spin-overlay.open #spin-modal {
-  transform: translateY(0);
+#spin-modal::backdrop {
+  background: rgba(21, 20, 15, 0.5);
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 
 #spin-close {
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: 4px;
+  right: 4px;
+  width: 40px;
+  height: 40px;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--ink-soft);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1;
-  padding: 4px;
   transition: color 0.15s ease;
 }
 #spin-close:hover {
@@ -462,18 +335,18 @@ footer .colophon {
   color: var(--rule);
 }
 
-/* Winner pulse — ink instead of an accent color */
+/* Winner pulse */
 #reel-window.reel-winner {
   animation: reel-pulse 0.6s ease-out forwards;
 }
 @keyframes reel-pulse {
   0% {
-    box-shadow: 0 0 0 0px var(--ink);
-    border-color: var(--ink);
+    box-shadow: 0 0 0 0px var(--accent);
+    border-color: var(--accent);
   }
   40% {
-    box-shadow: 0 0 0 4px rgba(21, 20, 15, 0.15);
-    border-color: var(--ink);
+    box-shadow: 0 0 0 4px rgba(194, 70, 31, 0.2);
+    border-color: var(--accent);
   }
   100% {
     box-shadow: 0 0 0 0px transparent;
@@ -508,11 +381,4 @@ footer .colophon {
 #spin-action:disabled {
   opacity: 0.35;
   cursor: default;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation: none !important;
-  }
 }

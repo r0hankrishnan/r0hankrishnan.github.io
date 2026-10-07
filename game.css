@@ -1,0 +1,70 @@
+/* Rally Run (game.js). */
+
+/* Whatever element opens the game gets a bigger, invisible hit area. */
+.game-trigger {
+  position: relative;
+  cursor: pointer;
+}
+.game-trigger::after {
+  content: "";
+  position: absolute;
+  inset: -8px -10px;
+}
+
+.rally {
+  width: min(640px, 92vw);
+  padding: 36px 20px 16px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+}
+.rally[open] {
+  animation: rally-in 0.2s ease;
+}
+.rally::backdrop {
+  background: rgba(21, 20, 15, 0.5);
+}
+@keyframes rally-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.rally canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+/* The canvas is focused so it receives keys; a hairline is enough. */
+.rally canvas:focus-visible {
+  outline: 1px solid var(--rule);
+  outline-offset: 0;
+}
+
+.rally-close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.rally-close:hover {
+  color: var(--ink);
+}
+
+.rally-help {
+  margin: 10px 0 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-align: center;
+}
