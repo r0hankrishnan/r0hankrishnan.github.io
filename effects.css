@@ -10,6 +10,12 @@
   }
 }
 
+/* ---------- Now block typing (characters revealed by effects.js) ---------- */
+
+.untyped {
+  visibility: hidden;
+}
+
 /* ---------- Rows fade in on render (projects, posts) ---------- */
 /* script.js re-renders these lists on every filter/page change, so the
    animation replays each time. */

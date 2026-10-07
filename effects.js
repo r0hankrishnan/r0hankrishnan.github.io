@@ -9,29 +9,33 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const block = document.getElementById("now-block");
   if (!block || reducedMotion) return;
 
-  // Hold the final height so the page doesn't jump while lines fill in.
-  block.style.minHeight = `${block.offsetHeight}px`;
-
+  // Wrap every character in a hidden span and reveal them in order. The text
+  // keeps its full size the whole time, so the layout never shifts.
   const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
-  const nodes = [];
-  while (walker.nextNode()) nodes.push(walker.currentNode);
-  const texts = nodes.map((node) => node.textContent);
-  nodes.forEach((node) => (node.textContent = ""));
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+  const chars = [];
+  textNodes.forEach((node) => {
+    const spans = [...node.textContent].map((c) => {
+      const span = document.createElement("span");
+      span.className = "untyped";
+      span.textContent = c;
+      return span;
+    });
+    chars.push(...spans);
+    node.replaceWith(...spans);
+  });
 
   const CHARS_PER_TICK = 3;
   function type() {
     let i = 0;
     const timer = setInterval(() => {
-      let budget = CHARS_PER_TICK;
-      while (budget > 0 && i < nodes.length) {
-        const node = nodes[i];
-        const remaining = texts[i].length - node.textContent.length;
-        const take = Math.min(budget, remaining);
-        node.textContent = texts[i].slice(0, node.textContent.length + take);
-        budget -= take;
-        if (node.textContent.length === texts[i].length) i++;
-      }
-      if (i >= nodes.length) clearInterval(timer);
+      chars
+        .slice(i, i + CHARS_PER_TICK)
+        .forEach((span) => span.classList.remove("untyped"));
+      i += CHARS_PER_TICK;
+      if (i >= chars.length) clearInterval(timer);
     }, 16);
   }
 
