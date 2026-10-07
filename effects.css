@@ -1,0 +1,116 @@
+/* Optional motion polish. Every block is independent: delete one to drop
+   that effect, or remove effects.css/effects.js from the HTML to drop all.
+   base.css already switches these off for prefers-reduced-motion. */
+
+/* ---------- Page transitions (cross-fade between pages) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+/* ---------- Rows fade in on render (projects, posts) ---------- */
+/* script.js re-renders these lists on every filter/page change, so the
+   animation replays each time. */
+
+#project-list > .project,
+#post-list > .post {
+  animation: row-in 0.35s ease both;
+}
+#project-list > :nth-child(2),
+#post-list > :nth-child(2) {
+  animation-delay: 0.05s;
+}
+#project-list > :nth-child(3),
+#post-list > :nth-child(3) {
+  animation-delay: 0.1s;
+}
+#post-list > :nth-child(4) {
+  animation-delay: 0.15s;
+}
+#post-list > :nth-child(5) {
+  animation-delay: 0.2s;
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* ---------- Sliding filter underline (positioned by effects.js) ---------- */
+
+.filters.has-indicator {
+  position: relative;
+}
+.filters.has-indicator button.active {
+  text-decoration-color: transparent;
+}
+.filter-indicator {
+  position: absolute;
+  height: 1px;
+  background: var(--accent);
+  transition:
+    left 0.25s ease,
+    width 0.25s ease;
+}
+
+/* ---------- Noodle cups tilt on hover ---------- */
+
+.noodles-item:hover .noodles-img.loaded {
+  transform: perspective(400px) rotateX(8deg) rotateY(-14deg) scale(1.08);
+}
+
+/* ---------- Steam rises off the winning noodle ---------- */
+/* .steam is inserted into the reel window by effects.js; noodles.js adds
+   .reel-winner when the reel stops. */
+
+.steam {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+}
+.steam span {
+  position: absolute;
+  bottom: 0;
+  width: 5px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  filter: blur(2.5px);
+  opacity: 0;
+}
+.steam span:nth-child(1) {
+  left: 44px;
+}
+.steam span:nth-child(2) {
+  left: 58px;
+}
+.steam span:nth-child(3) {
+  left: 72px;
+}
+.reel-winner .steam span {
+  animation: steam 1.6s ease-out 2;
+}
+.reel-winner .steam span:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.reel-winner .steam span:nth-child(3) {
+  animation-delay: 0.5s;
+}
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scaleY(0.6);
+  }
+  35% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-24px) scaleY(1.3);
+  }
+}

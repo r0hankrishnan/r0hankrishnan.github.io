@@ -1,0 +1,156 @@
+/* Shared by every page: tokens, typography, links, layout shell, footer.
+   Page-specific styles live in styles.css / noodles.css. */
+
+* {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+:root {
+  --paper: #fbfaf7;
+  --ink: #15140f;
+  --ink-soft: #6b6860;
+  --rule: #e6e3d9;
+  --accent: #c2461f; /* persimmon, 4.8:1 on --paper so it's safe for text */
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    "Archivo",
+    -apple-system,
+    sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.15s ease;
+}
+a:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* One focus style for every link, button, and focusable control */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.mono {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem 4rem;
+}
+
+/* ---------- Header ---------- */
+
+header h1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin: 0 0 1.4rem;
+  letter-spacing: -0.01em;
+}
+header h1::after {
+  content: ".";
+  color: var(--accent);
+}
+header p {
+  margin: 0 0 1.1rem;
+  max-width: 58ch;
+}
+
+/* Rows of links separated by "·" (header quicklinks, footer). Flex lets
+   the row wrap on narrow screens. */
+.quicklinks,
+footer .elsewhere {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.35rem;
+}
+.quicklinks {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ---------- Sections ---------- */
+
+section {
+  margin-top: 4rem;
+}
+section > h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1.3rem;
+}
+section > h2::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 0.55rem;
+  vertical-align: middle;
+  transform: translateY(-1px);
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  margin-top: 4rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+footer .elsewhere {
+  margin: 0 0 1.6rem;
+}
+footer .colophon {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 560px) {
+  .wrap {
+    padding: 3.5rem 1.25rem 3rem;
+  }
+  header h1 {
+    font-size: 1.5rem;
+  }
+  footer .colophon {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

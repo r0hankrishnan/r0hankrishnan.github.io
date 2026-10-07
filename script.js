@@ -15,30 +15,40 @@ function renderSiteInfo() {
   const nowEl = document.getElementById("now-block");
   if (nowEl) {
     const n = siteData.now;
-    nowEl.innerHTML = `<span class="key">now</span> = {
-  location: <span>"${n.location}"</span>,
-  study:    <span>"${n.study}"</span>,
-  role:     <span>"${n.role}"</span>
-  building: <span>"${n.building}"</span>,  <span class="comment">// ${n.buildingNote}</span>
-  reading:  <span>"${n.reading}"</span>,
-}<span class="cursor"></span>`;
+    const lines = [
+      `now = {`,
+      `  location: <span class="str">"${n.location}"</span>,`,
+      `  study:    <span class="str">"${n.study}"</span>,`,
+      `  role:     <span class="str">"${n.role}"</span>,`,
+      `  building: <span class="str">"${n.building}"</span>,  <span class="comment">// ${n.buildingNote}</span>`,
+      `  reading:  <span class="str">"${n.reading}"</span>,`,
+      `}<span class="cursor"></span>`,
+    ];
+    nowEl.innerHTML = lines
+      .map((line) => `<span class="line">${line}</span>`)
+      .join("");
   }
 }
 renderSiteInfo();
 
 // ─── Email copy-to-clipboard (delegated, works regardless of render order) ─
+// The `.copied` class shows a "Copied" tooltip (styles.css). The status
+// element announces the copy to screen readers, which can't see the tooltip.
+const copyStatus = document.createElement("p");
+copyStatus.setAttribute("role", "status");
+copyStatus.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)";
+document.body.append(copyStatus);
+
 document.addEventListener("click", (e) => {
   const link = e.target.closest("a[data-copy]");
   if (!link) return;
   e.preventDefault();
-  const email = link.dataset.copy;
-  navigator.clipboard.writeText(email).then(() => {
-    const original = link.textContent;
-    link.textContent = "Copied!";
+  navigator.clipboard.writeText(link.dataset.copy).then(() => {
     link.classList.add("copied");
+    copyStatus.textContent = "Email address copied";
     setTimeout(() => {
-      link.textContent = original;
       link.classList.remove("copied");
+      copyStatus.textContent = "";
     }, 1800);
   });
 });

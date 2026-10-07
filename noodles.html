@@ -13,7 +13,9 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="base.css" />
     <link rel="stylesheet" href="noodles.css" />
+    <link rel="stylesheet" href="effects.css" />
   </head>
   <body>
     <div class="wrap">
@@ -24,11 +26,11 @@
         <h1>Instant Noodle Rankings</h1>
         <p>
           A tier list of every instant noodle I've eaten more than once (ranked
-          with no real methodology). Click the &nbsp
-          <kbd id="spin-trigger" class="spin-trigger" role="button" tabindex="0"
-            >Spin</kbd
-          >
-          &nbsp button to pick a cup noodle for dinner.
+          with no real methodology). Click the
+          <button type="button" id="spin-trigger" class="spin-trigger">
+            Spin
+          </button>
+          button to pick a cup noodle for dinner.
         </p>
         <p class="quicklinks"><a href="index.html">← Back to main site</a></p>
       </header>
@@ -84,23 +86,24 @@
       </footer>
     </div>
 
-    <button id="spin-btn" class="mono">Spin</button>
+    <button type="button" id="spin-btn" class="mono">Spin</button>
 
-    <div id="spin-overlay">
-      <div id="spin-modal">
-        <button id="spin-close" aria-label="Close">×</button>
-        <p class="spin-eyebrow mono">Tonight's noodles</p>
-        <div id="reel-window">
-          <div id="reel-idle"><span class="mono">— — —</span></div>
-          <div id="reel-strip" style="display: none"></div>
-        </div>
-        <p id="spin-result-label" class="mono"></p>
-        <button id="spin-action" class="mono">Spin for noodles</button>
+    <dialog id="spin-modal" aria-labelledby="spin-title">
+      <button type="button" id="spin-close" aria-label="Close">×</button>
+      <p id="spin-title" class="spin-eyebrow mono">Tonight's noodles</p>
+      <div id="reel-window">
+        <div id="reel-idle"><span class="mono">— — —</span></div>
+        <div id="reel-strip" style="display: none"></div>
       </div>
-    </div>
+      <p id="spin-result-label" class="mono" aria-live="polite"></p>
+      <button type="button" id="spin-action" class="mono">
+        Spin for noodles
+      </button>
+    </dialog>
 
     <script src="data/site.js"></script>
     <script src="data/noodles.js"></script>
     <script src="noodles.js"></script>
+    <script src="effects.js"></script>
   </body>
 </html>

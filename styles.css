@@ -1,115 +1,56 @@
-* {
-  box-sizing: border-box;
-}
-html {
-  -webkit-text-size-adjust: 100%;
-}
+/* Homepage styles. Shared tokens and layout live in base.css. */
 
-:root {
-  --paper: #fbfaf7;
-  --ink: #15140f;
-  --ink-soft: #6b6860;
-  --rule: #e6e3d9;
-}
-
-body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family:
-    "Archivo",
-    -apple-system,
-    sans-serif;
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: var(--rule);
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  transition: text-decoration-color 0.15s ease;
-}
-a:hover {
-  text-decoration-color: var(--ink);
-}
-a:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 3px;
-}
-
-.mono {
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-}
-
-.wrap {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 5.5rem 1.5rem 4rem;
-}
-
-/* ---------- Header ---------- */
-
-header h1 {
-  font-size: 1.7rem;
-  font-weight: 600;
-  margin: 0 0 1.4rem;
-  letter-spacing: -0.01em;
-}
-header p {
-  margin: 0 0 1.1rem;
-  max-width: 58ch;
-}
 header p:last-of-type {
   margin-bottom: 1.6rem;
 }
 
-.quicklinks {
-  font-size: 0.95rem;
-  color: var(--ink-soft);
-  margin: 0;
-}
-.quicklinks a {
-  margin-right: 0.35rem;
-}
-.quicklinks span {
-  margin-right: 0.35rem;
-}
-.quicklinks a[data-copy].copied {
-  font-style: italic;
-  text-decoration: none;
-}
+/* ---------- Email copy-to-clipboard tooltip ---------- */
 
-/* ---------- Sections ---------- */
-
-section {
-  margin-top: 4rem;
+a[data-copy] {
+  position: relative;
 }
-section > h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 1.3rem;
+a[data-copy]::after {
+  content: "Copied";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  translate: -50% 4px;
+  padding: 2px 8px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  color: var(--paper);
+  background: var(--ink);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    translate 0.15s ease;
+}
+a[data-copy].copied::after {
+  opacity: 1;
+  translate: -50% 0;
 }
 
 /* ---------- Now (code block) ---------- */
 
 .now-block {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 0.86rem;
+  font-size: 0.84rem; /* largest size where the longest line fits at 640px */
   line-height: 1.85;
-  white-space: pre;
-  overflow-x: auto;
   color: var(--ink);
   margin: 0;
+}
+/* Each line is its own block with a hanging indent, so long values wrap
+   and line up under the value column instead of running off-screen. */
+.now-block .line {
+  display: block;
+  white-space: pre-wrap;
+  padding-left: 12ch;
+  text-indent: -12ch;
+}
+.now-block .str {
+  color: var(--accent);
 }
 .now-block .comment {
   color: var(--ink-soft);
@@ -118,50 +59,50 @@ section > h2 {
 .cursor {
   display: inline-block;
   width: 7px;
-  background: var(--ink);
+  height: 1.1em;
+  vertical-align: text-bottom;
+  background: var(--accent);
   margin-left: 2px;
   animation: blink 1.1s steps(1) infinite;
 }
 @keyframes blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
+  50% {
     opacity: 0;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .cursor {
-    animation: none;
-    opacity: 1;
-  }
-}
 
-/* ---------- Projects ---------- */
+/* ---------- Project + post rows ---------- */
 
-.project {
+/* Accent bar that grows in from whichever edge the pointer entered
+   (--edge is set in script.js). It sits just outside the text column. */
+.project,
+.post {
   position: relative;
-  padding: 1rem 0 1rem 1rem;
-  margin-left: -1rem;
   border-bottom: 1px solid var(--rule);
 }
-.project::before {
+.project::before,
+.post::before {
   content: "";
   position: absolute;
-  left: 0;
+  left: -0.9rem;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--ink);
+  background: var(--accent);
   transform: scaleY(0);
   transform-origin: var(--edge, top);
   transition: transform 0.25s ease;
 }
 .project:hover::before,
-.project:focus-visible::before {
+.post:hover::before,
+.post:focus-visible::before {
   transform: scaleY(1);
+}
+
+/* ---------- Projects ---------- */
+
+.project {
+  padding: 1rem 0;
 }
 .project:first-child {
   padding-top: 0;
@@ -219,37 +160,28 @@ section > h2 {
   color: var(--ink);
 }
 .filters button.active {
-  color: var(--ink);
-  text-decoration-color: var(--ink);
+  color: var(--accent);
+  text-decoration-color: var(--accent);
 }
 
+/* The whole row is the link, but only the title is underlined. */
 .post {
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1.5rem;
-  padding: 0.6rem 0 0.6rem 1rem;
-  margin-left: -1rem;
-  border-bottom: 1px solid var(--rule);
+  padding: 0.6rem 0;
+  text-decoration: none;
 }
-.post::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--ink);
-  transform: scaleY(0);
-  transform-origin: var(--edge, top);
-  transition: transform 0.25s ease;
+.post-title {
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
 }
-.post:hover::before,
-.post:focus-visible::before {
-  transform: scaleY(1);
+.post:hover .post-title {
+  text-decoration-color: var(--accent);
 }
-
 .post-meta {
   font-size: 0.85rem;
   color: var(--ink-soft);
@@ -296,7 +228,7 @@ section > h2 {
 }
 .pagination button:hover:not(:disabled) {
   color: var(--ink);
-  text-decoration-color: var(--ink);
+  text-decoration-color: var(--accent);
 }
 .pagination button:disabled {
   opacity: 0.35;
@@ -307,54 +239,10 @@ section > h2 {
   text-align: center;
 }
 
-/* ---------- Footer ---------- */
-
-footer {
-  margin-top: 4rem;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-}
-footer .elsewhere {
-  margin-bottom: 1.6rem;
-}
-footer .elsewhere a {
-  margin-right: 0.35rem;
-}
-footer .elsewhere span {
-  margin-right: 0.35rem;
-}
-footer .elsewhere a[data-copy].copied {
-  font-style: italic;
-  text-decoration: none;
-}
-
-footer .colophon {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  font-size: 0.85rem;
-}
-
 /* ---------- Responsive ---------- */
 
 @media (max-width: 560px) {
-  .wrap {
-    padding: 3.5rem 1.25rem 3rem;
-  }
-  header h1 {
-    font-size: 1.5rem;
-  }
   .now-block {
     font-size: 0.78rem;
-  }
-  footer .colophon {
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
   }
 }
