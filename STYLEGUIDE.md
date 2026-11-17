@@ -9,8 +9,7 @@ A calm, editorial page with the tactility of the 2010s web hidden in how
 things respond. At rest the site is neutral paper, ink, and type. Anything you
 can press feels physical: it lifts on hover, squishes when pressed, and can
 make a soft pop. Color means one thing: **this is pressable**. Personality
-lives in a few small toys (a record, a tennis ball) and in the copy, never in
-decoration.
+lives in how things respond and in the copy, never in decoration.
 
 ## Color
 
@@ -24,10 +23,10 @@ color in a component; if a new one is needed, add a token here first.
 | `--ink` | `#16171b` | Text, headings, focus ring | 15.9:1 on paper |
 | `--ink-soft` | `#575a62` | Secondary text, labels, metadata | 6.1:1 on paper |
 | `--rule` | `#dcdcd5` | Hairlines between rows, link underlines at rest | decorative |
-| `--accent` | `#3a63d8` | Fill of primary and pressed keys, link underline on hover, record label, text selection | 4.7:1 on paper, 5.3:1 with white text |
+| `--accent` | `#3a63d8` | Fill of primary and pressed keys, link underline on hover, text selection | 4.7:1 on paper, 5.3:1 with white text |
 | `--accent-strong` | `#2f55c4` | Accent hover/pressed state | 6.5:1 with white text |
 | `--accent-ink` | `#ffffff` | Text on accent fills | |
-| `--ball` | `#d4ef3a` | The tennis ball only (toy and game). Fill only, never text | 13.8:1 with ink text |
+| `--ball` | `#d4ef3a` | The tennis ball in Rally Run only. Fill only, never text | 13.8:1 with ink text |
 | `--shine` | `rgb(255 255 255 / .55)` | The faint top highlight on keys (a gradient over their fill) | decorative |
 
 Rules:
@@ -80,7 +79,7 @@ Every content section uses the same structure, so the page reads as one
 system.
 
 ```
-Section heading                       [optional toys / action]
+Section heading                            [optional controls]
 ───────────────────────────────────────────────────────────────
 MARGIN LABEL        Content column
 (mono, soft)        (name, text, actions)
@@ -99,9 +98,9 @@ MARGIN LABEL        Content column
 - Page width: `.wrap` max 680px, side padding 20px (16px minimum).
 - Vertical rhythm: sections are `4.25rem` apart (`3.5rem` on phones);
   heading to first row `1.1rem`. Every heading row is at least 36px tall
-  (the toys' size) so all headings sit on the same rhythm.
-- The right side of a heading row holds that section's controls: the toys
-  (Now), the filter keys (Writing), the Spin key (Tier List).
+  (a key's height) so all headings sit on the same rhythm.
+- The right side of a heading row holds that section's controls: the filter
+  keys (Writing), the Spin key (Tier List).
 
 ## Components and their states
 
@@ -133,6 +132,8 @@ element with `data-copy` copies that text on click and shows the **bubble**.
 
 Use a key for actions and for the one or two links that are the point of a
 section (Email, Résumé, Try the demo). Everything else stays a text link.
+A quiet action that shouldn't draw the eye (the footer's "Play Rally Run")
+is a `.text-button`: a real `<button>` styled like a text link.
 
 ### Text link
 
@@ -144,29 +145,13 @@ Body links and the four profile links.
 | Hover | Underline turns `--accent` |
 | Focus-visible | 2px ink outline |
 
-### Bubble / tooltip (`[data-bubble]`, `.tip`)
+### Bubble (`[data-bubble]`)
 
 Ink fill, paper text, mono micro, radius 6px, appears 4 to 8px above its
 anchor with a spring scale-in. Used for "Copied" (set `data-bubble` on the
-element) and for toy hints (`.tip`, shown on hover and keyboard focus; the
-last toy's hint grows leftward so it never leaves the page). Always paired
-with a screen-reader equivalent (the `role="status"` region or
-`aria-label`). If the clipboard is unavailable, the bubble shows the text
+element). Always paired with a screen-reader equivalent (the `role="status"`
+region). If the clipboard is unavailable, the bubble shows the text
 itself instead of "Copied".
-
-### Toys
-
-Small objects with personality: 36px round buttons around a smaller
-drawing, 8px apart at the right of a heading row, with a hint on
-hover/focus.
-
-- **Record** (`#record`): plays the jazz loop. Rest: still disc, arm parked.
-  Hover: disc nudges -25deg, arm twitches. Playing: disc spins (1.8s/turn),
-  arm on the record, notes float up, `aria-pressed="true"`.
-- **Tennis ball** (`#ball`): rest is tennis yellow with white seams and a
-  faint ink edge (the yellow alone barely separates from the paper); hover
-  tilts it. Click bounces it (thwack, then two pocks) and Rally Run opens
-  as it lands (650ms; immediately with reduced motion).
 
 ### Ledger row
 
@@ -184,7 +169,7 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 ## Motion
 
 - Physical, short, and caused by the user. Nothing moves on its own except
-  feedback the user started (a spinning record, a rolling reel, rising steam).
+  feedback the user started (a rolling reel, rising steam).
 - Durations: press-in .06s, release/hover .25 to .3s spring, fades .15s.
 - `prefers-reduced-motion: reduce` turns off all transitions and animations
   (in `base.css`). JS-driven motion checks it too.
@@ -195,10 +180,6 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 - Off by default. One toggle key in the footer of each page ("Sounds off" /
   "Sounds on", `aria-pressed`), remembered per visitor.
 - Keys: a soft rising pop on press (Doodle Jump, not 8-bit).
-- Tennis ball: a round "thwock" with a stadium echo, then a duller "pock" on
-  each landing.
-- Music only starts from the record, independent of the sound toggle (it is
-  an explicit request), fades in, and stops when the tab is hidden.
 - Everything is synthesized with Web Audio; no audio files.
 
 ## Accessibility checklist
@@ -210,7 +191,7 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 - Toggles use `aria-pressed`. Copy actions announce through the shared
   `role="status"` region.
 - Text contrast at least 4.5:1 (see the color table).
-- Touch targets at least 24px; toys are 36px buttons.
+- Touch targets at least 24px.
 - Each page has a `<main>` landmark. axe-core reports no violations on
   either page (re-run it after big changes).
 
@@ -221,7 +202,5 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 | `base.css` | Tokens, type, links, keys, bubbles, ledger, headings, footer, dialogs | (required) |
 | `styles.css` / `noodles.css` | Page-specific layout | (required) |
 | `effects.css` / `effects.js` | Page cross-fade, noodle tilt, steam | drop that polish |
-| `sound.js` | Sound toggle, key pops, ball sounds | go silent |
-| `toys.css` / `toys.js` | Record and ball visuals, ball bounce | remove the toys (also remove their markup) |
-| `music.js` | The jazz loop behind the record | make the record inert |
-| `game.css` / `game.js` | Rally Run, opened from the ball | drop the game |
+| `sound.js` | Sound toggle, key pops | go silent |
+| `game.css` / `game.js` | Rally Run, opened from the footer | drop the game (also remove the footer button) |

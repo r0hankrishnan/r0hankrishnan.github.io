@@ -1,12 +1,11 @@
 // ─── Rally Run: a hidden tennis-ball runner (styles in game.css) ──────────
 // Jump nets and low racquets; stay down for high ones.
 //
-// HOW IT'S OPENED: clicking any button matching GAME_TRIGGER (the tennis
-// ball toy). The game opens once the ball's bounce has landed. Point it at a
-// different button to move the entrance, or call `RallyRun.open()` from
-// anywhere (e.g. a 404 page).
-const GAME_TRIGGER = "#ball";
-const OPEN_DELAY_MS = 650; // matches the ball bounce in toys.css
+// HOW IT'S OPENED: clicking any button matching GAME_TRIGGER (the "Play
+// Rally Run" button in the homepage footer). Point it at a different button
+// to move the entrance, or call `RallyRun.open()` from anywhere (e.g. a 404
+// page).
+const GAME_TRIGGER = "#play-rally";
 
 const RallyRun = (() => {
   // Canvas is drawn in these logical units and scaled to fit.
@@ -315,9 +314,5 @@ const RallyRun = (() => {
 // ─── Wire up the trigger ───────────────────────────────────────────────────
 // The trigger is a real <button>, so Enter and Space already click it.
 document.querySelectorAll(GAME_TRIGGER).forEach((button) => {
-  button.addEventListener("click", () => {
-    let delay = OPEN_DELAY_MS;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) delay = 0;
-    setTimeout(() => RallyRun.open(button), delay);
-  });
+  button.addEventListener("click", () => RallyRun.open(button));
 });

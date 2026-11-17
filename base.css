@@ -106,7 +106,7 @@ section {
 }
 
 /* Heading on the left, that section's controls on the right. The min-height
-   matches the toys so every heading sits on the same rhythm. */
+   is a key's height, so every heading sits on the same rhythm. */
 .section-head {
   display: flex;
   flex-wrap: wrap;
@@ -168,6 +168,25 @@ section {
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* A button that looks like a text link, for quiet actions (e.g. "Play
+   Rally Run" in the footer). */
+.text-button {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: text-decoration-color 0.15s ease;
+}
+.text-button:hover {
+  text-decoration-color: var(--accent);
 }
 
 /* ---------- Key: the one pressable component ---------- */
@@ -246,12 +265,10 @@ section {
   gap: 0.5rem;
 }
 
-/* ---------- Bubble and tooltip ---------- */
-/* `data-bubble="Copied"` on any element shows a bubble above it. Toy hints
-   (.tip, see toys.css) share the look. */
+/* ---------- Bubble ---------- */
+/* `data-bubble="Copied"` on any element shows a bubble above it. */
 
-[data-bubble]::after,
-.tip {
+[data-bubble]::after {
   position: absolute;
   left: 50%;
   bottom: calc(100% + 6px);
@@ -264,10 +281,8 @@ section {
   white-space: nowrap;
   pointer-events: none;
   transform-origin: 50% 100%;
-  animation: bubble-in 0.28s var(--spring);
-}
-[data-bubble]::after {
   content: attr(data-bubble);
+  animation: bubble-in 0.28s var(--spring);
 }
 @keyframes bubble-in {
   from {

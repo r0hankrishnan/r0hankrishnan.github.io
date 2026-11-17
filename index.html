@@ -56,7 +56,6 @@
     <link rel="stylesheet" href="base.css" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="effects.css" />
-    <link rel="stylesheet" href="toys.css" />
     <link rel="stylesheet" href="game.css" />
   </head>
   <body>
@@ -98,28 +97,6 @@
         <section id="now" aria-labelledby="now-title">
           <div class="section-head">
             <h2 id="now-title">Now</h2>
-            <div class="toys">
-              <button
-                type="button"
-                class="toy"
-                id="record"
-                aria-label="Play a little jazz"
-                aria-pressed="false"
-              >
-                <span class="record-disc" aria-hidden="true"></span>
-                <span class="record-arm" aria-hidden="true"></span>
-                <span class="tip" aria-hidden="true">Play a little jazz</span>
-              </button>
-              <button
-                type="button"
-                class="toy"
-                id="ball"
-                aria-label="Play Rally Run, a hidden tennis game"
-              >
-                <span class="ball" aria-hidden="true"></span>
-                <span class="tip" aria-hidden="true">Play Rally Run</span>
-              </button>
-            </div>
           </div>
           <dl class="ledger now-list" id="now-list"></dl>
         </section>
@@ -156,6 +133,9 @@
       <footer>
         <p class="footer-links">
           <a href="noodles.html">Noodles</a>
+          <button type="button" class="text-button" id="play-rally">
+            Play Rally Run
+          </button>
         </p>
         <p class="colophon">
           <span>© <span id="copyright-year">2026</span> Rohan Krishnan</span>
@@ -169,8 +149,6 @@
     <script src="script.js"></script>
     <script src="effects.js"></script>
     <script src="sound.js"></script>
-    <script src="toys.js"></script>
-    <script src="music.js"></script>
     <script src="game.js"></script>
   </body>
 </html>
