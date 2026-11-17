@@ -104,7 +104,8 @@ MARGIN LABEL        Content column
   heading to first row `1.1rem`. Every heading row is at least 36px tall
   (a key's height) so all headings sit on the same rhythm.
 - The right side of a heading row holds that section's controls: the filter
-  keys (Writing), the Spin key (Tier List).
+  keys (Writing, shown only when posts come from more than one source), the
+  Spin key (Tier List).
 
 ## Components and their states
 
@@ -131,7 +132,7 @@ Variants: `.key.primary` (accent fill at rest; hover uses `--accent-strong`),
 `.key.cmd` (mono text, for copyable commands), `.key-inline` (noodles page,
 small enough to sit in a sentence). `.key-sm` is the compact size
 (`.78rem` text, `.55em .9em` padding) for filters, pagination, dialog
-Close keys and the footer Sounds toggle. Any
+Close keys. Any
 element with `data-copy` copies that text on click and shows the **bubble**.
 
 Use a key for actions and for the one or two links that are the point of a
