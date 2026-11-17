@@ -171,8 +171,9 @@ always in reach.
 | Current section (`aria-current`, set by nav.js) | Paper text on ink |
 | Focus-visible | 2px ink outline |
 
-Sections get `scroll-margin-top: 4.5rem` so a jump lands below the nav, and
-scrolling is smooth unless reduced motion is on. A "Skip to content" key
+`html` has `scroll-padding-top: 4.5rem`, so anchor jumps and keyboard focus
+both land below the nav, never under it. Scrolling is smooth unless reduced
+motion is on. A "Skip to content" key
 appears top-left on first Tab.
 
 ### Sound switch (`.sound-switch`, `role="switch"`)

@@ -7,6 +7,9 @@
 }
 html {
   -webkit-text-size-adjust: 100%;
+  /* Anchor jumps and keyboard focus scroll things to land below the
+     floating nav, never under it. */
+  scroll-padding-top: 4.5rem;
 }
 /* Author display rules (e.g. .keys { display: flex }) would otherwise beat
    the browser's own [hidden] style. */
@@ -108,7 +111,6 @@ header p {
 
 section {
   margin-top: 4.25rem;
-  scroll-margin-top: 4.5rem; /* land below the floating nav */
 }
 
 /* Heading on the left, that section's controls on the right. The min-height
