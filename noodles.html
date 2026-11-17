@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="effects.css" />
   </head>
   <body>
+    <a class="key skip-link" href="#main">Skip to content</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="index.html">Home</a>
+      <a href="#tierlist">Tier List</a>
+    </nav>
+
     <div class="wrap">
       <header>
         <p class="eyebrow">You can never go wrong with cup noodles...right?</p>
@@ -33,7 +39,7 @@
         <p><a href="index.html">Back to main site</a></p>
       </header>
 
-      <main>
+      <main id="main">
         <section id="tierlist" aria-labelledby="tierlist-title">
           <div class="section-head">
             <h2 id="tierlist-title">Tier List</h2>
@@ -103,6 +109,7 @@
     <script src="data/noodles.js"></script>
     <script src="noodles.js"></script>
     <script src="effects.js"></script>
+    <script src="nav.js"></script>
     <script src="sound.js"></script>
   </body>
 </html>

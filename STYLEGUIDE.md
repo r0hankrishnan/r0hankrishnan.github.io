@@ -153,6 +153,30 @@ element). Always paired with a screen-reader equivalent (the `role="status"`
 region). If the clipboard is unavailable, the bubble shows the text
 itself instead of "Copied".
 
+### Floating nav (`.site-nav`)
+
+A pill fixed 12px from the top of every page: surface at 88% with a blur,
+1px rule border, soft shadow. It holds the page's section links (text, no
+underline) and, last, the sound switch. Always visible, so the switch is
+always in reach.
+
+| State | Look |
+|---|---|
+| Link rest | `--ink-soft` |
+| Link hover | Ink text on a 6% ink wash |
+| Current section (`aria-current`, set by nav.js) | Paper text on ink |
+| Focus-visible | 2px ink outline |
+
+Sections get `scroll-margin-top: 4.5rem` so a jump lands below the nav, and
+scrolling is smooth unless reduced motion is on. A "Skip to content" key
+appears top-left on first Tab.
+
+### Sound switch (`.sound-switch`, `role="switch"`)
+
+"Sound" plus a 26x16px track with a 12px knob. Off: `--ink-soft` track,
+knob left. On: `--accent` track, knob slides right with the spring.
+Under 400px wide only the track shows; `aria-label="Sound"` keeps its name.
+
 ### Ledger row
 
 Rest only; rows themselves are not interactive. Links and keys inside them
@@ -177,8 +201,8 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 
 ## Sound
 
-- Off by default. One toggle key in the footer of each page ("Sounds off" /
-  "Sounds on", `aria-pressed`), remembered per visitor.
+- On by default, but nothing plays until the visitor presses something. The
+  sound switch in the floating nav turns it off, remembered per visitor.
 - Keys: a soft rising pop on press (Doodle Jump, not 8-bit).
 - Everything is synthesized with Web Audio; no audio files.
 
@@ -187,9 +211,10 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 - Semantic elements: `button` for actions, `a` for navigation, `dl` for the
   Now list, `section` with headings.
 - Every control is reachable and usable by keyboard, with the focus ring
-  visible.
-- Toggles use `aria-pressed`. Copy actions announce through the shared
-  `role="status"` region.
+  visible. Each page starts with a "Skip to content" link to `<main>`.
+- Toggles use `aria-pressed` (the sound switch uses `role="switch"` with
+  `aria-checked`). Copy actions announce through the shared `role="status"`
+  region.
 - Text contrast at least 4.5:1 (see the color table).
 - Touch targets at least 24px.
 - Each page has a `<main>` landmark. axe-core reports no violations on
@@ -199,8 +224,9 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 
 | File | What it owns | Remove it to |
 |---|---|---|
-| `base.css` | Tokens, type, links, keys, bubbles, ledger, headings, footer, dialogs | (required) |
+| `base.css` | Tokens, type, links, keys, bubbles, ledger, cards, nav, headings, footer, dialogs | (required) |
 | `styles.css` / `noodles.css` | Page-specific layout | (required) |
 | `effects.css` / `effects.js` | Page cross-fade, noodle tilt, steam | drop that polish |
-| `sound.js` | Sound toggle, key pops | go silent |
+| `nav.js` | Marks the current section in the floating nav | stop highlighting (the links still work) |
+| `sound.js` | Sound switch, key pops, spin sounds | go silent |
 | `game.css` / `game.js` | Rally Run, opened from the footer | drop the game (also remove the footer button) |

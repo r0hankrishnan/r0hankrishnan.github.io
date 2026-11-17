@@ -1,9 +1,9 @@
 // ─── Sound: key pops and the on/off toggle ────────────────────────────────
-// Everything is synthesized with Web Audio (no audio files). Sound is off by
-// default; the "Sounds" key in the footer turns it on and the choice is
-// remembered. The AudioContext is only created the first time a sound
-// actually plays, which is always inside a click or key press (browsers
-// require a user gesture before audio can start).
+// Everything is synthesized with Web Audio (no audio files). Sound is on by
+// default; the "Sound" switch in the floating nav turns it off and the
+// choice is remembered. Nothing ever plays on page load: the AudioContext is
+// only created the first time a sound plays, which is always inside a click
+// or key press (browsers require a user gesture before audio can start).
 //
 // Remove this file (and its <script> tags) to make the site silent.
 
@@ -15,9 +15,9 @@
   // ─── Preference (best effort; storage can be unavailable) ──────────────
   function loadEnabled() {
     try {
-      return localStorage.getItem(STORAGE_KEY) === "on";
+      return localStorage.getItem(STORAGE_KEY) !== "off";
     } catch (e) {
-      return false;
+      return true;
     }
   }
   function saveEnabled() {
@@ -74,26 +74,25 @@
     if (pressKey && !e.repeat && e.target.classList.contains("key")) pop();
   });
 
-  // ─── Footer toggle ─────────────────────────────────────────────────────
-  const footerLinks = document.querySelector(".footer-links");
-  if (footerLinks) {
+  // ─── On/off switch in the floating nav ─────────────────────────────────
+  const nav = document.querySelector(".site-nav");
+  if (nav) {
     const toggle = document.createElement("button");
     toggle.type = "button";
     toggle.id = "sound-toggle";
-    toggle.className = "key key-sm";
-    const showState = () => {
-      toggle.setAttribute("aria-pressed", enabled);
-      toggle.innerHTML = `Sounds <small>${enabled ? "on" : "off"}</small>`;
-    };
+    toggle.className = "sound-switch";
+    toggle.setAttribute("role", "switch");
+    toggle.setAttribute("aria-label", "Sound");
+    toggle.innerHTML =
+      '<span class="sound-switch-label">Sound</span><span class="sound-switch-track"></span>';
+    const showState = () => toggle.setAttribute("aria-checked", enabled);
     toggle.addEventListener("click", () => {
       enabled = !enabled;
       saveEnabled();
       showState();
-      // Turning sound on pops once so you hear what you turned on. (Turning
-      // it off already popped on the press, while sound was still on.)
-      if (enabled) pop();
+      if (enabled) pop(); // so you hear what you turned on
     });
     showState();
-    footerLinks.append(toggle);
+    nav.append(toggle);
   }
 })();

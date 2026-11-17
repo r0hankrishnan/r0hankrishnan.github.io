@@ -108,6 +108,7 @@ header p {
 
 section {
   margin-top: 4.25rem;
+  scroll-margin-top: 4.5rem; /* land below the floating nav */
 }
 
 /* Heading on the left, that section's controls on the right. The min-height
@@ -192,6 +193,100 @@ section {
 }
 .text-button:hover {
   text-decoration-color: var(--accent);
+}
+
+/* ---------- Floating nav ---------- */
+/* A pill fixed at the top: section links, then the sound switch (added by
+   sound.js). nav.js marks the current section with aria-current. */
+
+.site-nav {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: calc(100vw - 24px);
+  padding: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  box-shadow: 0 6px 20px -8px rgba(22, 23, 27, 0.25);
+}
+.site-nav a,
+.sound-switch {
+  padding: 0.4em 0.85em;
+  color: var(--ink-soft);
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.site-nav a {
+  text-decoration: none;
+}
+.site-nav a:hover,
+.sound-switch:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.site-nav a[aria-current] {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+/* Sound switch: a small track and knob. Accent when on (it's pressable and
+   toggled), soft ink when off. */
+.sound-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.sound-switch-track {
+  position: relative;
+  width: 26px;
+  height: 16px;
+  background: var(--ink-soft);
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+.sound-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: var(--surface);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(22, 23, 27, 0.3);
+  transition: transform 0.28s var(--spring);
+}
+.sound-switch[aria-checked="true"] .sound-switch-track {
+  background: var(--accent);
+}
+.sound-switch[aria-checked="true"] .sound-switch-track::after {
+  transform: translateX(10px);
+}
+
+/* Hidden until focused, then the first thing on the page. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 20;
+}
+.skip-link:focus {
+  top: 12px;
 }
 
 /* ---------- Key: the one pressable component ---------- */
@@ -358,9 +453,15 @@ footer {
 
 /* ---------- Responsive ---------- */
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @media (max-width: 560px) {
   .wrap {
-    padding-top: 3.5rem;
+    padding-top: 4.5rem; /* clear the floating nav */
     padding-bottom: 3rem;
   }
   section,
@@ -376,6 +477,14 @@ footer {
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
+  }
+}
+
+/* On the narrowest phones the switch keeps only its track (its aria-label
+   still says "Sound"). */
+@media (max-width: 400px) {
+  .sound-switch-label {
+    display: none;
   }
 }
 
