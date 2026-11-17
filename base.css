@@ -1,46 +1,86 @@
-/* Shared by every page: tokens, typography, links, layout shell, footer.
-   Page-specific styles live in styles.css / noodles.css. */
+/* Shared by every page: tokens, type, links, the ledger, keys, bubbles,
+   dialogs, footer. Page-specific layout lives in styles.css / noodles.css.
+   The rules behind every value here are in STYLEGUIDE.md. */
 
 * {
   box-sizing: border-box;
 }
 html {
   -webkit-text-size-adjust: 100%;
+  /* Anchor jumps and keyboard focus scroll things to land below the
+     floating nav, never under it. */
+  scroll-padding-top: 4.5rem;
+}
+/* Author display rules (e.g. .keys { display: flex }) would otherwise beat
+   the browser's own [hidden] style. */
+[hidden] {
+  display: none !important;
 }
 
 :root {
-  --paper: #fbfaf7;
-  --ink: #15140f;
-  --ink-soft: #6b6860;
-  --rule: #e6e3d9;
-  --accent: #c2461f; /* persimmon, 4.8:1 on --paper so it's safe for text */
+  /* Color (light theme only). Accent means "pressable". */
+  --paper: #f2f2ee;
+  --surface: #fbfbf9;
+  --ink: #16171b;
+  --ink-soft: #575a62;
+  --rule: #dcdcd5;
+  --accent: #3a63d8;
+  --accent-strong: #2f55c4;
+  --accent-ink: #fff;
+  --ball: #d4ef3a;
+  --shine: rgb(255 255 255 / 0.55); /* top highlight on keys */
+
+  /* Type */
+  --f-display: "Gabarito", system-ui, sans-serif;
+  --f-body: "Onest", system-ui, sans-serif;
+  --f-mono: "Reddit Mono", ui-monospace, monospace;
+
+  /* Shape and motion */
+  --radius: 10px;
+  --spring: cubic-bezier(0.3, 1.5, 0.5, 1);
+  --margin: 9.5rem; /* ledger margin column */
 }
 
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family:
-    "Archivo",
-    -apple-system,
-    sans-serif;
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 1.65;
+  font: 400 17px/1.62 var(--f-body);
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
   background: var(--accent);
-  color: var(--paper);
+  color: var(--accent-ink);
 }
+
+h1,
+h2,
+h3 {
+  font-family: var(--f-display);
+  text-wrap: balance;
+  margin: 0;
+}
+h1 {
+  font-size: clamp(2.6rem, 9vw, 3.9rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+}
+h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+/* ---------- Links and focus ---------- */
 
 a {
   color: inherit;
   text-decoration: underline;
   text-decoration-color: var(--rule);
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
   transition: text-decoration-color 0.15s ease;
 }
 a:hover {
@@ -49,107 +89,440 @@ a:hover {
 
 /* One focus style for every link, button, and focusable control */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
 
-.mono {
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-}
+/* ---------- Page shell ---------- */
 
 .wrap {
-  max-width: 640px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 5.5rem 1.5rem 4rem;
+  padding: 5.5rem 20px 4rem;
 }
-
-/* ---------- Header ---------- */
 
 header h1 {
-  font-size: 1.7rem;
-  font-weight: 600;
-  margin: 0 0 1.4rem;
-  letter-spacing: -0.01em;
-}
-header h1::after {
-  content: ".";
-  color: var(--accent);
+  margin-bottom: 1.4rem;
 }
 header p {
   margin: 0 0 1.1rem;
-  max-width: 58ch;
+  max-width: 60ch;
 }
 
-/* Rows of links separated by "·" (header quicklinks, footer). Flex lets
-   the row wrap on narrow screens. */
-.quicklinks,
-footer .elsewhere {
+section {
+  margin-top: 4.25rem;
+}
+
+/* Heading on the left, that section's controls on the right. The min-height
+   is a key's height, so every heading sits on the same rhythm. */
+.section-head {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 0.35rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  min-height: 36px;
+  margin-bottom: 1.1rem;
 }
-.quicklinks {
-  font-size: 0.95rem;
+
+/* ---------- The ledger ---------- */
+/* Every content list: a narrow margin column of metadata beside the content,
+   with hairlines between rows. `.ledger` is the list that holds the rows. */
+
+.ledger {
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--margin) 1fr;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--rule);
+}
+.row:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.row-margin {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  font-size: 0.86rem;
   color: var(--ink-soft);
   margin: 0;
 }
-
-/* ---------- Sections ---------- */
-
-section {
-  margin-top: 4rem;
+.row-body {
+  min-width: 0;
+  margin: 0;
 }
-section > h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 1.3rem;
+
+/* ---------- Card ---------- */
+/* A raised surface for a section's main content (Now, each project). Not
+   interactive by itself; keys and links inside it carry the states. */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(22, 23, 27, 0.04);
 }
-section > h2::before {
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.card-head .label {
+  margin: 0;
+}
+
+/* ---------- Small utilities ---------- */
+/* After the ledger on purpose: a Now label is both .row-margin and .label,
+   and the label size should win. */
+
+.label {
+  font: 500 0.68rem/1.4 var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+/* A field name beside its value (the Now card): mono, lowercase as
+   written, a touch larger than .label because it isn't uppercase. */
+.field-label {
+  font: 400 0.74rem/1.4 var(--f-mono);
+  color: var(--ink-soft);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A button that looks like a text link, for quiet actions (e.g. "Play
+   Rally Run" in the footer). */
+.text-button {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: text-decoration-color 0.15s ease;
+}
+.text-button:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* ---------- Floating nav ---------- */
+/* A pill fixed at the top: section links, then the sound switch (added by
+   sound.js). nav.js marks the current section with aria-current. */
+
+.site-nav {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: calc(100vw - 24px);
+  padding: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  box-shadow: 0 6px 20px -8px rgba(22, 23, 27, 0.25);
+}
+.site-nav a,
+.sound-switch {
+  padding: 0.4em 0.85em;
+  color: var(--ink-soft);
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.site-nav a {
+  text-decoration: none;
+}
+.site-nav a:hover,
+.sound-switch:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.site-nav a[aria-current] {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+/* Sound switch: a small track and knob. Accent when on (it's pressable and
+   toggled), soft ink when off. */
+.sound-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.sound-switch-track {
+  position: relative;
+  width: 26px;
+  height: 16px;
+  background: var(--ink-soft);
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+.sound-switch-track::after {
   content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: var(--surface);
   border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(22, 23, 27, 0.3);
+  transition: transform 0.28s var(--spring);
+}
+.sound-switch[aria-checked="true"] .sound-switch-track {
   background: var(--accent);
-  margin-right: 0.55rem;
-  vertical-align: middle;
+}
+.sound-switch[aria-checked="true"] .sound-switch-track::after {
+  transform: translateX(10px);
+}
+
+/* Hidden until focused, then the first thing on the page. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 20;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------- Key: the one pressable component ---------- */
+
+.key {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  padding: 0.62em 1.1em;
+  font: 600 0.86rem/1.2 var(--f-body);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  background: linear-gradient(var(--shine), transparent 60%) var(--surface);
+  border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  border-radius: var(--radius);
+  box-shadow:
+    0 1px 1px rgba(22, 23, 27, 0.08),
+    0 2px 4px -1px rgba(22, 23, 27, 0.1);
+  cursor: pointer;
+  transition:
+    transform 0.28s var(--spring),
+    box-shadow 0.28s var(--spring),
+    background-color 0.15s ease;
+}
+.key:hover {
   transform: translateY(-1px);
+  box-shadow:
+    0 2px 2px rgba(22, 23, 27, 0.08),
+    0 6px 12px -4px rgba(22, 23, 27, 0.22);
+}
+.key:active,
+.key.is-down {
+  transform: scale(0.95);
+  box-shadow: inset 0 1px 3px rgba(22, 23, 27, 0.22);
+  transition-duration: 0.06s;
+}
+.key.primary,
+.key[aria-pressed="true"] {
+  background-color: var(--accent);
+  color: var(--accent-ink);
+}
+.key.primary:hover,
+.key[aria-pressed="true"]:hover {
+  background-color: var(--accent-strong);
+}
+.key:disabled {
+  opacity: 0.4;
+  pointer-events: none; /* no hover lift or press */
+}
+
+/* Secondary text inside a key ("PDF", "on/off") */
+.key small {
+  font: 500 0.82em var(--f-mono);
+  color: var(--ink-soft);
+}
+.key.primary small,
+.key[aria-pressed="true"] small {
+  color: inherit;
+}
+
+.key-sm {
+  font-size: 0.78rem;
+  padding: 0.55em 0.9em;
+}
+.key.cmd {
+  font-family: var(--f-mono);
+  font-weight: 500;
+}
+
+.keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---------- Bubble ---------- */
+/* `data-bubble="Copied"` on any element shows a bubble above it. */
+
+[data-bubble]::after {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  translate: -50% 0;
+  padding: 0.3em 0.6em;
+  font: 500 0.68rem/1.3 var(--f-mono);
+  color: var(--paper);
+  background: var(--ink);
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  content: attr(data-bubble);
+  animation: bubble-in 0.28s var(--spring);
+}
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.6);
+  }
+}
+
+/* ---------- Dialog ---------- */
+
+dialog.panel {
+  max-width: calc(100vw - 32px);
+  padding: 14px 18px 18px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow:
+    0 4px 12px rgba(22, 23, 27, 0.1),
+    0 24px 60px -12px rgba(22, 23, 27, 0.35);
+}
+dialog.panel[open] {
+  animation: panel-in 0.2s ease-out;
+}
+dialog.panel::backdrop {
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 12px;
+}
+.panel-head .label {
+  margin: 0;
 }
 
 /* ---------- Footer ---------- */
 
 footer {
-  margin-top: 4rem;
+  margin-top: 4.25rem;
   font-size: 0.9rem;
   color: var(--ink-soft);
 }
-footer .elsewhere {
-  margin: 0 0 1.6rem;
-}
-footer .colophon {
+.footer-links {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1.5rem;
+}
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.35rem 1rem;
+  margin: 0;
   font-size: 0.85rem;
 }
 
 /* ---------- Responsive ---------- */
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @media (max-width: 560px) {
   .wrap {
-    padding: 3.5rem 1.25rem 3rem;
+    padding-top: 4.5rem; /* clear the floating nav */
+    padding-bottom: 3rem;
   }
-  header h1 {
-    font-size: 1.5rem;
+  section,
+  footer {
+    margin-top: 3.5rem;
   }
-  footer .colophon {
-    flex-direction: column;
-    gap: 0.35rem;
+  /* Ledger: the margin moves above the content and becomes a row. */
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .row-margin {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+}
+
+/* On the narrowest phones the switch keeps only its track (its aria-label
+   still says "Sound"). */
+@media (max-width: 400px) {
+  .sound-switch-label {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     transition: none !important;
     animation: none !important;
   }

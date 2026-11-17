@@ -2,101 +2,138 @@
 // Values live in data/site.js (loaded before this file) as `siteData`, so
 // they only need to be updated in one place.
 function renderSiteInfo() {
-  document
-    .querySelectorAll("#email-link-hero, #email-link-footer")
-    .forEach((link) => link.setAttribute("data-copy", siteData.email));
-  document
-    .querySelectorAll("#resume-link-hero, #resume-link-footer")
-    .forEach((link) => link.setAttribute("href", siteData.resumeUrl));
+  const email = document.getElementById("email-link");
+  email.href = `mailto:${siteData.email}`;
+  email.dataset.copy = siteData.email;
+  document.getElementById("resume-link").href = siteData.resumeUrl;
 
   const yearEl = document.getElementById("copyright-year");
   if (yearEl) yearEl.textContent = siteData.copyrightYear;
 
-  const nowEl = document.getElementById("now-block");
-  if (nowEl) {
-    const n = siteData.now;
-    const lines = [
-      `now = {`,
-      `  location: <span class="str">"${n.location}"</span>,`,
-      `  study:    <span class="str">"${n.study}"</span>,`,
-      `  role:     <span class="str">"${n.role}"</span>,`,
-      `  building: <span class="str">"${n.building}"</span>,  <span class="comment">// ${n.buildingNote}</span>`,
-      `  reading:  <span class="str">"${n.reading}"</span>,`,
-      `}<span class="cursor"></span>`,
-    ];
-    nowEl.innerHTML = lines
-      .map((line) => `<span class="line">${line}</span>`)
-      .join("");
-  }
+  renderNow();
+}
+
+// A card: location in the header, then one row per field with the field
+// name in the margin and the value beside it.
+function renderNow() {
+  const n = siteData.now;
+  document.getElementById("now-location").innerHTML =
+    `<span class="sr-only">Location: </span>${n.location}`;
+
+  const fields = [
+    ["Study", n.study],
+    ["Role", n.role],
+    ["Building", n.building, n.buildingNote],
+    ["Reading", n.reading],
+  ];
+  const list = document.getElementById("now-list");
+  list.replaceChildren(
+    ...fields.map(([name, value, note]) => {
+      const row = document.createElement("div");
+      row.className = "row";
+      const dt = document.createElement("dt");
+      dt.className = "row-margin field-label";
+      dt.textContent = name.toLowerCase();
+      const dd = document.createElement("dd");
+      dd.className = "row-body";
+      dd.textContent = value;
+      if (note) {
+        const small = document.createElement("span");
+        small.className = "now-note";
+        small.textContent = note;
+        dd.append(small);
+      }
+      row.append(dt, dd);
+      return row;
+    }),
+  );
 }
 renderSiteInfo();
 
-// ─── Email copy-to-clipboard (delegated, works regardless of render order) ─
-// The `.copied` class shows a "Copied" tooltip (styles.css). The status
-// element announces the copy to screen readers, which can't see the tooltip.
+// ─── Copy to clipboard (delegated, works for anything rendered later) ─────
+// Clicking any element with `data-copy` copies that text. `data-bubble`
+// shows a "Copied" bubble above it (base.css); the status element announces
+// the same thing to screen readers. If the clipboard is unavailable, the
+// bubble shows the text itself so it can still be copied by hand.
 const copyStatus = document.createElement("p");
+copyStatus.className = "sr-only";
 copyStatus.setAttribute("role", "status");
-copyStatus.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)";
 document.body.append(copyStatus);
 
-document.addEventListener("click", (e) => {
-  const link = e.target.closest("a[data-copy]");
-  if (!link) return;
-  e.preventDefault();
-  navigator.clipboard.writeText(link.dataset.copy).then(() => {
-    link.classList.add("copied");
-    copyStatus.textContent = "Email address copied";
-    setTimeout(() => {
-      link.classList.remove("copied");
-      copyStatus.textContent = "";
-    }, 1800);
-  });
-});
+const BUBBLE_MS = 1600;
+const bubbleTimers = new WeakMap();
 
-// ─── Row hover-edge effect (delegated, covers .project and dynamic .post) ─
-document.addEventListener("mouseover", (e) => {
-  const row = e.target.closest(".project, .post");
-  if (!row) return;
-  const rect = row.getBoundingClientRect();
-  const enteredFromBottom = e.clientY - rect.top > rect.height / 2;
-  row.style.setProperty("--edge", enteredFromBottom ? "bottom" : "top");
+document.addEventListener("click", async (e) => {
+  const el = e.target.closest("[data-copy]");
+  if (!el) return;
+  e.preventDefault();
+  const text = el.dataset.copy;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    el.dataset.bubble = "Copied";
+    copyStatus.textContent = `Copied ${text}`;
+  } catch (err) {
+    el.dataset.bubble = text;
+    copyStatus.textContent = `Could not copy automatically: ${text}`;
+  }
+
+  clearTimeout(bubbleTimers.get(el));
+  bubbleTimers.set(
+    el,
+    setTimeout(() => {
+      delete el.dataset.bubble;
+      copyStatus.textContent = "";
+    }, BUBBLE_MS),
+  );
 });
 
 // ─── Shared pagination control (used by projects + writing) ───────────────
-function renderPaginationControls({
-  afterEl,
-  containerId,
-  total,
-  pageSize,
-  page,
-  onChange,
-}) {
-  const old = document.getElementById(containerId);
+// Rebuilds the Previous / Next nav after `afterEl`, or removes it when
+// everything fits on one page. Because the buttons are rebuilt on every
+// page change, focus is moved to the new button in the same spot (or the
+// other one if that spot is now disabled) so keyboard users don't lose
+// their place.
+function renderPagination({ afterEl, id, label, page, totalPages, onChange }) {
+  const old = document.getElementById(id);
+  let focusedText = null;
+  if (old && old.contains(document.activeElement)) {
+    focusedText = document.activeElement.textContent;
+  }
   if (old) old.remove();
-
-  const totalPages = Math.ceil(total / pageSize);
   if (totalPages <= 1) return;
 
-  const container = document.createElement("div");
-  container.id = containerId;
-  container.className = "pagination";
+  const nav = document.createElement("nav");
+  nav.id = id;
+  nav.className = "pagination";
+  nav.setAttribute("aria-label", label);
 
-  const prevBtn = document.createElement("button");
-  prevBtn.textContent = "← Prev";
-  prevBtn.disabled = page === 1;
-  prevBtn.addEventListener("click", () => onChange(page - 1));
-
+  const prev = makePageButton("Previous", page === 1, () => onChange(page - 1));
+  const next = makePageButton("Next", page === totalPages, () =>
+    onChange(page + 1),
+  );
   const info = document.createElement("span");
-  info.className = "page-info";
-  info.textContent = `${page} / ${totalPages}`;
+  info.className = "label";
+  info.textContent = `Page ${page} of ${totalPages}`;
 
-  const nextBtn = document.createElement("button");
-  nextBtn.textContent = "Next →";
-  nextBtn.disabled = page === totalPages;
-  nextBtn.addEventListener("click", () => onChange(page + 1));
+  nav.append(prev, info, next);
+  afterEl.after(nav);
 
-  container.append(prevBtn, info, nextBtn);
-  afterEl.after(container);
+  if (focusedText) {
+    let target = focusedText === "Next" ? next : prev;
+    if (target.disabled) target = target === next ? prev : next;
+    target.focus();
+  }
+}
+
+function makePageButton(text, disabled, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "key key-sm";
+  button.textContent = text;
+  button.disabled = disabled;
+  button.addEventListener("click", onClick);
+  return button;
 }
 
 // ─── Projects ──────────────────────────────────────────────────────────────
@@ -105,9 +142,21 @@ function renderPaginationControls({
 const PROJECTS_PAGE_SIZE = 3;
 let currentProjectsPage = 1;
 
+// One primary action per project. With `install`, the copyable command is
+// the primary key and the demo link steps down to a secondary key.
+function projectActions(p) {
+  const demoText = p.demoLabel || "Try the demo";
+  if (!p.install) {
+    return `<a class="key primary" href="${p.demoUrl}" target="_blank" rel="noopener">${demoText}</a>`;
+  }
+  return `
+    <button type="button" class="key primary cmd" data-copy="${p.install}"><span class="sr-only">Copy </span>${p.install}</button>
+    <a class="key" href="${p.demoUrl}" target="_blank" rel="noopener">${demoText}</a>`;
+}
+
 function renderProjects() {
   const list = document.getElementById("project-list");
-  const total = projectsData.length;
+  const totalPages = Math.ceil(projectsData.length / PROJECTS_PAGE_SIZE);
   const page = projectsData.slice(
     (currentProjectsPage - 1) * PROJECTS_PAGE_SIZE,
     currentProjectsPage * PROJECTS_PAGE_SIZE,
@@ -116,26 +165,25 @@ function renderProjects() {
   list.innerHTML = page
     .map(
       (p) => `
-    <div class="project">
-      <div class="project-heading">
-        <span>
-          <a class="project-title" href="${p.demoUrl}" target="_blank" rel="noopener">${p.title}</a>
-        </span>
-        <a class="project-code" href="${p.codeUrl}" target="_blank" rel="noopener">code</a>
+    <article class="card project">
+      ${p.status ? `<p class="label">${p.status}</p>` : ""}
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <div class="project-actions">
+        <span class="keys">${projectActions(p)}</span>
+        <a href="${p.codeUrl}" target="_blank" rel="noopener">View the code<span class="sr-only"> for ${p.title}</span></a>
       </div>
-      <span class="project-status">  ${p.status}</span>
-      <p class="project-desc">${p.desc}</p>
-    </div>
+    </article>
   `,
     )
     .join("");
 
-  renderPaginationControls({
+  renderPagination({
     afterEl: list,
-    containerId: "projects-pagination",
-    total,
-    pageSize: PROJECTS_PAGE_SIZE,
+    id: "projects-pagination",
+    label: "Projects pages",
     page: currentProjectsPage,
+    totalPages,
     onChange: (newPage) => {
       currentProjectsPage = newPage;
       renderProjects();
@@ -145,42 +193,27 @@ function renderProjects() {
 
 renderProjects();
 
-// ─── Writing feed: fetch, filter, paginate ────────────────────────────────
-const MEDIUM_URL =
-  "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@rohan.krishnan";
-const SUBSTACK_URL =
-  "https://api.rss2json.com/v1/api.json?rss_url=https://rohankrishnan.substack.com/feed";
+// ─── Writing: filter, paginate ────────────────────────────────────────────
+// Posts live in data/posts.js (loaded before this file) as `postsData`.
 const PAGE_SIZE = 5;
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-let allArticles = [];
-let activeFilter = "all";
+let activeSource = null; // null means all sources
 let currentPage = 1;
 
-function formatDate(str) {
-  const d = new Date(str);
-  return isNaN(d) ? "" : `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+// "2024-10-18" → "Oct 2024". Dates are read as UTC so a post never shows up
+// a day (or a month) early in western timezones.
+function formatDate(isoDate) {
+  return new Date(isoDate).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }
 
 function getFiltered() {
-  const base =
-    activeFilter === "all"
-      ? [...allArticles]
-      : allArticles.filter((a) => a.sourceKey === activeFilter);
-  return base.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  let posts = postsData;
+  if (activeSource) posts = posts.filter((p) => p.source === activeSource);
+  // ISO dates sort correctly as plain strings.
+  return [...posts].sort((a, b) => b.date.localeCompare(a.date));
 }
 
 function renderWriting() {
@@ -193,39 +226,34 @@ function renderWriting() {
   );
 
   if (!total) {
-    const msg =
-      activeFilter === "all"
-        ? "Nothing here yet. Check back soon."
-        : `Nothing on ${activeFilter === "medium" ? "Medium" : "Substack"} yet.`;
-    list.innerHTML = `<p class="post empty">${msg}</p>`;
-    renderPaginationControls({
-      afterEl: list,
-      containerId: "writing-pagination",
-      total: 0,
-      pageSize: PAGE_SIZE,
-      page: 1,
-      onChange: () => {},
-    });
+    const msg = activeSource
+      ? `Nothing on ${activeSource} yet.`
+      : "Nothing here yet. Check back soon.";
+    list.innerHTML = `<p class="row empty">${msg}</p>`;
+    document.getElementById("writing-pagination")?.remove();
     return;
   }
 
   list.innerHTML = page
     .map(
-      (a) => `
-    <a class="post" data-source="${a.sourceKey}" href="${a.link}" target="_blank" rel="noopener">
-      <span class="post-title">${a.title}</span>
-      <span class="post-meta">${a.source}, ${formatDate(a.pubDate)}</span>
+      (p) => `
+    <a class="row post" href="${p.url}" target="_blank" rel="noopener">
+      <span class="row-margin">
+        <span class="label">${p.source}</span>
+        <span>${formatDate(p.date)}</span>
+      </span>
+      <span class="row-body">${p.title}</span>
     </a>
   `,
     )
     .join("");
 
-  renderPaginationControls({
+  renderPagination({
     afterEl: list,
-    containerId: "writing-pagination",
-    total,
-    pageSize: PAGE_SIZE,
+    id: "writing-pagination",
+    label: "Writing pages",
     page: currentPage,
+    totalPages: Math.ceil(total / PAGE_SIZE),
     onChange: (newPage) => {
       currentPage = newPage;
       renderWriting();
@@ -233,37 +261,31 @@ function renderWriting() {
   });
 }
 
-Promise.all([
-  fetch(MEDIUM_URL)
-    .then((r) => r.json())
-    .catch(() => ({ items: [] })),
-  fetch(SUBSTACK_URL)
-    .then((r) => r.json())
-    .catch(() => ({ items: [] })),
-]).then(([medium, substack]) => {
-  allArticles = [
-    ...(medium.items || []).map((a) => ({
-      ...a,
-      source: "Medium",
-      sourceKey: "medium",
-    })),
-    ...(substack.items || []).map((a) => ({
-      ...a,
-      source: "Substack",
-      sourceKey: "substack",
-    })),
-  ];
-  renderWriting();
-});
+// Filter keys ("All" plus one per source) are only worth showing when
+// there's more than one source. They're toggles: exactly one has
+// aria-pressed="true".
+function renderFilters() {
+  const sources = [...new Set(postsData.map((p) => p.source))];
+  if (sources.length < 2) return;
 
-document.querySelectorAll(".filter-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document
-      .querySelectorAll(".filter-btn")
-      .forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    activeFilter = btn.dataset.filter;
-    currentPage = 1;
-    renderWriting();
+  const group = document.getElementById("post-filters");
+  const buttons = [null, ...sources].map((source) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "key key-sm";
+    button.textContent = source || "All";
+    button.setAttribute("aria-pressed", source === activeSource);
+    button.addEventListener("click", () => {
+      buttons.forEach((b) => b.setAttribute("aria-pressed", b === button));
+      activeSource = source;
+      currentPage = 1;
+      renderWriting();
+    });
+    return button;
   });
-});
+  group.append(...buttons);
+  group.hidden = false;
+}
+
+renderFilters();
+renderWriting();

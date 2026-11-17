@@ -1,10 +1,11 @@
 // ─── Rally Run: a hidden tennis-ball runner (styles in game.css) ──────────
 // Jump nets and low racquets; stay down for high ones.
 //
-// HOW IT'S OPENED: clicking (or pressing Enter on) any element matching
-// GAME_TRIGGER. Point it at a different selector to move the entrance, or
-// call `RallyRun.open()` from anywhere (e.g. a 404 page).
-const GAME_TRIGGER = "#now-block .cursor";
+// HOW IT'S OPENED: clicking any button matching GAME_TRIGGER (the "Play
+// Rally Run" button in the homepage footer). Point it at a different button
+// to move the entrance, or call `RallyRun.open()` from anywhere (e.g. a 404
+// page).
+const GAME_TRIGGER = "#play-rally";
 
 const RallyRun = (() => {
   // Canvas is drawn in these logical units and scaled to fit.
@@ -22,18 +23,21 @@ const RallyRun = (() => {
   const HIGH_RACQUETS_AFTER = 250; // score before high racquets appear
   const BEST_KEY = "rally-run-best";
 
-  let dialog, canvas, ctx, colors, frame;
+  let dialog, canvas, ctx, colors, frame, returnFocusTo;
   let state, ball, obstacles, speed, score, best, nextSpawn, groundOffset;
 
   // ─── Setup ───────────────────────────────────────────────────────────────
   function build() {
     dialog = document.createElement("dialog");
-    dialog.className = "rally";
-    dialog.setAttribute("aria-label", "Rally Run, a hidden game");
+    dialog.className = "panel rally";
+    dialog.setAttribute("aria-labelledby", "rally-title");
     dialog.innerHTML = `
-      <button type="button" class="rally-close" aria-label="Close game">×</button>
+      <div class="panel-head">
+        <p class="label" id="rally-title">Rally Run</p>
+        <button type="button" class="key key-sm rally-close">Close</button>
+      </div>
       <canvas tabindex="0" autofocus aria-label="Rally Run game. Press space or tap to jump."></canvas>
-      <p class="rally-help mono">Space or tap to jump. Esc to quit.</p>`;
+      <p class="rally-help">Space or tap to jump. Esc to quit.</p>`;
     document.body.append(dialog);
 
     canvas = dialog.querySelector("canvas");
@@ -45,8 +49,16 @@ const RallyRun = (() => {
 
     dialog.querySelector(".rally-close").addEventListener("click", close);
     dialog.addEventListener("click", (e) => e.target === dialog && close());
-    dialog.addEventListener("close", () => cancelAnimationFrame(frame));
+    dialog.addEventListener("close", () => {
+      cancelAnimationFrame(frame);
+      sound("stopMusic");
+      // Native <dialog> restores focus in most browsers; Safari doesn't focus
+      // buttons on click, so return focus to the trigger explicitly.
+      if (returnFocusTo) returnFocusTo.focus();
+    });
     dialog.addEventListener("keydown", (e) => {
+      // Let Space press the Close key normally when it has focus.
+      if (e.target.closest("button")) return;
       if (e.code === "Space" || e.code === "ArrowUp" || e.code === "KeyW") {
         e.preventDefault();
         press();
@@ -63,20 +75,23 @@ const RallyRun = (() => {
     const css = getComputedStyle(document.documentElement);
     const get = (name) => css.getPropertyValue(name).trim();
     colors = {
-      paper: get("--paper"),
+      surface: get("--surface"),
       ink: get("--ink"),
       inkSoft: get("--ink-soft"),
       rule: get("--rule"),
-      accent: get("--accent"),
+      ball: get("--ball"),
+      mono: get("--f-mono"),
     };
   }
 
-  function open() {
+  function open(trigger) {
+    returnFocusTo = trigger;
     if (!dialog) build();
     readColors();
     best = loadBest();
     reset();
     dialog.showModal();
+    sound("startMusic");
     let last = performance.now();
     const loop = (now) => {
       const dt = Math.min((now - last) / 1000, 1 / 30);
@@ -104,12 +119,21 @@ const RallyRun = (() => {
 
   // Space / tap: serve, jump, or restart depending on state.
   function press() {
-    if (state === "ready") state = "playing";
     if (state === "over") {
       if (performance.now() - ball.hitAt > 400) reset();
       return;
     }
-    if (ball.y >= GROUND) ball.vy = JUMP_VELOCITY;
+    const serving = state === "ready";
+    state = "playing";
+    if (ball.y < GROUND) return; // already in the air
+
+    ball.vy = JUMP_VELOCITY;
+    if (serving) {
+      sound("serve");
+      sound("startMusic"); // back on after a fault
+    } else {
+      sound("jump");
+    }
   }
 
   // ─── Simulation ──────────────────────────────────────────────────────────
@@ -146,6 +170,8 @@ const RallyRun = (() => {
     if (obstacles.some(hits)) {
       state = "over";
       ball.hitAt = performance.now();
+      sound("stopMusic");
+      sound("fault");
       if (Math.floor(score) > best) {
         best = Math.floor(score);
         saveBest(best);
@@ -176,7 +202,7 @@ const RallyRun = (() => {
 
   // ─── Drawing ─────────────────────────────────────────────────────────────
   function draw() {
-    ctx.fillStyle = colors.paper;
+    ctx.fillStyle = colors.surface;
     ctx.fillRect(0, 0, W, H);
 
     // Court: baseline plus scrolling dashes underneath for a sense of speed.
@@ -196,12 +222,15 @@ const RallyRun = (() => {
     ctx.translate(BALL_X, ball.y - BALL_R * (1 - squash));
     ctx.scale(1 + squash, 1 - squash);
     ctx.rotate(ball.spin);
-    ctx.fillStyle = colors.accent;
+    ctx.fillStyle = colors.ball;
+    ctx.strokeStyle = colors.inkSoft; // keeps the light ball visible
+    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(0, 0, BALL_R, 0, Math.PI * 2);
     ctx.fill();
+    ctx.stroke();
     // Seams: two curves bowing in from opposite sides.
-    ctx.strokeStyle = colors.paper;
+    ctx.strokeStyle = colors.surface;
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.arc(-BALL_R * 1.25, 0, BALL_R * 0.95, -0.75, 0.75);
@@ -258,22 +287,29 @@ const RallyRun = (() => {
     ctx.restore();
   }
 
+  // The canvas is drawn at 600 logical px and shrunk to fit, so on a narrow
+  // screen 12px text would end up tiny. Scale the text back up to stay
+  // readable.
   function drawText() {
+    const scale = Math.max(1, (600 / canvas.clientWidth) * 0.85);
+    const size = 12 * scale;
     const pad = (n) => String(Math.floor(n)).padStart(5, "0");
-    ctx.font = '12px "IBM Plex Mono", ui-monospace, monospace';
+    ctx.font = `${size}px ${colors.mono}`;
+    ctx.fillStyle = colors.ink;
     ctx.textAlign = "right";
-    ctx.fillStyle = colors.inkSoft;
-    ctx.fillText(`HI ${pad(best)}  ${pad(score)}`, W - 16, 24);
+    ctx.fillText(`HI ${pad(best)}  ${pad(score)}`, W - 16, 8 + size);
 
     ctx.textAlign = "center";
-    ctx.fillStyle = colors.ink;
     if (state === "ready") ctx.fillText("Press space or tap to serve", W / 2, 80);
     if (state === "over") {
-      ctx.fillStyle = colors.accent;
       ctx.fillText("Fault.", W / 2, 72);
-      ctx.fillStyle = colors.ink;
-      ctx.fillText("Space or tap to play again", W / 2, 92);
+      ctx.fillText("Space or tap to play again", W / 2, 72 + size * 1.6);
     }
+  }
+
+  // ─── Sound (game-sound.js is optional, so check it's loaded) ────────────
+  function sound(name) {
+    if (typeof GameSound !== "undefined") GameSound[name]();
   }
 
   // ─── High score (best effort; storage can be unavailable) ────────────────
@@ -294,16 +330,7 @@ const RallyRun = (() => {
 })();
 
 // ─── Wire up the trigger ───────────────────────────────────────────────────
-document.querySelectorAll(GAME_TRIGGER).forEach((el) => {
-  el.setAttribute("role", "button");
-  el.setAttribute("tabindex", "0");
-  el.setAttribute("aria-label", "Play a hidden game");
-  el.classList.add("game-trigger");
-  el.addEventListener("click", RallyRun.open);
-  el.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      RallyRun.open();
-    }
-  });
+// The trigger is a real <button>, so Enter and Space already click it.
+document.querySelectorAll(GAME_TRIGGER).forEach((button) => {
+  button.addEventListener("click", () => RallyRun.open(button));
 });

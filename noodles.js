@@ -21,7 +21,7 @@ function renderTierList() {
     `,
           )
           .join("")
-      : `<span class="tier-empty">unclaimed</span>`;
+      : `<span class="tier-empty">empty</span>`;
   });
 }
 
@@ -256,6 +256,8 @@ async function runSpin() {
   const finalIdx = reelItems.length - 1;
   const finalOffset = -(finalIdx * frameH) + (reelWindow.clientHeight / 2 - 50);
 
+  tickAsFramesPass(strip, frameH, 2400);
+
   // The easing's last value (1.02) overshoots slightly, so the reel settles
   // back onto the winner. Use "cubic-bezier(0.15, 0, 0.1, 1)" for a hard stop.
   await animateReel(
@@ -267,11 +269,36 @@ async function runSpin() {
 
   // Stays on until the next spin; drives the pulse and steam (effects.css).
   reelWindow.classList.add("reel-winner");
+  if (hasSound()) Sound.chime();
 
   resultLabel.textContent = winner.label;
   resultLabel.style.opacity = "1";
   action.textContent = "Spin again";
   action.disabled = false;
+}
+
+// sound.js is optional (and loads after this file), so check at call time.
+function hasSound() {
+  return typeof Sound !== "undefined";
+}
+
+// Ticks once each time a new cup crosses the middle of the window. It reads
+// the strip's real position every frame, so the ticks slow down exactly as
+// the reel does.
+function tickAsFramesPass(strip, frameH, durationMs) {
+  if (!hasSound()) return;
+  const end = performance.now() + durationMs;
+  let lastIndex = 0;
+  function check(now) {
+    const y = new DOMMatrixReadOnly(getComputedStyle(strip).transform).m42;
+    const index = Math.round(-y / frameH);
+    if (index !== lastIndex) {
+      lastIndex = index;
+      Sound.tick();
+    }
+    if (now < end) requestAnimationFrame(check);
+  }
+  requestAnimationFrame(check);
 }
 
 function animateReel(el, toY, durationMs, easing) {
