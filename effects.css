@@ -38,13 +38,13 @@
   opacity: 0;
 }
 .steam span:nth-child(1) {
-  left: 44px;
+  left: 50px;
 }
 .steam span:nth-child(2) {
-  left: 58px;
+  left: 64px;
 }
 .steam span:nth-child(3) {
-  left: 72px;
+  left: 78px;
 }
 .reel-winner .steam span {
   animation: steam 1.6s ease-out 2;
