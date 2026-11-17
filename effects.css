@@ -10,58 +10,6 @@
   }
 }
 
-/* ---------- Now block typing (characters revealed by effects.js) ---------- */
-
-.untyped {
-  visibility: hidden;
-}
-
-/* ---------- Rows fade in on render (projects, posts) ---------- */
-/* script.js re-renders these lists on every filter/page change, so the
-   animation replays each time. */
-
-#project-list > .project,
-#post-list > .post {
-  animation: row-in 0.35s ease both;
-}
-#project-list > :nth-child(2),
-#post-list > :nth-child(2) {
-  animation-delay: 0.05s;
-}
-#project-list > :nth-child(3),
-#post-list > :nth-child(3) {
-  animation-delay: 0.1s;
-}
-#post-list > :nth-child(4) {
-  animation-delay: 0.15s;
-}
-#post-list > :nth-child(5) {
-  animation-delay: 0.2s;
-}
-@keyframes row-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-}
-
-/* ---------- Sliding filter underline (positioned by effects.js) ---------- */
-
-.filters.has-indicator {
-  position: relative;
-}
-.filters.has-indicator button.active {
-  text-decoration-color: transparent;
-}
-.filter-indicator {
-  position: absolute;
-  height: 1px;
-  background: var(--accent);
-  transition:
-    left 0.25s ease,
-    width 0.25s ease;
-}
-
 /* ---------- Noodle cups tilt on hover ---------- */
 
 .noodles-item:hover .noodles-img.loaded {
