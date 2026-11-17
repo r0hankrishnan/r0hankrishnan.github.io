@@ -107,20 +107,24 @@
         <div class="ledger" id="project-list"></div>
       </section>
 
-      <section id="writing">
-        <h2>Writing</h2>
-        <p class="filters">
-          <button type="button" class="filter-btn active" data-filter="all">
-            All</button
-          ><button type="button" class="filter-btn" data-filter="medium">
-            Medium</button
-          ><button type="button" class="filter-btn" data-filter="substack">
-            Substack
-          </button>
-        </p>
+      <section id="writing" aria-labelledby="writing-title">
+        <div class="section-head">
+          <h2 id="writing-title">Writing</h2>
+          <div class="keys" role="group" aria-label="Filter posts by source">
+            <button type="button" class="key key-sm" data-filter="all" aria-pressed="true">
+              All
+            </button>
+            <button type="button" class="key key-sm" data-filter="medium" aria-pressed="false">
+              Medium
+            </button>
+            <button type="button" class="key key-sm" data-filter="substack" aria-pressed="false">
+              Substack
+            </button>
+          </div>
+        </div>
 
-        <div id="post-list">
-          <p class="post empty">Loading posts…</p>
+        <div class="ledger" id="post-list">
+          <p class="row empty">Loading posts…</p>
         </div>
       </section>
 
