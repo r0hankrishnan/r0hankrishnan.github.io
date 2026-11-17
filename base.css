@@ -8,6 +8,11 @@
 html {
   -webkit-text-size-adjust: 100%;
 }
+/* Author display rules (e.g. .keys { display: flex }) would otherwise beat
+   the browser's own [hidden] style. */
+[hidden] {
+  display: none !important;
+}
 
 :root {
   /* Color (light theme only). Accent means "pressable". */

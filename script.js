@@ -192,29 +192,27 @@ function renderProjects() {
 
 renderProjects();
 
-// ─── Writing feed: fetch, filter, paginate ────────────────────────────────
-const MEDIUM_URL =
-  "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@rohan.krishnan";
-const SUBSTACK_URL =
-  "https://api.rss2json.com/v1/api.json?rss_url=https://rohankrishnan.substack.com/feed";
+// ─── Writing: filter, paginate ────────────────────────────────────────────
+// Posts live in data/posts.js (loaded before this file) as `postsData`.
 const PAGE_SIZE = 5;
-let allArticles = [];
-let activeFilter = "all";
+let activeSource = null; // null means all sources
 let currentPage = 1;
 
-// "Oct 2026"
-function formatDate(str) {
-  const d = new Date(str);
-  if (isNaN(d)) return "";
-  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+// "2024-10-18" → "Oct 2024". Dates are read as UTC so a post never shows up
+// a day (or a month) early in western timezones.
+function formatDate(isoDate) {
+  return new Date(isoDate).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }
 
 function getFiltered() {
-  const base =
-    activeFilter === "all"
-      ? [...allArticles]
-      : allArticles.filter((a) => a.sourceKey === activeFilter);
-  return base.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  let posts = postsData;
+  if (activeSource) posts = posts.filter((p) => p.source === activeSource);
+  // ISO dates sort correctly as plain strings.
+  return [...posts].sort((a, b) => b.date.localeCompare(a.date));
 }
 
 function renderWriting() {
@@ -227,10 +225,9 @@ function renderWriting() {
   );
 
   if (!total) {
-    const msg =
-      activeFilter === "all"
-        ? "Nothing here yet. Check back soon."
-        : `Nothing on ${activeFilter === "medium" ? "Medium" : "Substack"} yet.`;
+    const msg = activeSource
+      ? `Nothing on ${activeSource} yet.`
+      : "Nothing here yet. Check back soon.";
     list.innerHTML = `<p class="row empty">${msg}</p>`;
     document.getElementById("writing-pagination")?.remove();
     return;
@@ -238,13 +235,13 @@ function renderWriting() {
 
   list.innerHTML = page
     .map(
-      (a) => `
-    <a class="row post" href="${a.link}" target="_blank" rel="noopener">
+      (p) => `
+    <a class="row post" href="${p.url}" target="_blank" rel="noopener">
       <span class="row-margin">
-        <span class="label">${a.source}</span>
-        <span>${formatDate(a.pubDate)}</span>
+        <span class="label">${p.source}</span>
+        <span>${formatDate(p.date)}</span>
       </span>
-      <span class="row-body">${a.title}</span>
+      <span class="row-body">${p.title}</span>
     </a>
   `,
     )
@@ -263,36 +260,31 @@ function renderWriting() {
   });
 }
 
-Promise.all([
-  fetch(MEDIUM_URL)
-    .then((r) => r.json())
-    .catch(() => ({ items: [] })),
-  fetch(SUBSTACK_URL)
-    .then((r) => r.json())
-    .catch(() => ({ items: [] })),
-]).then(([medium, substack]) => {
-  allArticles = [
-    ...(medium.items || []).map((a) => ({
-      ...a,
-      source: "Medium",
-      sourceKey: "medium",
-    })),
-    ...(substack.items || []).map((a) => ({
-      ...a,
-      source: "Substack",
-      sourceKey: "substack",
-    })),
-  ];
-  renderWriting();
-});
+// Filter keys ("All" plus one per source) are only worth showing when
+// there's more than one source. They're toggles: exactly one has
+// aria-pressed="true".
+function renderFilters() {
+  const sources = [...new Set(postsData.map((p) => p.source))];
+  if (sources.length < 2) return;
 
-// Filter keys are toggles: exactly one has aria-pressed="true".
-const filterButtons = document.querySelectorAll("[data-filter]");
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    filterButtons.forEach((b) => b.setAttribute("aria-pressed", b === btn));
-    activeFilter = btn.dataset.filter;
-    currentPage = 1;
-    renderWriting();
+  const group = document.getElementById("post-filters");
+  const buttons = [null, ...sources].map((source) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "key key-sm";
+    button.textContent = source || "All";
+    button.setAttribute("aria-pressed", source === activeSource);
+    button.addEventListener("click", () => {
+      buttons.forEach((b) => b.setAttribute("aria-pressed", b === button));
+      activeSource = source;
+      currentPage = 1;
+      renderWriting();
+    });
+    return button;
   });
-});
+  group.append(...buttons);
+  group.hidden = false;
+}
+
+renderFilters();
+renderWriting();

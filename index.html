@@ -111,22 +111,16 @@
         <section id="writing" aria-labelledby="writing-title">
           <div class="section-head">
             <h2 id="writing-title">Writing</h2>
-            <div class="keys" role="group" aria-label="Filter posts by source">
-              <button type="button" class="key key-sm" data-filter="all" aria-pressed="true">
-                All
-              </button>
-              <button type="button" class="key key-sm" data-filter="medium" aria-pressed="false">
-                Medium
-              </button>
-              <button type="button" class="key key-sm" data-filter="substack" aria-pressed="false">
-                Substack
-              </button>
-            </div>
+            <div
+              class="keys"
+              id="post-filters"
+              role="group"
+              aria-label="Filter posts by source"
+              hidden
+            ></div>
           </div>
 
-          <div class="ledger" id="post-list">
-            <p class="row empty">Loading posts…</p>
-          </div>
+          <div class="ledger" id="post-list"></div>
         </section>
       </main>
 
@@ -146,6 +140,7 @@
 
     <script src="data/site.js"></script>
     <script src="data/projects.js"></script>
+    <script src="data/posts.js"></script>
     <script src="script.js"></script>
     <script src="effects.js"></script>
     <script src="sound.js"></script>

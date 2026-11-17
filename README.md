@@ -20,5 +20,10 @@ logic in `script.js` / `noodles.js`.
   object; each needs `tier` (`S`/`A`/`B`/`C`/`D`/`F`), `src` (path under
   `assets/`), `alt`, `label`. Moving a noodle to a different tier is just
   changing its `tier` field.
+- **`data/posts.js`** — the Writing list on the homepage. After publishing a
+  post (on Medium, Substack, anywhere), add an object with `title`, `date`
+  (`YYYY-MM-DD`), `source` and `url`. Order doesn't matter; the page sorts
+  newest first. Filter keys appear automatically once there's more than one
+  source.
 - **`data/site.js`** — email, résumé link, copyright year, and the "Now"
   block shown on the homepage.
