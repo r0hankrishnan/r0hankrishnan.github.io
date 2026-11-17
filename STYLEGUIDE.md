@@ -221,6 +221,9 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 - On by default, but nothing plays until the visitor presses something. The
   sound switch in the floating nav turns it off, remembered per visitor.
 - Keys: a soft rising pop on press (Doodle Jump, not 8-bit).
+- Noodle reel: a short falling tick each time a cup passes the window
+  (synced to the reel's real position, so it slows as the reel does), then
+  a two-note chime when it lands.
 - Everything is synthesized with Web Audio; no audio files.
 
 ## Accessibility checklist

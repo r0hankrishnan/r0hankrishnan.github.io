@@ -5,9 +5,11 @@
 // only created the first time a sound plays, which is always inside a click
 // or key press (browsers require a user gesture before audio can start).
 //
-// Remove this file (and its <script> tags) to make the site silent.
+// Exposes `Sound.tick()` and `Sound.chime()` for the noodle reel. Both do
+// nothing while sound is off. Remove this file (and its <script> tags) to
+// make the site silent.
 
-(function sound() {
+const Sound = (function sound() {
   const STORAGE_KEY = "sounds";
   let enabled = loadEnabled();
   let ctx = null;
@@ -34,22 +36,22 @@
   }
 
   // ─── Building blocks ───────────────────────────────────────────────────
-  // A sine that sweeps from one pitch to another with a quick attack and
-  // an exponential decay.
-  function sweep(from, to, peak, seconds, out) {
-    const t = ctx.currentTime;
+  // A sine that sweeps from one pitch to another (or holds one, if `from`
+  // equals `to`) with a quick attack and an exponential decay, starting
+  // `delay` seconds from now.
+  function sweep(from, to, peak, seconds, delay = 0) {
+    const t = ctx.currentTime + delay;
     const osc = ctx.createOscillator();
     osc.frequency.setValueAtTime(from, t);
     osc.frequency.exponentialRampToValueAtTime(to, t + seconds);
-    const gain = envelope(peak, seconds);
+    const gain = envelope(t, peak, seconds);
     osc.connect(gain);
-    gain.connect(out);
+    gain.connect(ctx.destination);
     osc.start(t);
     osc.stop(t + seconds + 0.02);
   }
 
-  function envelope(peak, seconds) {
-    const t = ctx.currentTime;
+  function envelope(t, peak, seconds) {
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(0.0001, t);
     gain.gain.exponentialRampToValueAtTime(peak, t + 0.005);
@@ -62,7 +64,22 @@
   function pop() {
     if (!enabled) return;
     audio();
-    sweep(380, 720, 0.07, 0.07, ctx.destination);
+    sweep(380, 720, 0.07, 0.07);
+  }
+
+  // Noodle reel: a short falling click each time a cup passes the window.
+  function tick() {
+    if (!enabled) return;
+    audio();
+    sweep(1600, 1100, 0.035, 0.03);
+  }
+
+  // Noodle reel landing: two bright notes, a fifth apart (C6 then G6).
+  function chime() {
+    if (!enabled) return;
+    audio();
+    sweep(1046.5, 1046.5, 0.06, 0.35);
+    sweep(1568, 1568, 0.05, 0.5, 0.09);
   }
 
   // ─── Key pops: pointer down, or Enter/Space on a focused key ───────────
@@ -95,4 +112,6 @@
     showState();
     nav.append(toggle);
   }
+
+  return { tick, chime };
 })();
