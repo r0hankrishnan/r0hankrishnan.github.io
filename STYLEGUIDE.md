@@ -28,6 +28,7 @@ color in a component; if a new one is needed, add a token here first.
 | `--accent-strong` | `#2f55c4` | Accent hover/pressed state | 6.5:1 with white text |
 | `--accent-ink` | `#ffffff` | Text on accent fills | |
 | `--ball` | `#d4ef3a` | The tennis ball only (toy and game). Fill only, never text | 13.8:1 with ink text |
+| `--shine` | `rgb(255 255 255 / .55)` | The faint top highlight on keys (a gradient over their fill) | decorative |
 
 Rules:
 
