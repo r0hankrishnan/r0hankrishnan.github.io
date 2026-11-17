@@ -13,11 +13,14 @@ function renderSiteInfo() {
   renderNow();
 }
 
-// One ledger row per field: the field name in the margin, the value beside it.
+// A card: location in the header, then one row per field with the field
+// name in the margin and the value beside it.
 function renderNow() {
   const n = siteData.now;
+  document.getElementById("now-location").innerHTML =
+    `<span class="sr-only">Location: </span>${n.location}`;
+
   const fields = [
-    ["Location", n.location],
     ["Study", n.study],
     ["Role", n.role],
     ["Building", n.building, n.buildingNote],
@@ -29,8 +32,8 @@ function renderNow() {
       const row = document.createElement("div");
       row.className = "row";
       const dt = document.createElement("dt");
-      dt.className = "row-margin label";
-      dt.textContent = name;
+      dt.className = "row-margin field-label";
+      dt.textContent = name.toLowerCase();
       const dd = document.createElement("dd");
       dd.className = "row-body";
       dd.textContent = value;

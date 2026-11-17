@@ -15,9 +15,21 @@
 
 /* ---------- Now ---------- */
 
+/* Rows inside the card: inset from its edges, dashed between rows. The
+   card header's solid rule sits above the first row. */
+.now-list {
+  --margin: 7rem;
+}
 .now-list .row {
-  padding: 0.7rem 0;
+  padding: 0.75rem 16px;
   align-items: baseline;
+  border-top: 1px dashed var(--rule);
+}
+.now-list .row:first-child {
+  border-top: 0;
+}
+.now-list .row:last-child {
+  border-bottom: 0;
 }
 .now-note {
   display: block;

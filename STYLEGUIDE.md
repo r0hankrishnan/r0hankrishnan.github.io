@@ -60,7 +60,8 @@ Scale (body is 17px):
 | Item | 1.3rem, line-height 1.2 | Display 700 | Project names |
 | Body | 1rem (17px), line-height 1.62 | Body 400 | Paragraphs |
 | Small | .86rem | Body 600 | Keys |
-| Label | .68rem, uppercase, tracking .06em | Mono 500 | Margin column, eyebrows |
+| Label | .68rem, uppercase, tracking .06em | Mono 500 | Margin column, card headers, flags |
+| Field | .74rem, lowercase as written | Mono 400 | Field names in the Now card (`.field-label`) |
 | Micro | .68rem, no transform | Mono 500 | Tooltips, bubbles |
 
 Rules:
@@ -87,14 +88,17 @@ MARGIN LABEL        Content column
 ```
 
 - Column `--margin: 9.5rem`, gap `1.5rem`, row padding `1.25rem 0`.
-  Tighter variants: Now rows `.7rem 0`, Writing rows `.95rem 0`, tier rows
-  `1rem 0`. The tier list narrows the margin to `3rem` (just the letter)
-  and keeps it beside the content on phones.
+  Variants: Writing rows `.95rem 0`; tier rows `1rem 0`, with the margin
+  narrowed to `3rem` (just the letter) and kept beside the content on
+  phones; Now rows live inside a card (see Card) with a `7rem` margin,
+  `.75rem 16px` padding and dashed dividers.
 - Rows are separated by `1px solid var(--rule)` on top; the last row also
   gets a bottom rule.
 - At `max-width: 560px` the margin moves above the content and lays out as a
   row (label left, secondary link right).
-- No boxed cards. Dialogs are the only boxed surfaces.
+- Boxes are earned: cards hold a section's main content (the Now card, each
+  project) and dialogs hold modal tasks. Lists (Writing, the tier list) stay
+  as open ledger rows.
 - Page width: `.wrap` max 680px, side padding 20px (16px minimum).
 - Vertical rhythm: sections are `4.25rem` apart (`3.5rem` on phones);
   heading to first row `1.1rem`. Every heading row is at least 36px tall
@@ -176,6 +180,14 @@ appears top-left on first Tab.
 "Sound" plus a 26x16px track with a 12px knob. Off: `--ink-soft` track,
 knob left. On: `--accent` track, knob slides right with the spring.
 Under 400px wide only the track shows; `aria-label="Sound"` keeps its name.
+
+### Card (`.card`)
+
+Surface fill, 1px rule border, radius 14px, a barely-there shadow. Optional
+`.card-head`: a row with a `.label` on the left, `12px 16px` padding and a
+solid rule below. Cards are static: no hover lift, because a lift says
+"pressable" and a card doesn't open anything yet. If cards later open a
+full write-up, make the title the link and add the key's hover lift then.
 
 ### Ledger row
 
