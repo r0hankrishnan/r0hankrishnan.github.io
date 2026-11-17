@@ -86,40 +86,51 @@ document.addEventListener("click", async (e) => {
 });
 
 // ─── Shared pagination control (used by projects + writing) ───────────────
-function renderPaginationControls({
-  afterEl,
-  containerId,
-  total,
-  pageSize,
-  page,
-  onChange,
-}) {
-  const old = document.getElementById(containerId);
+// Rebuilds the Previous / Next nav after `afterEl`, or removes it when
+// everything fits on one page. Because the buttons are rebuilt on every
+// page change, focus is moved to the new button in the same spot (or the
+// other one if that spot is now disabled) so keyboard users don't lose
+// their place.
+function renderPagination({ afterEl, id, label, page, totalPages, onChange }) {
+  const old = document.getElementById(id);
+  let focusedText = null;
+  if (old && old.contains(document.activeElement)) {
+    focusedText = document.activeElement.textContent;
+  }
   if (old) old.remove();
-
-  const totalPages = Math.ceil(total / pageSize);
   if (totalPages <= 1) return;
 
-  const container = document.createElement("div");
-  container.id = containerId;
-  container.className = "pagination";
+  const nav = document.createElement("nav");
+  nav.id = id;
+  nav.className = "pagination";
+  nav.setAttribute("aria-label", label);
 
-  const prevBtn = document.createElement("button");
-  prevBtn.textContent = "← Prev";
-  prevBtn.disabled = page === 1;
-  prevBtn.addEventListener("click", () => onChange(page - 1));
-
+  const prev = makePageButton("Previous", page === 1, () => onChange(page - 1));
+  const next = makePageButton("Next", page === totalPages, () =>
+    onChange(page + 1),
+  );
   const info = document.createElement("span");
-  info.className = "page-info";
-  info.textContent = `${page} / ${totalPages}`;
+  info.className = "label";
+  info.textContent = `Page ${page} of ${totalPages}`;
 
-  const nextBtn = document.createElement("button");
-  nextBtn.textContent = "Next →";
-  nextBtn.disabled = page === totalPages;
-  nextBtn.addEventListener("click", () => onChange(page + 1));
+  nav.append(prev, info, next);
+  afterEl.after(nav);
 
-  container.append(prevBtn, info, nextBtn);
-  afterEl.after(container);
+  if (focusedText) {
+    let target = focusedText === "Next" ? next : prev;
+    if (target.disabled) target = target === next ? prev : next;
+    target.focus();
+  }
+}
+
+function makePageButton(text, disabled, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "key key-sm";
+  button.textContent = text;
+  button.disabled = disabled;
+  button.addEventListener("click", onClick);
+  return button;
 }
 
 // ─── Projects ──────────────────────────────────────────────────────────────
@@ -128,9 +139,21 @@ function renderPaginationControls({
 const PROJECTS_PAGE_SIZE = 3;
 let currentProjectsPage = 1;
 
+// One primary action per project. With `install`, the copyable command is
+// the primary key and the demo link steps down to a secondary key.
+function projectActions(p) {
+  const demoText = p.demoLabel || "Try the demo";
+  if (!p.install) {
+    return `<a class="key primary" href="${p.demoUrl}" target="_blank" rel="noopener">${demoText}</a>`;
+  }
+  return `
+    <button type="button" class="key primary cmd" data-copy="${p.install}"><span class="sr-only">Copy </span>${p.install}</button>
+    <a class="key" href="${p.demoUrl}" target="_blank" rel="noopener">${demoText}</a>`;
+}
+
 function renderProjects() {
   const list = document.getElementById("project-list");
-  const total = projectsData.length;
+  const totalPages = Math.ceil(projectsData.length / PROJECTS_PAGE_SIZE);
   const page = projectsData.slice(
     (currentProjectsPage - 1) * PROJECTS_PAGE_SIZE,
     currentProjectsPage * PROJECTS_PAGE_SIZE,
@@ -139,26 +162,27 @@ function renderProjects() {
   list.innerHTML = page
     .map(
       (p) => `
-    <div class="project">
-      <div class="project-heading">
-        <span>
-          <a class="project-title" href="${p.demoUrl}" target="_blank" rel="noopener">${p.title}</a>
-        </span>
-        <a class="project-code" href="${p.codeUrl}" target="_blank" rel="noopener">code</a>
+    <article class="row project">
+      <div class="row-margin">
+        <span class="label">${p.status}</span>
+        <a href="${p.codeUrl}" target="_blank" rel="noopener">Code<span class="sr-only"> for ${p.title}</span></a>
       </div>
-      <span class="project-status">  ${p.status}</span>
-      <p class="project-desc">${p.desc}</p>
-    </div>
+      <div class="row-body">
+        <h3>${p.title}</h3>
+        <p>${p.desc}</p>
+        <p class="keys">${projectActions(p)}</p>
+      </div>
+    </article>
   `,
     )
     .join("");
 
-  renderPaginationControls({
+  renderPagination({
     afterEl: list,
-    containerId: "projects-pagination",
-    total,
-    pageSize: PROJECTS_PAGE_SIZE,
+    id: "projects-pagination",
+    label: "Projects pages",
     page: currentProjectsPage,
+    totalPages,
     onChange: (newPage) => {
       currentProjectsPage = newPage;
       renderProjects();
@@ -221,14 +245,7 @@ function renderWriting() {
         ? "Nothing here yet. Check back soon."
         : `Nothing on ${activeFilter === "medium" ? "Medium" : "Substack"} yet.`;
     list.innerHTML = `<p class="post empty">${msg}</p>`;
-    renderPaginationControls({
-      afterEl: list,
-      containerId: "writing-pagination",
-      total: 0,
-      pageSize: PAGE_SIZE,
-      page: 1,
-      onChange: () => {},
-    });
+    document.getElementById("writing-pagination")?.remove();
     return;
   }
 
@@ -243,12 +260,12 @@ function renderWriting() {
     )
     .join("");
 
-  renderPaginationControls({
+  renderPagination({
     afterEl: list,
-    containerId: "writing-pagination",
-    total,
-    pageSize: PAGE_SIZE,
+    id: "writing-pagination",
+    label: "Writing pages",
     page: currentPage,
+    totalPages: Math.ceil(total / PAGE_SIZE),
     onChange: (newPage) => {
       currentPage = newPage;
       renderWriting();

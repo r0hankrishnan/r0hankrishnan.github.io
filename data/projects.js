@@ -1,5 +1,7 @@
 // ─── Projects content ──────────────────────────────────────────────────────
 // To add a project: append an object below with the same 5 fields.
+// Optional: `demoLabel` replaces the "Try the demo" button text, and
+// `install` adds a copyable command (e.g. "pip install x") as the main button.
 // To update: edit the fields in place. To remove: delete the object.
 // Order here is the display order (most recent/relevant first).
 
@@ -22,6 +24,8 @@ const projectsData = [
     title: "Datashelf",
     status: "Published, available on PyPI",
     demoUrl: "https://pypi.org/project/datashelf/",
+    demoLabel: "PyPI",
+    install: "pip install datashelf",
     codeUrl: "https://github.com/r0hankrishnan/datashelf",
     desc: "A lightweight Python library for versioned tabular data storage, with hash-based deduplication.",
   },

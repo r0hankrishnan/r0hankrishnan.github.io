@@ -27,38 +27,17 @@
 
 /* ---------- Projects ---------- */
 
-.project {
-  padding: 1rem 0;
+.project h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
-.project:first-child {
-  padding-top: 0;
+.project p {
+  margin: 0.45rem 0 0;
+  max-width: 60ch;
 }
-
-.project-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-}
-.project-title {
-  font-weight: 500;
-  font-size: 1.02rem;
-}
-.project-status {
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  font-style: italic;
-}
-.project-code {
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.project-desc {
-  color: var(--ink-soft);
-  margin: 0.4rem 0 0;
-  max-width: 56ch;
+.project .keys {
+  margin-top: 0.95rem;
 }
 
 /* ---------- Writing ---------- */
@@ -127,37 +106,7 @@
 .pagination {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  margin-top: 1rem;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: var(--ink-soft);
-}
-.pagination button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  color: var(--ink-soft);
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 3px;
-  transition:
-    text-decoration-color 0.15s ease,
-    color 0.15s ease,
-    opacity 0.15s ease;
-}
-.pagination button:hover:not(:disabled) {
-  color: var(--ink);
-  text-decoration-color: var(--accent);
-}
-.pagination button:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-.pagination .page-info {
-  flex: 1;
-  text-align: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.1rem;
 }
