@@ -165,15 +165,13 @@ function renderProjects() {
   list.innerHTML = page
     .map(
       (p) => `
-    <article class="row project">
-      <div class="row-margin">
-        <span class="label">${p.status}</span>
-        <a href="${p.codeUrl}" target="_blank" rel="noopener">Code<span class="sr-only"> for ${p.title}</span></a>
-      </div>
-      <div class="row-body">
-        <h3>${p.title}</h3>
-        <p>${p.desc}</p>
-        <p class="keys">${projectActions(p)}</p>
+    <article class="card project">
+      ${p.status ? `<p class="label">${p.status}</p>` : ""}
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <div class="project-actions">
+        <span class="keys">${projectActions(p)}</span>
+        <a href="${p.codeUrl}" target="_blank" rel="noopener">View the code<span class="sr-only"> for ${p.title}</span></a>
       </div>
     </article>
   `,

@@ -189,6 +189,11 @@ solid rule below. Cards are static: no hover lift, because a lift says
 "pressable" and a card doesn't open anything yet. If cards later open a
 full write-up, make the title the link and add the key's hover lift then.
 
+Each project is a card (no header) with `20px 22px` padding, stacked 12px
+apart: an optional status flag (`.label`, only for something worth flagging
+such as "In progress"), the name, the description, then an actions row:
+the action keys followed by a "View the code" text link.
+
 ### Ledger row
 
 Rest only; rows themselves are not interactive. Links and keys inside them

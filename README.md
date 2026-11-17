@@ -10,8 +10,10 @@ Content lives in `data/` as plain JS files, separate from the rendering
 logic in `script.js` / `noodles.js`.
 
 - **`data/projects.js`** — the Projects list on the homepage. Add, edit, or
-  delete an object in the array; each needs `title`, `status`, `demoUrl`,
-  `codeUrl`, `desc`. Two fields are optional:
+  delete an object in the array; each needs `title`, `demoUrl`, `codeUrl`,
+  `desc`. Three fields are optional:
+  - `status` shows a small flag above the title. Use it only for something
+    worth flagging, like `"In progress"`; leave it out otherwise.
   - `demoLabel` replaces the "Try the demo" button text (e.g. `"PyPI"`).
   - `install` is a command such as `"pip install datashelf"`. It becomes the
     main button, which copies the command, and the demo link becomes a
