@@ -94,62 +94,64 @@
         </div>
       </header>
 
-      <section id="now" aria-labelledby="now-title">
-        <div class="section-head">
-          <h2 id="now-title">Now</h2>
-          <div class="toys">
-            <button
-              type="button"
-              class="toy"
-              id="record"
-              aria-label="Play a little jazz"
-              aria-pressed="false"
-            >
-              <span class="record-disc" aria-hidden="true"></span>
-              <span class="record-arm" aria-hidden="true"></span>
-              <span class="tip" aria-hidden="true">Play a little jazz</span>
-            </button>
-            <button
-              type="button"
-              class="toy"
-              id="ball"
-              aria-label="Play Rally Run, a hidden tennis game"
-            >
-              <span class="ball" aria-hidden="true"></span>
-              <span class="tip" aria-hidden="true">Play Rally Run</span>
-            </button>
+      <main>
+        <section id="now" aria-labelledby="now-title">
+          <div class="section-head">
+            <h2 id="now-title">Now</h2>
+            <div class="toys">
+              <button
+                type="button"
+                class="toy"
+                id="record"
+                aria-label="Play a little jazz"
+                aria-pressed="false"
+              >
+                <span class="record-disc" aria-hidden="true"></span>
+                <span class="record-arm" aria-hidden="true"></span>
+                <span class="tip" aria-hidden="true">Play a little jazz</span>
+              </button>
+              <button
+                type="button"
+                class="toy"
+                id="ball"
+                aria-label="Play Rally Run, a hidden tennis game"
+              >
+                <span class="ball" aria-hidden="true"></span>
+                <span class="tip" aria-hidden="true">Play Rally Run</span>
+              </button>
+            </div>
           </div>
-        </div>
-        <dl class="ledger now-list" id="now-list"></dl>
-      </section>
+          <dl class="ledger now-list" id="now-list"></dl>
+        </section>
 
-      <section id="projects" aria-labelledby="projects-title">
-        <div class="section-head">
-          <h2 id="projects-title">Projects</h2>
-        </div>
-        <div class="ledger" id="project-list"></div>
-      </section>
-
-      <section id="writing" aria-labelledby="writing-title">
-        <div class="section-head">
-          <h2 id="writing-title">Writing</h2>
-          <div class="keys" role="group" aria-label="Filter posts by source">
-            <button type="button" class="key key-sm" data-filter="all" aria-pressed="true">
-              All
-            </button>
-            <button type="button" class="key key-sm" data-filter="medium" aria-pressed="false">
-              Medium
-            </button>
-            <button type="button" class="key key-sm" data-filter="substack" aria-pressed="false">
-              Substack
-            </button>
+        <section id="projects" aria-labelledby="projects-title">
+          <div class="section-head">
+            <h2 id="projects-title">Projects</h2>
           </div>
-        </div>
+          <div class="ledger" id="project-list"></div>
+        </section>
 
-        <div class="ledger" id="post-list">
-          <p class="row empty">Loading posts…</p>
-        </div>
-      </section>
+        <section id="writing" aria-labelledby="writing-title">
+          <div class="section-head">
+            <h2 id="writing-title">Writing</h2>
+            <div class="keys" role="group" aria-label="Filter posts by source">
+              <button type="button" class="key key-sm" data-filter="all" aria-pressed="true">
+                All
+              </button>
+              <button type="button" class="key key-sm" data-filter="medium" aria-pressed="false">
+                Medium
+              </button>
+              <button type="button" class="key key-sm" data-filter="substack" aria-pressed="false">
+                Substack
+              </button>
+            </div>
+          </div>
+
+          <div class="ledger" id="post-list">
+            <p class="row empty">Loading posts…</p>
+          </div>
+        </section>
+      </main>
 
       <footer>
         <p class="footer-links">
