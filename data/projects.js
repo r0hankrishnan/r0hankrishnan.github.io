@@ -23,7 +23,7 @@ const projectsData = [
   },
   {
     title: "Datashelf",
-    demoUrl: "https://pypi.org/project/datashelf/",
+    demoUrl: "https://pypi.org/project/datashelf-py/",
     demoLabel: "PyPI",
     install: "pip install datashelf",
     codeUrl: "https://github.com/r0hankrishnan/datashelf",

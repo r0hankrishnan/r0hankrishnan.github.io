@@ -51,6 +51,7 @@ const RallyRun = (() => {
     dialog.addEventListener("click", (e) => e.target === dialog && close());
     dialog.addEventListener("close", () => {
       cancelAnimationFrame(frame);
+      sound("stopMusic");
       // Native <dialog> restores focus in most browsers; Safari doesn't focus
       // buttons on click, so return focus to the trigger explicitly.
       if (returnFocusTo) returnFocusTo.focus();
@@ -90,6 +91,7 @@ const RallyRun = (() => {
     best = loadBest();
     reset();
     dialog.showModal();
+    sound("startMusic");
     let last = performance.now();
     const loop = (now) => {
       const dt = Math.min((now - last) / 1000, 1 / 30);
@@ -117,12 +119,21 @@ const RallyRun = (() => {
 
   // Space / tap: serve, jump, or restart depending on state.
   function press() {
-    if (state === "ready") state = "playing";
     if (state === "over") {
       if (performance.now() - ball.hitAt > 400) reset();
       return;
     }
-    if (ball.y >= GROUND) ball.vy = JUMP_VELOCITY;
+    const serving = state === "ready";
+    state = "playing";
+    if (ball.y < GROUND) return; // already in the air
+
+    ball.vy = JUMP_VELOCITY;
+    if (serving) {
+      sound("serve");
+      sound("startMusic"); // back on after a fault
+    } else {
+      sound("jump");
+    }
   }
 
   // ─── Simulation ──────────────────────────────────────────────────────────
@@ -159,6 +170,8 @@ const RallyRun = (() => {
     if (obstacles.some(hits)) {
       state = "over";
       ball.hitAt = performance.now();
+      sound("stopMusic");
+      sound("fault");
       if (Math.floor(score) > best) {
         best = Math.floor(score);
         saveBest(best);
@@ -292,6 +305,11 @@ const RallyRun = (() => {
       ctx.fillText("Fault.", W / 2, 72);
       ctx.fillText("Space or tap to play again", W / 2, 72 + size * 1.6);
     }
+  }
+
+  // ─── Sound (game-sound.js is optional, so check it's loaded) ────────────
+  function sound(name) {
+    if (typeof GameSound !== "undefined") GameSound[name]();
   }
 
   // ─── High score (best effort; storage can be unavailable) ────────────────

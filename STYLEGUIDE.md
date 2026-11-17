@@ -226,6 +226,11 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 - Noodle reel: a short falling tick each time a cup passes the window
   (synced to the reel's real position, so it slows as the reel does), then
   a two-note chime when it lands.
+- Rally Run (game-sound.js): an original 8-bit tennis theme (square lead,
+  triangle bass, noise hats; 8 bars in C at 150 BPM) loops while the game is
+  open and stops on a fault, coming back on the next serve. Effects: a rising
+  arpeggio on serve, an upward blip on each jump, a thud and falling tone on
+  a fault. All of it follows the sound switch.
 - Everything is synthesized with Web Audio; no audio files.
 
 ## Accessibility checklist
@@ -251,4 +256,5 @@ clicking the backdrop. Focus moves into the dialog and returns on close
 | `effects.css` / `effects.js` | Page cross-fade, noodle tilt, steam | drop that polish |
 | `nav.js` | Marks the current section in the floating nav | stop highlighting (the links still work) |
 | `sound.js` | Sound switch, key pops, spin sounds | go silent |
-| `game.css` / `game.js` | Rally Run, opened from the footer | drop the game (also remove the footer button) |
+| `game.css` / `game.js` | Rally Run, opened from the footer | drop the game (also remove the footer button and game-sound.js) |
+| `game-sound.js` | Rally Run's theme and effects | make the game silent |

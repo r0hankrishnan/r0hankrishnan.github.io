@@ -5,8 +5,8 @@
 // only created the first time a sound plays, which is always inside a click
 // or key press (browsers require a user gesture before audio can start).
 //
-// Exposes `Sound.tick()` and `Sound.chime()` for the noodle reel. Both do
-// nothing while sound is off. Remove this file (and its <script> tags) to
+// Exposes `Sound.tick()` and `Sound.chime()` for the noodle reel (both do
+// nothing while sound is off) and `Sound.isOn()` for game-sound.js. Remove this file (and its <script> tags) to
 // make the site silent.
 
 const Sound = (function sound() {
@@ -113,5 +113,7 @@ const Sound = (function sound() {
     nav.append(toggle);
   }
 
-  return { tick, chime };
+  const isOn = () => enabled;
+
+  return { tick, chime, isOn };
 })();
