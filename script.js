@@ -2,12 +2,10 @@
 // Values live in data/site.js (loaded before this file) as `siteData`, so
 // they only need to be updated in one place.
 function renderSiteInfo() {
-  document
-    .querySelectorAll("#email-link-hero, #email-link-footer")
-    .forEach((link) => link.setAttribute("data-copy", siteData.email));
-  document
-    .querySelectorAll("#resume-link-hero, #resume-link-footer")
-    .forEach((link) => link.setAttribute("href", siteData.resumeUrl));
+  const email = document.getElementById("email-link");
+  email.href = `mailto:${siteData.email}`;
+  email.dataset.copy = siteData.email;
+  document.getElementById("resume-link").href = siteData.resumeUrl;
 
   const yearEl = document.getElementById("copyright-year");
   if (yearEl) yearEl.textContent = siteData.copyrightYear;
@@ -31,35 +29,42 @@ function renderSiteInfo() {
 }
 renderSiteInfo();
 
-// ─── Email copy-to-clipboard (delegated, works regardless of render order) ─
-// The `.copied` class shows a "Copied" tooltip (styles.css). The status
-// element announces the copy to screen readers, which can't see the tooltip.
+// ─── Copy to clipboard (delegated, works for anything rendered later) ─────
+// Clicking any element with `data-copy` copies that text. `data-bubble`
+// shows a "Copied" bubble above it (base.css); the status element announces
+// the same thing to screen readers. If the clipboard is unavailable, the
+// bubble shows the text itself so it can still be copied by hand.
 const copyStatus = document.createElement("p");
+copyStatus.className = "sr-only";
 copyStatus.setAttribute("role", "status");
-copyStatus.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)";
 document.body.append(copyStatus);
 
-document.addEventListener("click", (e) => {
-  const link = e.target.closest("a[data-copy]");
-  if (!link) return;
-  e.preventDefault();
-  navigator.clipboard.writeText(link.dataset.copy).then(() => {
-    link.classList.add("copied");
-    copyStatus.textContent = "Email address copied";
-    setTimeout(() => {
-      link.classList.remove("copied");
-      copyStatus.textContent = "";
-    }, 1800);
-  });
-});
+const BUBBLE_MS = 1600;
+const bubbleTimers = new WeakMap();
 
-// ─── Row hover-edge effect (delegated, covers .project and dynamic .post) ─
-document.addEventListener("mouseover", (e) => {
-  const row = e.target.closest(".project, .post");
-  if (!row) return;
-  const rect = row.getBoundingClientRect();
-  const enteredFromBottom = e.clientY - rect.top > rect.height / 2;
-  row.style.setProperty("--edge", enteredFromBottom ? "bottom" : "top");
+document.addEventListener("click", async (e) => {
+  const el = e.target.closest("[data-copy]");
+  if (!el) return;
+  e.preventDefault();
+  const text = el.dataset.copy;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    el.dataset.bubble = "Copied";
+    copyStatus.textContent = `Copied ${text}`;
+  } catch (err) {
+    el.dataset.bubble = text;
+    copyStatus.textContent = `Could not copy automatically: ${text}`;
+  }
+
+  clearTimeout(bubbleTimers.get(el));
+  bubbleTimers.set(
+    el,
+    setTimeout(() => {
+      delete el.dataset.bubble;
+      copyStatus.textContent = "";
+    }, BUBBLE_MS),
+  );
 });
 
 // ─── Shared pagination control (used by projects + writing) ───────────────

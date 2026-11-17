@@ -1,35 +1,16 @@
 /* Homepage styles. Shared tokens and layout live in base.css. */
 
-header p:last-of-type {
-  margin-bottom: 1.6rem;
-}
+/* ---------- Header links: two keys, then plain profile links ---------- */
 
-/* ---------- Email copy-to-clipboard tooltip ---------- */
-
-a[data-copy] {
-  position: relative;
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.6rem;
 }
-a[data-copy]::after {
-  content: "Copied";
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 6px);
-  translate: -50% 4px;
-  padding: 2px 8px;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 0.7rem;
-  color: var(--paper);
-  background: var(--ink);
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition:
-    opacity 0.15s ease,
-    translate 0.15s ease;
-}
-a[data-copy].copied::after {
-  opacity: 1;
-  translate: -50% 0;
+.links .keys {
+  margin-right: 0.5rem;
 }
 
 /* ---------- Now (code block) ---------- */
@@ -69,34 +50,6 @@ a[data-copy].copied::after {
   50% {
     opacity: 0;
   }
-}
-
-/* ---------- Project + post rows ---------- */
-
-/* Accent bar that grows in from whichever edge the pointer entered
-   (--edge is set in script.js). It sits just outside the text column. */
-.project,
-.post {
-  position: relative;
-  border-bottom: 1px solid var(--rule);
-}
-.project::before,
-.post::before {
-  content: "";
-  position: absolute;
-  left: -0.9rem;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--accent);
-  transform: scaleY(0);
-  transform-origin: var(--edge, top);
-  transition: transform 0.25s ease;
-}
-.project:hover::before,
-.post:hover::before,
-.post:focus-visible::before {
-  transform: scaleY(1);
 }
 
 /* ---------- Projects ---------- */
@@ -194,9 +147,6 @@ a[data-copy].copied::after {
   font-style: italic;
   padding: 0.5rem 0 0.2rem;
   border-bottom: none;
-}
-.post.empty::before {
-  display: none;
 }
 
 /* ---------- Pagination (shared: projects + writing) ---------- */
