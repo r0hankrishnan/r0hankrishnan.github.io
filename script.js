@@ -10,22 +10,40 @@ function renderSiteInfo() {
   const yearEl = document.getElementById("copyright-year");
   if (yearEl) yearEl.textContent = siteData.copyrightYear;
 
-  const nowEl = document.getElementById("now-block");
-  if (nowEl) {
-    const n = siteData.now;
-    const lines = [
-      `now = {`,
-      `  location: <span class="str">"${n.location}"</span>,`,
-      `  study:    <span class="str">"${n.study}"</span>,`,
-      `  role:     <span class="str">"${n.role}"</span>,`,
-      `  building: <span class="str">"${n.building}"</span>,  <span class="comment">// ${n.buildingNote}</span>`,
-      `  reading:  <span class="str">"${n.reading}"</span>,`,
-      `}<span class="cursor"></span>`,
-    ];
-    nowEl.innerHTML = lines
-      .map((line) => `<span class="line">${line}</span>`)
-      .join("");
-  }
+  renderNow();
+}
+
+// One ledger row per field: the field name in the margin, the value beside it.
+function renderNow() {
+  const n = siteData.now;
+  const fields = [
+    ["Location", n.location],
+    ["Study", n.study],
+    ["Role", n.role],
+    ["Building", n.building, n.buildingNote],
+    ["Reading", n.reading],
+  ];
+  const list = document.getElementById("now-list");
+  list.replaceChildren(
+    ...fields.map(([name, value, note]) => {
+      const row = document.createElement("div");
+      row.className = "row";
+      const dt = document.createElement("dt");
+      dt.className = "row-margin label";
+      dt.textContent = name;
+      const dd = document.createElement("dd");
+      dd.className = "row-body";
+      dd.textContent = value;
+      if (note) {
+        const small = document.createElement("span");
+        small.className = "now-note";
+        small.textContent = note;
+        dd.append(small);
+      }
+      row.append(dt, dd);
+      return row;
+    }),
+  );
 }
 renderSiteInfo();
 

@@ -137,7 +137,12 @@ section {
 
 /* ---------- The ledger ---------- */
 /* Every content list: a narrow margin column of metadata beside the content,
-   with hairlines between rows. */
+   with hairlines between rows. `.ledger` is the list that holds the rows. */
+
+.ledger {
+  margin: 0;
+  padding: 0;
+}
 
 .row {
   display: grid;
