@@ -314,9 +314,10 @@ const RallyRun = (() => {
 
 // ─── Wire up the trigger ───────────────────────────────────────────────────
 // The trigger is a real <button>, so Enter and Space already click it.
-const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.querySelectorAll(GAME_TRIGGER).forEach((button) => {
   button.addEventListener("click", () => {
-    setTimeout(() => RallyRun.open(button), reduceMotion ? 0 : OPEN_DELAY_MS);
+    let delay = OPEN_DELAY_MS;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) delay = 0;
+    setTimeout(() => RallyRun.open(button), delay);
   });
 });

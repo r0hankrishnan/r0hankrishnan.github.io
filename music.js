@@ -254,8 +254,9 @@
 
   // ─── Scheduling ────────────────────────────────────────────────────────
 
+  // The chord sounding at `beat`: the last change at or before it.
   function chordAt(bar, beat) {
-    let chord = CHORDS[bar][0][1];
+    let chord;
     for (const [changeBeat, voicing] of CHORDS[bar]) {
       if (changeBeat <= beat) chord = voicing;
     }

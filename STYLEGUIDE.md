@@ -163,7 +163,8 @@ hover/focus.
 - **Record** (`#record`): plays the jazz loop. Rest: still disc, arm parked.
   Hover: disc nudges -25deg, arm twitches. Playing: disc spins (1.8s/turn),
   arm on the record, notes float up, `aria-pressed="true"`.
-- **Tennis ball** (`#ball`): rest is tennis yellow with white seams; hover
+- **Tennis ball** (`#ball`): rest is tennis yellow with white seams and a
+  faint ink edge (the yellow alone barely separates from the paper); hover
   tilts it. Click bounces it (thwack, then two pocks) and Rally Run opens
   as it lands (650ms; immediately with reduced motion).
 

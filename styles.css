@@ -48,9 +48,7 @@
   text-decoration: none;
 }
 .post .row-body {
-  text-decoration: underline;
-  text-decoration-color: var(--rule);
-  text-decoration-thickness: 1.5px;
+  text-decoration: underline 1.5px var(--rule);
   text-underline-offset: 3px;
   transition: text-decoration-color 0.15s ease;
 }
