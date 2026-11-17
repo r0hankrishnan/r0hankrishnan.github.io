@@ -1,6 +1,9 @@
 # r0hankrishnan.github.io
 Personal portfolio website
 
+Design rules (colors, type, layout, component states, motion, sound) live in
+[STYLEGUIDE.md](STYLEGUIDE.md). Read it before changing anything visual.
+
 ## Editing content
 
 Content lives in `data/` as plain JS files, separate from the rendering

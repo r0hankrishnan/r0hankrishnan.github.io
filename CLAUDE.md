@@ -9,6 +9,7 @@ Personal portfolio site, deployed by GitHub Pages straight from `main`. **Anythi
 - Content lives in `data/*.js` as plain globals (`siteData`, `projectsData`, noodle data), loaded with `<script>` tags before the page script. See README.md for field schemas.
 - **Keep the data/ separation:** content goes in `data/`, rendering logic stays in the page scripts. New content-driven sections should follow the same pattern.
 - Colors are CSS custom properties on `:root` (`--paper`, `--ink`, ...). Reuse them instead of hardcoding values.
+- **Read STYLEGUIDE.md before any visual change.** It is the source of truth for tokens, type, layout, component states, motion and sound. Update it in the same commit if a rule changes.
 
 ## Guardrails
 
