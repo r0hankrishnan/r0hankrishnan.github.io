@@ -21,7 +21,7 @@ function renderTierList() {
     `,
           )
           .join("")
-      : `<span class="tier-empty">unclaimed</span>`;
+      : `<span class="tier-empty">empty</span>`;
   });
 }
 
